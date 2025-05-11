@@ -1,0 +1,109 @@
+.control-product .icon-control {
+    margin-right: 4px;
+}
+
+.control-product .btn:first-child {
+    margin-right: 8px;
+}
+    
+.control-product {
+    float: right;
+}
+
+.page-inner-custom .page-header {
+    display: inline-flex;
+}
+
+.add-product-form-area {
+    background: #fff;
+    border-radius: 3px;
+    min-height: 800px;
+}
+
+.label-notice {
+    color: red;
+    padding: 16px 0 16px 16px;
+    border-bottom: 1px solid #ededed;
+}
+
+.form-left {
+    padding: 14px 0 18px 16px;
+}
+
+.form-right {
+    padding-right: 18px;
+    padding-top: 14px;
+}
+
+.form-left .form-group:not(:last-child) {
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 22px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin-bottom: 22px;
+}
+
+.upload-img-item:not(:last-of-type) {
+    margin-bottom: 20px;
+}
+
+.upload-img-title {
+    font-size: 13.5px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.upload-img-item input {
+    font-size: 13.5px;
+    width: 100%;
+}
+
+.form-input {
+    width: 100%;
+    font-size: 16px;
+    padding: 4px 12px;
+    border: 1px solid #e5e6e7;
+    transition: all 0.3s ease;
+    color: #333;
+}
+
+.form-input:focus,
+.form-input:hover {
+    border: 1px solid #000;
+}
+
+.select-input {
+    font-size: 14.5px;
+    padding: 6px 12px;
+    border: 1px solid #e5e6e7;
+    transition: all 0.3s ease;
+}
+
+.select-input:focus,
+.select-input:hover {
+    border: 1px solid #000;
+}
+
+.form-label::after {
+    content: "(*)";
+    display: inline-block;
+    font-size: 14px;
+    color: red;
+    margin-left: 4px;
+}
+
+.img-product-wrapper {
+    text-align: center;
+    margin: 6px 0;
+}
+
+.product-img-view {
+    width: 100%;
+    max-width: 120px;
+    padding-bottom: 16px;
+    padding-top: 6px;
+}

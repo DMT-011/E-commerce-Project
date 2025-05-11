@@ -1,0 +1,16 @@
+
+.control-product .icon-control {
+    margin-right: 4px;
+}
+
+.control-product .btn:first-child {
+    margin-right: 8px;
+}
+
+.control-product {
+    float: right;
+}
+
+.page-inner-custom .page-header {
+    display: inline-flex;
+}

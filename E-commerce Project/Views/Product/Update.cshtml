@@ -1,0 +1,256 @@
+﻿@{
+	Layout = "_LayoutAdmin";
+}
+
+@section Styles
+{
+	<link rel="stylesheet" href="~/css/admin/updateProductForm.css">
+}
+
+<div class="container">
+	<div class="page-inner page-inner-custom">
+		<!-- Breadcrumb-->
+		<div class="page-header">
+			<h3 class="fw-bold mb-3">Sản phẩm</h3>
+			<ul class="breadcrumbs mb-3">
+				<li class="nav-home">
+					<a href="#">
+						<i class="icon-home"></i>
+					</a>
+				</li>
+				<li class="separator">
+					<i class="icon-arrow-right"></i>
+				</li>
+				<li class="nav-item">
+					<a href="#">Sản phẩm</a>
+				</li>
+				<li class="separator">
+					<i class="icon-arrow-right"></i>
+				</li>
+				<li class="nav-item">
+					<a href="#">Cập nhật sản phẩm</a>
+				</li>
+			</ul>
+
+			
+		</div>
+
+		<div class="control-product">
+			<a href="#" class="btn btn-black">
+			  <i class="icon-control fas fa-window-restore"></i>
+			Cập nhật
+			</a>
+			<button class="btn btn-primary">
+			  <i class="icon-control fas fa-undo-alt"></i>
+			  Trở về
+			</button>
+		</div>
+
+		<div class="add-product-form-area">
+			<div class="row">
+				<div class="col-12">
+					<div class="label-notice">* Các mục đánh dấu (*) là bắt buộc</div>
+				</div>
+				<!-- Form side left -->
+				<div class="col-9">
+					<div class="form-left">
+						<div class="form-group">
+							<label for="name-product" class="form-label">Tên sản phẩm</label>
+							<input type="text" class="form-input" id="name-product">
+						</div>
+
+						<div class="form-group">
+							<label for="product-desc-content" class="form-label">Mô tả sản phẩm</label>
+							<textarea name="" id="product-desc-content"></textarea>
+						</div>
+
+						<div class="form-group">
+							<label for="product-detail-content" class="form-label">Chi tiết sản phẩm</label>
+							<textarea name="" id="product-detail-content"></textarea>
+						</div>
+					</div>
+				</div>
+
+				<!-- Form side right -->
+				<div class="col-3">
+					<div class="form-right">
+						<div class="form-group">
+							<label for="img-product-main" class="form-label">Hình ảnh</label>
+							<div class="upload-img-item">
+								<span class="upload-img-title">Ảnh chính</span>
+								<input type="file" name="" class="img-product-main">
+								
+								<div class="img-product-wrapper">
+									<img accept="image/*" src="../assets/img/iphone-16-128gb-black.png" class="product-img-view" alt="">
+								</div>
+							</div>
+
+							<div class="upload-img-item">
+								<span class="upload-img-title">Ảnh phụ 1</span>
+								<input type="file" name="" class="img-product-sub-1">
+
+								<div class="img-product-wrapper">
+									<img accept="image/*" src="../assets/img/iphone-16-128gb-black.png" class="product-img-view" alt="">
+								</div>
+							</div>
+
+							<div class="upload-img-item">
+								<span class="upload-img-title">Ảnh phụ 2</span>
+								<input type="file" name="" class="img-product-sub-2">
+
+								<div class="img-product-wrapper">
+									<img accept="image/*" src="../assets/img/iphone-16-128gb-black.png" class="product-img-view" alt="">
+								</div>
+							</div>
+
+							<div class="upload-img-item">
+								<span class="upload-img-title">Ảnh phụ 3</span>
+								<input type="file" name="" class="img-product-sub-3">
+
+								<div class="img-product-wrapper">
+									<img accept="image/*" src="../assets/img/iphone-16-128gb-black.png" class="product-img-view" alt="">
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="nameProduct" class="form-label">Loại sản phẩm</label>
+
+							<select name="" id="category-product" class="select-input">
+								<option value="0">[Chọn loại sản phẩm]</option>
+								<option value="1">Iphone 16</option>
+								<option value="2">Watch</option>
+							</select>
+						</div>
+						
+						<div class="form-group">
+							<label for="product-quantity" class="form-label">Số lượng</label>
+							<input type="number"  min="1" class="form-input" id="product-quantity">
+						</div>
+
+						<div class="form-group">
+							<label for="product-price" class="form-label">Giá gốc</label>
+							<input type="text"  class="form-input" id="product-price">
+						</div>
+
+						<div class="form-group">
+							<label for="product-price-promotion" class="form-label">Giá khuyến mãi</label>
+							<input type="text" class="form-input" id="product-price-promotion">
+						</div>
+
+						<div class="form-group">
+							<label for="product-has-promotion" class="form-label">Chương trình giảm giá</label>
+
+							<select name="" id="product-has-promotion" class="select-input">
+								<option value="0">Có</option>
+								<option value="1">Không</option>
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label for="product-status" class="form-label">Trạng thái</label>
+
+							<select name="" id="product-status" class="select-input">
+								<option value="0">Hiển thị</option>
+								<option value="1">Không hiện thị</option>
+							</select>
+						</div>
+						
+
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+</div>
+
+@section Scripts
+{
+	<script src="https://cdn.tiny.cloud/1/kni28pimx3vbme8ar0q8guu556w4ig99fxodlsqrr7ettxqb/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@@tinymce/tinymce-jquery@2/dist/tinymce-jquery.min.js"></script>
+	
+	<!-- Tiny editor -->
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+			// Text editor product desc content
+			tinymce.init({
+				selector: "#product-desc-content",
+				height: 400,
+				menubar: true,
+				plugins: [
+					'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+					'anchor', 'searchreplace', 'visualblocks', 'fullscreen',
+					'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+				],
+				toolbar: 'undo redo | blocks | bold italic backcolor | ' +
+					'alignleft aligncenter alignright alignjustify | ' +
+					'bullist numlist outdent indent | removeformat | fullscreen | preview | help',
+			});
+
+			// Text editor product detail content
+			tinymce.init({
+				selector: "#product-detail-content",
+				height: 400,
+				menubar: true,
+				plugins: [
+					'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+					'anchor', 'searchreplace', 'visualblocks', 'fullscreen',
+					'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+				],
+				toolbar: 'undo redo | blocks | bold italic backcolor | ' +
+					'alignleft aligncenter alignright alignjustify | ' +
+					'bullist numlist outdent indent | removeformat | fullscreen | preview | help',
+			});
+		});
+	</script>
+
+	<!-- Auto render img when upload other file img -->
+	<script>
+		function handleRenderImageOnchange(inputElement, imgElement) {
+			inputElement.addEventListener("input", function(e) {
+				const fileImg = e.target.files[0];
+
+				if (fileImg) {
+					const reader = new FileReader();
+
+					reader.onload = function(e) {
+						// assign url img to img element
+						imgElement.src = e.target.result;
+						imgElement.style.display = "inline-block";
+						imgElement.parentElement.style.borderBottom = "1px dashed #ededed";
+					}
+
+					// Read file as a URL
+					reader.readAsDataURL(fileImg);
+
+				} else {
+					imgElement.src = "";
+					imgElement.style.display = "none";
+					imgElement.parentElement.style.borderBottom = "";
+				}
+
+			});
+		}
+
+
+		const inputImageMain = document.querySelector(".img-product-main");
+		const imageMain = inputImageMain.parentElement.querySelector(".product-img-view");
+
+		const inputImageSub1 = document.querySelector(".img-product-sub-1");
+		const imageSub1 = inputImageSub1.parentElement.querySelector(".product-img-view");
+
+		const inputImageSub2 = document.querySelector(".img-product-sub-2");
+		const imageSub2 = inputImageSub2.parentElement.querySelector(".product-img-view");
+
+		const inputImageSub3 = document.querySelector(".img-product-sub-3");
+		const imageSub3 = inputImageSub3.parentElement.querySelector(".product-img-view");
+
+
+		handleRenderImageOnchange(inputImageMain, imageMain);
+		handleRenderImageOnchange(inputImageSub1, imageSub1);
+		handleRenderImageOnchange(inputImageSub2, imageSub2);
+		handleRenderImageOnchange(inputImageSub3, imageSub3);
+	</script>
+	
+}

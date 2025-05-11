@@ -18,11 +18,12 @@
 
     <ItemGroup>
       <Folder Include="Migrations\" />
+      <Folder Include="wwwroot\css\admin\" />
       <Folder Include="wwwroot\css\lib\" />
       <Folder Include="wwwroot\css\main\" />
       <Folder Include="wwwroot\images\" />
+      <Folder Include="wwwroot\js\admin\" />
       <Folder Include="wwwroot\js\lib\" />
-      <Folder Include="wwwroot\js\main\" />
       <Folder Include="wwwroot\js\product\" />
     </ItemGroup>
 
@@ -72,6 +73,30 @@
       <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\LICENSE" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-brands-400.eot" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-brands-400.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-brands-400.ttf" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-brands-400.woff" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-brands-400.woff2" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-regular-400.eot" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-regular-400.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-regular-400.ttf" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-regular-400.woff" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-regular-400.woff2" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-solid-900.eot" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-solid-900.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-solid-900.ttf" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-solid-900.woff" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\fontawesome\fa-solid-900.woff2" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\simple-line-icons\Simple-Line-Icons.eot" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\simple-line-icons\Simple-Line-Icons.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\simple-line-icons\Simple-Line-Icons.ttf" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\simple-line-icons\Simple-Line-Icons.woff" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\simple-line-icons\Simple-Line-Icons.woff2" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\summernote\summernote.eot" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\summernote\summernote.ttf" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\summernote\summernote.woff" />
+      <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\summernote\summernote.woff2" />
     </ItemGroup>
 
 </Project>

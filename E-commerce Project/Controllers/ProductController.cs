@@ -8,4 +8,20 @@ public class ProductController : Controller
     {
         return View();
     }
+
+    public IActionResult Create()
+    {
+        return View();
+    }
+    
+
+    public IActionResult Trash()
+    {
+        return View();
+    }
+
+    public IActionResult Update()
+    {
+        return View();
+    }
 }
