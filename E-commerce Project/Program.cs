@@ -1,6 +1,10 @@
 using E_commerce_Project.Models.Context;
+using E_commerce_Project.Models.Entities;
+using E_commerce_Project.Models.Services.CategoryService;
+using E_commerce_Project.Models.Services.FileService;
+using E_commerce_Project.Models.Services.ProductImageService;
+using E_commerce_Project.Models.Services.ProductService;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +14,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 {
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+// Add service handle logic business
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductImageService, ProductImageService>();
 
 builder.Services.AddHttpContextAccessor();
 

@@ -1,10 +1,11 @@
-﻿@{
-	Layout = "_LayoutAdmin";
+﻿@model IEnumerable<E_commerce_Project.Models.ViewModels.AdminViewModel.AdminProductListViewModel>;
+@{
+  Layout = "_LayoutAdmin";
 }
 
 @section Styles
 {
-	<link rel="stylesheet" href="~/css/admin/adminProduct.css">
+  <link rel="stylesheet" href="~/css/admin/adminProduct.css">
 }
 
 <div class="page-inner page-inner-custom">
@@ -40,9 +41,10 @@
     <a href="/Product/Trash" class="btn btn-danger">
       <i class="icon-control fas fa-trash"></i>
       Thùng rác
+      <span>(@ViewBag.countProductDel)</span>
     </a>
   </div>
-  
+
 </div>
 
 <div class="product-list-wrapper">
@@ -51,16 +53,18 @@
       <div class="table-responsive">
         <table class="table align-middle table-product-list">
           <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Hình ảnh</th>
-              <th scope="col">Tên sản phẩm</th>
-              <th scope="col">Số lượng</th>
-              <th scope="col">Thao tác</th>
-            </tr>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Hình ảnh</th>
+            <th scope="col">Tên sản phẩm</th>
+            <th scope="col">Số lượng</th>
+            <th scope="col">Thao tác</th>
+          </tr>
           </thead>
 
           <tbody class="table-group-divider">
+          @foreach (var item in Model)
+          {
             <tr class="product-item">
               <th scope="row">
                 <i
@@ -72,84 +76,59 @@
                   style="opacity: 0.9"
                 ></i>
                 <span class="id-product" style="margin-left: 2px"
-                  >1</span
+                >@item.Id</span
                 >
               </th>
               <td>
                 <img
-                  src="~/images/product_img/iphone16/iphone-16-128gb-black.png"
+                  src="~/@item.ImagePath"
                   class="product-img"
                   alt=""
                 />
               </td>
               <td>
                 <a href="#" class="product-detail-link"
-                  >Iphone 16 128GB black</a
+                >@item.Name</a
                 >
               </td>
-              <td>20</td>
+              <td>@item.Quantity</td>
               <td class="product-controls">
-                  <button
-                    class="btn btn-black"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="top"
-                    data-bs-title="Chỉnh sửa"
-                  >
-                    <i class="far fa-edit"></i>
-                  </button>
+                <a
+                  href="/Product/Update/@item.Id"
+                  class="btn btn-black"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  data-bs-title="Chỉnh sửa"
+                >
+                  <i class="far fa-edit"></i>
+                </a>
 
-                  <button
-                    class="btn btn-danger"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modal-confirm"
-                    data-bs-mess="Test"
-                  >
-                    <i class="fas fa-trash-alt"></i>
-                  </button>
+                <button
+                  class="btn btn-danger"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modal-confirm-delete"
+                  data-product-id="@item.Id"
+                  data-product-name="@item.Name"
+                >
+                  <i class="fas fa-trash-alt"></i>
+                </button>
               </td>
 
               <td class="content-hidden" style="display: none">
-                Iphone 16
+                @item.CategoryName
               </td>
               <td class="content-hidden" style="display: none">
-                05/12/2024 - 2:38-32
+                @item.CreatedDate
               </td>
               <td class="content-hidden" style="display: none">
-                23.999.000
+                @item.PromotionPrice
               </td>
               <td class="content-hidden" style="display: none">
-                25.500.000
+                @item.Price
               </td>
             </tr>
-
-            <!-- <tr class="detail-product">
-                  <td colspan="5">
-                    <div class="detail-product-inner">
-                        <div class="detail-product-row">
-                          <div class="detail-product-name">Loại sản phẩm:</div>
-                          <div class="detail-product-value">Iphone 16</div>
-                        </div>
-
-                        <div class="detail-product-row">
-                          <div class="detail-product-name">Ngày tạo:</div>
-                          <div class="detail-product-value">05/12/2024 - 2:38:32</div>
-                        </div>
-
-                        <div class="detail-product-row">
-                          <div class="detail-product-name">Giá khuyển mãi:</div>
-                          <div class="detail-product-value">23.999.000</div>
-                        </div>
-
-                        <div class="detail-product-row">
-                          <div class="detail-product-name">Giá:</div>
-                          <div class="detail-product-value">25.500.000</div>
-                        </div>
-                       
-                    </div>
-                  </td>
-                </tr> -->
-
-            <tr style="display: none"></tr>
+          }
+          <tr style="display: none"></tr>
           </tbody>
         </table>
       </div>
@@ -159,26 +138,52 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="modal-confirm" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modal-confirm-delete" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Vứt sản phẩm này vào thùng rác ?</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">  
-        Bạn có chắc chắn là chuyển sản phẩm này đến thùng rác ?
+      <div class="modal-body">
+        Sản phẩm sẽ được chuyển vào thùng rác <span style="color: #2bb930">( có thể khôi phục lại )</span>.
+        Bạn có chắc chắn là chuyển sản phẩm 
+        <span style="font-weight: bold" class="product-name"></span>
+        đến thùng rác ?
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
-        <button type="button" class="btn btn-dark">Xác nhận</button>
+        <button type="button" class="btn btn-warning btn-confirm-delete">Xác nhận</button>
       </div>
     </div>
   </div>
 </div>
 
+<form action="" method="POST" id="form-delete-product"></form>
+
+
 @section Scripts
 {
+  <script>
+    const modalConfirmDelete = document.getElementById('modal-confirm-delete');
+    const formDelete = document.querySelector("#form-delete-product");
+    const btnConfirmDelete = document.querySelector(".btn-confirm-delete");
+    
+    if (modalConfirmDelete) {
+      modalConfirmDelete.addEventListener('show.bs.modal', event => {
+        const contentBody = document.querySelector(".product-name");
+        const productId = event.relatedTarget.dataset.productId;
+        const productName = event.relatedTarget.dataset.productName;
+        
+        formDelete.action = `/Product/Delete/${productId}`;
+        contentBody.textContent = productName;
+      })
+    }
+    
+    btnConfirmDelete.onclick = function () {
+      formDelete.submit();
+    }
+  </script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const productItems = document.querySelectorAll(
@@ -247,11 +252,11 @@
       //Remove event when click controls
       const productControls = document.querySelectorAll(".table-product-list .product-controls");
 
-      productControls.forEach(productControl=> {
+      productControls.forEach(productControl => {
         const btnControls = productControl.querySelectorAll(".btn");
 
         btnControls.forEach(btnItems => {
-          btnItems.addEventListener("click", function(e) {
+          btnItems.addEventListener("click", function (e) {
             e.stopPropagation();
           });
 
@@ -259,19 +264,6 @@
 
       });
     });
-
-
-    const modalConfirm = document.getElementById('modal-confirm')
-    if (modalConfirm) {
-      modalConfirm.addEventListener('show.bs.modal', event => {
-        // Button that triggered the modal
-        const button = event.relatedTarget
-        // Extract info from data-bs-* attributes
-        const recipient = button.getAttribute('data-bs-mess');
-
-        console.log(recipient);
-
-      })
-    }
+    
   </script>
 }

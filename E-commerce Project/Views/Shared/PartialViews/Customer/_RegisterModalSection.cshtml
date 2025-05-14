@@ -1,0 +1,59 @@
+﻿@section Styles
+{
+    <link rel="stylesheet" href="~/css/user/register.css">
+}
+
+<div class="modal fade" id="modal-register" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="register-box">
+                    <div class="modal-close">
+                        <i class="bi bi-x-circle-fill" data-bs-dismiss="modal"></i>
+                    </div>
+                    <div class="logo">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple Logo">
+                    </div>
+                    <h2>Đăng ký tài khoản</h2>
+                    <p>Điền thông tin bên dưới để tạo tài khoản của bạn</p>
+                    <form action="#" method="POST">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <input type="text" placeholder="Họ và tên" name="fullname" required>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" placeholder="Tên đăng nhập" name="username" required>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="tel" placeholder="Số điện thoại" name="phone" required>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="password" placeholder="Mật khẩu" name="password" required>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="email" placeholder="Địa chỉ email" name="email" required>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="password" placeholder="Nhập lại mật khẩu" name="confirm_password" required>
+                            </div>
+
+                            <div class="form-group form-full-width">
+                                <input type="text" placeholder="Địa chỉ" name="address" required>
+                            </div>
+                        </div>
+                        <button type="submit">Đăng Ký</button>
+                    </form>
+                    <div class="signin-link">
+                        <p>Bạn đã có tài khoản? <a data-bs-dismiss="modal" class="btn-move-login" href="">Đăng nhập ngay</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -21,6 +21,7 @@
       <Folder Include="wwwroot\css\admin\" />
       <Folder Include="wwwroot\css\lib\" />
       <Folder Include="wwwroot\css\main\" />
+      <Folder Include="wwwroot\css\user\" />
       <Folder Include="wwwroot\images\" />
       <Folder Include="wwwroot\js\admin\" />
       <Folder Include="wwwroot\js\lib\" />
@@ -97,6 +98,9 @@
       <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\summernote\summernote.ttf" />
       <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\summernote\summernote.woff" />
       <_ContentIncludedByDefault Remove="wwwroot\assets\fonts\summernote\summernote.woff2" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\products\1\iphone-16-128gb-black.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\products\2\iphone-16-128gb-black.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\uploads\products\3\iphone-16-128gb-black.png" />
     </ItemGroup>
 
 </Project>

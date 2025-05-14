@@ -6,7 +6,8 @@ public interface IFileService
     string GetUploadsFolder(string subFolder);
     
     string GetUploadsFolderByIdItem (string subfolder, string idItem);
-    Task<string> SaveFileAsync(IFormFile file, string fullPathSave);
+    string GetRelativePath(string absolutePath);
+    Task<string> SaveFileAsync(IFormFile file, string fullPath);
 
     void DeleteFile(string filePath);
     void DeleteFolder(string folderPath);

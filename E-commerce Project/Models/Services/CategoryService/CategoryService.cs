@@ -2,6 +2,7 @@
 using E_commerce_Project.Models.Context;
 using E_commerce_Project.Models.Entities;
 using E_commerce_Project.Models.ViewModels.CategoryViewModel;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace E_commerce_Project.Models.Services.CategoryService;
@@ -111,5 +112,17 @@ public class CategoryService : ICategoryService
         _context.Categories.Remove(category);
         await _context.SaveChangesAsync();
         _logger.LogInformation($"Category {category.Name} has been deleted from database successfully");
+    }
+
+    public async Task<List<SelectListItem>> GetCategoriesWithSelectList()
+    {
+        var categories = await _context.Categories
+            .Select(item => new SelectListItem
+            {
+                Text = item.Name,
+                Value = item.Id.ToString(),
+            }).ToListAsync();
+
+        return categories;
     }
 }

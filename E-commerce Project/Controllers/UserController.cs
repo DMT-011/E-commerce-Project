@@ -13,4 +13,9 @@ public class UserController : Controller
     {
         return View();
     }
+
+    public IActionResult Login()
+    {
+        return View();
+    }
 }

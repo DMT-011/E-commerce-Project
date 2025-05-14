@@ -1,9 +1,12 @@
-﻿@{
+﻿@model E_commerce_Project.Models.ViewModels.ProductViewModel.ProductUpdateViewModel;
+@{
 	Layout = "_LayoutAdmin";
 }
 
 @section Styles
 {
+	<script src="https://cdn.tiny.cloud/1/kni28pimx3vbme8ar0q8guu556w4ig99fxodlsqrr7ettxqb/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@@tinymce/tinymce-jquery@2/dist/tinymce-jquery.min.js"></script>
 	<link rel="stylesheet" href="~/css/admin/updateProductForm.css">
 }
 
@@ -36,17 +39,17 @@
 		</div>
 
 		<div class="control-product">
-			<a href="#" class="btn btn-black">
+			<button href="#" class="btn btn-primary btn-update-product">
 			  <i class="icon-control fas fa-window-restore"></i>
 			Cập nhật
-			</a>
-			<button class="btn btn-primary">
-			  <i class="icon-control fas fa-undo-alt"></i>
-			  Trở về
 			</button>
+			<a href="/Admin/Product" class="btn btn-black">
+			  <i class="icon-control fas fa-reply"></i>
+			  Quay lại
+			</a>
 		</div>
 
-		<div class="add-product-form-area">
+		<form action="/Product/Update/@Model.Id" method="POST" enctype="multipart/form-data" id="form-update-product" class="add-product-form-area">
 			<div class="row">
 				<div class="col-12">
 					<div class="label-notice">* Các mục đánh dấu (*) là bắt buộc</div>
@@ -56,17 +59,17 @@
 					<div class="form-left">
 						<div class="form-group">
 							<label for="name-product" class="form-label">Tên sản phẩm</label>
-							<input type="text" class="form-input" id="name-product">
+							<input asp-for="Name" type="text" class="form-input" id="name-product">
 						</div>
 
 						<div class="form-group">
 							<label for="product-desc-content" class="form-label">Mô tả sản phẩm</label>
-							<textarea name="" id="product-desc-content"></textarea>
+							<textarea asp-for="Description" id="product-desc-content"></textarea>
 						</div>
 
 						<div class="form-group">
 							<label for="product-detail-content" class="form-label">Chi tiết sản phẩm</label>
-							<textarea name="" id="product-detail-content"></textarea>
+							<textarea asp-for="Detail" id="product-detail-content"></textarea>
 						</div>
 					</div>
 				</div>
@@ -78,37 +81,37 @@
 							<label for="img-product-main" class="form-label">Hình ảnh</label>
 							<div class="upload-img-item">
 								<span class="upload-img-title">Ảnh chính</span>
-								<input type="file" name="" class="img-product-main">
+								<input asp-for="ImageMain" type="file" class="img-product-main">
 								
 								<div class="img-product-wrapper">
-									<img accept="image/*" src="../assets/img/iphone-16-128gb-black.png" class="product-img-view" alt="">
+									<img accept="image/*" src="~/@Model.ImageMainPath" class="product-img-view" alt="">
 								</div>
 							</div>
 
 							<div class="upload-img-item">
 								<span class="upload-img-title">Ảnh phụ 1</span>
-								<input type="file" name="" class="img-product-sub-1">
+								<input asp-for="ImageSub1" type="file"  class="img-product-sub-1">
 
 								<div class="img-product-wrapper">
-									<img accept="image/*" src="../assets/img/iphone-16-128gb-black.png" class="product-img-view" alt="">
+									<img accept="image/*" src="~/@Model.ImageSub1Path" class="product-img-view" alt="">
 								</div>
 							</div>
 
 							<div class="upload-img-item">
 								<span class="upload-img-title">Ảnh phụ 2</span>
-								<input type="file" name="" class="img-product-sub-2">
+								<input asp-for="ImageSub2" type="file" class="img-product-sub-2">
 
 								<div class="img-product-wrapper">
-									<img accept="image/*" src="../assets/img/iphone-16-128gb-black.png" class="product-img-view" alt="">
+									<img accept="image/*" src="~/@Model.ImageSub2Path" class="product-img-view" alt="">
 								</div>
 							</div>
 
 							<div class="upload-img-item">
 								<span class="upload-img-title">Ảnh phụ 3</span>
-								<input type="file" name="" class="img-product-sub-3">
+								<input asp-for="ImageSub3" type="file" class="img-product-sub-3">
 
 								<div class="img-product-wrapper">
-									<img accept="image/*" src="../assets/img/iphone-16-128gb-black.png" class="product-img-view" alt="">
+									<img accept="image/*" src="~/@Model.ImageSub3Path" class="product-img-view" alt="">
 								</div>
 							</div>
 						</div>
@@ -116,43 +119,39 @@
 						<div class="form-group">
 							<label for="nameProduct" class="form-label">Loại sản phẩm</label>
 
-							<select name="" id="category-product" class="select-input">
-								<option value="0">[Chọn loại sản phẩm]</option>
-								<option value="1">Iphone 16</option>
-								<option value="2">Watch</option>
+							<select asp-for="CategoryId" asp-items="Model.Categories" id="category-product" class="select-input">
+								<option value="">[Chọn loại sản phẩm]</option>
 							</select>
 						</div>
 						
 						<div class="form-group">
 							<label for="product-quantity" class="form-label">Số lượng</label>
-							<input type="number"  min="1" class="form-input" id="product-quantity">
+							<input asp-for="Quantity" type="number"  min="1" class="form-input" id="product-quantity">
 						</div>
 
 						<div class="form-group">
 							<label for="product-price" class="form-label">Giá gốc</label>
-							<input type="text"  class="form-input" id="product-price">
+							<input asp-for="Price" type="text"  class="form-input" id="product-price">
 						</div>
 
 						<div class="form-group">
 							<label for="product-price-promotion" class="form-label">Giá khuyến mãi</label>
-							<input type="text" class="form-input" id="product-price-promotion">
+							<input asp-for="PromotionPrice" type="text" class="form-input" id="product-price-promotion">
 						</div>
 
 						<div class="form-group">
 							<label for="product-has-promotion" class="form-label">Chương trình giảm giá</label>
-
-							<select name="" id="product-has-promotion" class="select-input">
-								<option value="0">Có</option>
-								<option value="1">Không</option>
+							<select asp-for="HasDiscount" id="product-has-promotion" class="select-input">
+								<option value="true">Có</option>
+								<option value="false">Không</option>
 							</select>
 						</div>
 
 						<div class="form-group">
 							<label for="product-status" class="form-label">Trạng thái</label>
-
-							<select name="" id="product-status" class="select-input">
-								<option value="0">Hiển thị</option>
-								<option value="1">Không hiện thị</option>
+							<select asp-for="IsDisplayed" id="product-status" class="select-input">
+								<option value="true">Hiển thị</option>
+								<option value="false">Không hiện thị</option>
 							</select>
 						</div>
 						
@@ -160,15 +159,20 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</form>
 		
 	</div>
 </div>
 
 @section Scripts
 {
-	<script src="https://cdn.tiny.cloud/1/kni28pimx3vbme8ar0q8guu556w4ig99fxodlsqrr7ettxqb/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
-	<script src="https://cdn.jsdelivr.net/npm/@@tinymce/tinymce-jquery@2/dist/tinymce-jquery.min.js"></script>
+	<script>
+		const btnUpdateProduct = document.querySelector(".btn-update-product");
+		
+		btnUpdateProduct.onclick = function () {
+			document.querySelector("#form-update-product").submit();
+		}
+	</script>
 	
 	<!-- Tiny editor -->
 	<script>

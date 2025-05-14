@@ -16,6 +16,8 @@
     <!-- Css style -->
     <link rel="stylesheet" href="~/css/main/base.css">
     <link rel="stylesheet" href="~/css/main/main.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/user/login.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/user/register.css" asp-append-version="true">
     <!-- Css section other view -->
     @RenderSection("Styles", false)
     <!-- Jquery -->
@@ -45,11 +47,45 @@
             <!-- Coppyright -->
             @await Html.PartialAsync("PartialViews/Customer/_CopyrightSection")
         </div>
-        <!-- Script  -->
+
+        <!-- Modal login and Register  -->
+        @await Html.PartialAsync("PartialViews/Customer/_LoginModalSection")
+        @await Html.PartialAsync("PartialViews/Customer/_RegisterModalSection")
+         <!-- Script  -->
         <script src="~/js/lib/jquery.nivo.slider.js"></script>
         <script src="~/js/lib/owl.carousel.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
         <script src="~/js/main/main.js" asp-append-version="true"></script>
+         <script asp-append-version="true">
+             const btnLinkRegister = document.querySelector(".login-box .btn-move-register");
+             const btnLinkLogin = document.querySelector(".register-box .btn-move-login");
+             const loginModal = document.querySelector("#modal-login");
+             const registerModal = document.querySelector("#modal-register");
+
+             console.log(loginModal)
+             console.log(registerModal)
+
+             
+             if (loginModal) {
+                 btnLinkRegister.onclick = function (e) {
+                     e.preventDefault();
+                     // Show register model from login modal
+                     let modalRegisterInstance = new bootstrap.Modal(registerModal);
+                     modalRegisterInstance.show();
+                 }
+             }
+
+             if (registerModal) {
+                 btnLinkLogin.onclick = function (e) {
+                     e.preventDefault();
+                     // Show register model from login modal
+                     let modalLoginInstance = new bootstrap.Modal(loginModal);
+                     modalLoginInstance.show();
+                 }
+             }
+
+             
+         </script>
         @await RenderSectionAsync("Scripts", required: false)
     </body>
 </html>

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<E_commerce_Project.Models.ViewModels.ProductViewModel.ProductTrashViewModel>;
+@{
   Layout = "_LayoutAdmin";
 }
 
@@ -33,12 +34,12 @@
   </div>
 
   <div class="control-product">
-    <a href="addProductForm.html" class="btn btn-info">
-      <i class="icon-control fas fa-undo-alt"></i>
-      Trờ về
+    <a href="/Admin/Product" class="btn btn-black">
+      <i class="icon-control fas fa-reply"></i>
+      Quay lại
     </a>
   </div>
-  
+
 </div>
 
 <div class="product-list-wrapper">
@@ -47,16 +48,18 @@
       <div class="table-responsive">
         <table class="table align-middle table-product-list">
           <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Hình ảnh</th>
-              <th scope="col">Tên sản phẩm</th>
-              <th scope="col">Giá</th>
-              <th scope="col">Thao tác</th>
-            </tr>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Hình ảnh</th>
+            <th scope="col">Tên sản phẩm</th>
+            <th scope="col">Số lượng</th>
+            <th scope="col">Thao tác</th>
+          </tr>
           </thead>
 
           <tbody class="table-group-divider">
+          @foreach (var item in Model)
+          {
             <tr class="product-item">
               <th scope="row">
                 <i
@@ -68,83 +71,59 @@
                   style="opacity: 0.9"
                 ></i>
                 <span class="id-product" style="margin-left: 2px"
-                  >1</span
+                >@item.Id</span
                 >
               </th>
               <td>
                 <img
-                  src="../assets/img/iphone-16-128gb-black.png"
+                  src="~/@item.ImagePath"
                   class="product-img"
                   alt=""
                 />
               </td>
               <td>
                 <a href="#" class="product-detail-link"
-                  >Iphone 16 128GB black</a
+                >@item.Name</a
                 >
               </td>
-              <td>20.000.000đ</td>
+              <td>@item.Quantity</td>
               <td class="product-controls">
-                  <button
-                    class="btn btn-black"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="top"
-                    data-bs-title="Khôi phục"
-                  >
-                    <i class="fas fa-redo-alt"></i>
-                  </button>
+                <button
+                  class="btn btn-black btn-restore-product"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  data-bs-title="Khôi phục"
+                  data-product-id="@item.Id"
+                >
+                  <i class="fas fa-redo-alt"></i>
+                </button>
 
-                  <button
-                    class="btn btn-danger"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modal-confirm-delete"
-                  >
-                    <i class="fas fa-trash-alt"></i>
-                  </button>
+                <button
+                  class="btn btn-danger"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modal-confirm-forceDelete"
+                  data-product-id="@item.Id"
+                  data-product-name="@item.Name"
+                >
+                  <i class="fas fa-trash-alt"></i>
+                </button>
               </td>
 
               <td class="content-hidden" style="display: none">
-                Iphone 16
+                @item.CategoryName
               </td>
               <td class="content-hidden" style="display: none">
-                05/12/2024 - 2:38-32
+                @item.CreatedDate
               </td>
               <td class="content-hidden" style="display: none">
-                23.999.000
+                @item.PromotionPrice
               </td>
               <td class="content-hidden" style="display: none">
-                25.500.000
+                @item.Price
               </td>
             </tr>
-
-            <!-- <tr class="detail-product">
-                  <td colspan="5">
-                    <div class="detail-product-inner">
-                        <div class="detail-product-row">
-                          <div class="detail-product-name">Loại sản phẩm:</div>
-                          <div class="detail-product-value">Iphone 16</div>
-                        </div>
-
-                        <div class="detail-product-row">
-                          <div class="detail-product-name">Ngày tạo:</div>
-                          <div class="detail-product-value">05/12/2024 - 2:38:32</div>
-                        </div>
-
-                        <div class="detail-product-row">
-                          <div class="detail-product-name">Giá khuyển mãi:</div>
-                          <div class="detail-product-value">23.999.000</div>
-                        </div>
-
-                        <div class="detail-product-row">
-                          <div class="detail-product-name">Giá:</div>
-                          <div class="detail-product-value">25.500.000</div>
-                        </div>
-                       
-                    </div>
-                  </td>
-                </tr> -->
-
             <tr style="display: none"></tr>
+          }
           </tbody>
         </table>
       </div>
@@ -152,8 +131,12 @@
   </div>
 </div>
 
+<!-- Form restore and force delete product -->
+<form action="" method="POST" id="form-restore-product"></form>
+<form action="" method="POST" id="form-force-delete-product"></form>
+
 <!-- Modal -->
-<div class="modal fade" id="modal-confirm-delete" tabindex="-1"  aria-hidden="true">
+<div class="modal fade" id="modal-confirm-forceDelete" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -161,11 +144,14 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        Hành động này sẽ xóa vĩnh viễn sản phẩm này, không thể khôi phục lại !
+        Hãy chắc chắn rằng bạn muốn xóa nó.
+        Hành động này sẽ xóa vĩnh viễn sản phẩm
+        <span style="font-weight: bold" class="product-name"></span>
+        , không thể khôi phục lại !
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
-        <button type="button" class="btn btn-danger">Xóa vĩnh viễn</button>
+        <button type="button" class="btn btn-danger btn-confirm-forceDel">Xóa vĩnh viễn</button>
       </div>
     </div>
   </div>
@@ -173,6 +159,39 @@
 
 @section Scripts
 {
+  <script>
+    const formRestore = document.querySelector("#form-restore-product");
+    const btnRestore = document.querySelectorAll(".btn-restore-product");
+    
+    btnRestore.forEach(item => {
+      item.addEventListener("click", function () {
+        const id = this.dataset.productId;
+        formRestore.action = `/Product/Restore/${id}`;
+        formRestore.submit();
+      })
+    });
+    
+    const formForceDelete = document.querySelector("#form-force-delete-product");
+    const btnConfirmForceDel = document.querySelector(".btn-confirm-forceDel");
+    const modalConfirmForceDel = document.querySelector("#modal-confirm-forceDelete");
+
+    if (modalConfirmForceDel) {
+      modalConfirmForceDel.addEventListener('show.bs.modal', event => {
+        const contentBody = document.querySelector(".product-name");
+        const productId = event.relatedTarget.dataset.productId;
+        const productName = event.relatedTarget.dataset.productName;
+
+        console.log(123)
+    
+        formForceDelete.action = `/Product/ForceDelete/${productId}`;
+        contentBody.textContent = productName;
+      });
+    }
+    btnConfirmForceDel.onclick = function () {
+      formForceDelete.submit();
+    }
+  </script>
+  
   <!-- Script droplist table -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -242,11 +261,11 @@
       //Remove event when click controls
       const productControls = document.querySelectorAll(".table-product-list .product-controls");
 
-      productControls.forEach(productControl=> {
+      productControls.forEach(productControl => {
         const btnControls = productControl.querySelectorAll(".btn");
 
         btnControls.forEach(btnItems => {
-          btnItems.addEventListener("click", function(e) {
+          btnItems.addEventListener("click", function (e) {
             e.stopPropagation();
           });
 
@@ -255,5 +274,5 @@
       });
     });
   </script>
-  
+
 }

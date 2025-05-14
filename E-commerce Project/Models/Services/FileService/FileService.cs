@@ -41,10 +41,33 @@ public class FileService : IFileService
         EnsureFolderExist(fullPath);
         return fullPath;
     }
-    
+
+    public string GetRelativePath(string absolutePath)
+    {
+        var wwwrootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+
+        absolutePath = Path.GetFullPath(absolutePath).Replace("\\", "/");
+        wwwrootPath = Path.GetFullPath(wwwrootPath).Replace("\\", "/");
+
+        if (absolutePath.StartsWith(wwwrootPath))
+        {
+            return absolutePath.Substring(wwwrootPath.Length).TrimStart('/');
+        }
+
+        return absolutePath; 
+    }
+
     public async Task<string> SaveFileAsync(IFormFile file, string fullPath)
     {
         var savePath = Path.Combine(fullPath, file.FileName);
+
+        if (File.Exists(savePath))
+        {
+            var fileFormat = 
+                file.FileName.Replace(Path.GetExtension(file.FileName), "") + Guid.NewGuid() + Path.GetExtension(file.FileName);
+            savePath = Path.Combine(fullPath, fileFormat);
+        }
+        
         using var stream = new FileStream(savePath, FileMode.Create);
         await file.CopyToAsync(stream);
         
@@ -59,6 +82,7 @@ public class FileService : IFileService
         }
        
         File.Delete(filePath);
+        _logger.LogInformation($"Deleted file in path: {filePath}");
     }
 
     public void DeleteFolder(string folderPath)
@@ -69,5 +93,6 @@ public class FileService : IFileService
         }
 
         Directory.Delete(folderPath, true);
+        _logger.LogInformation($"Deleted folder has path {folderPath}");
     }
 }

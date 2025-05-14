@@ -1,0 +1,114 @@
+.register-box {
+    position: relative;
+    background: white;
+    border-radius: 20px;
+    padding: 40px 30px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+}
+
+.register-box .logo img {
+    width: 60px;
+    margin-bottom: 20px;
+}
+
+.register-box h2 {
+    font-size: 24px;
+    color: #2d3436;
+    margin-bottom: 10px;
+}
+
+.register-box p {
+    font-size: 14px;
+    color: #636e72;
+    margin-bottom: 20px;
+}
+
+.register-box .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.register-box .form-group input {
+    width: 100%;
+    padding: 13px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: all 0.15s ease;
+}
+
+.register-box .form-full-width {
+    grid-column: span 2;
+}
+
+.register-box input:focus {
+    outline: none;
+    border-color: #434343;
+}
+
+
+.register-box button {
+    width: 100%;
+    padding: 14px;
+    background: #000;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.15s ease;
+}
+
+.register-box button:hover {
+    opacity: 0.8;
+}
+
+.register-box .signin-link {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #636e72;
+}
+
+.register-box .signin-link a {
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.register-box .signin-link a:hover {
+    text-decoration: underline;
+}
+
+#modal-register .modal-content {
+    background-color: transparent !important;
+    align-items: center;
+    border: none !important;
+}
+
+#modal-register .modal-body {
+    width: 600px;
+}
+
+.register-box .modal-close {
+    position: absolute;
+    bottom: 12px;
+    right: 50%;
+    transform: translatex(50%);
+    transition: all 0.15s ease;
+}
+
+.register-box .modal-close:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.register-box .modal-close i {
+    font-size: 18px;
+    padding: 8px 10px;
+}

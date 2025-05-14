@@ -17,20 +17,20 @@
                     <div class="col-6">
                         <div class="header-menu-right">
                               <!-- User non-authentication -->
-                              <nav class="user-unverified" style="display: none;">
+                              <nav class="user-unverified" style="display: unset;">
                                   <ul class="controls-user">
                                       <li class="controls-item">
-                                        <a href="" class="controls-link separate">Đăng nhập</a>
+                                        <a  href="#" data-bs-toggle="modal" data-bs-target="#modal-login" class="controls-link separate">Đăng nhập</a>
                                       </li>
                                     
                                       <li class="controls-item" >
-                                        <a href="" class="controls-link">Đăng ký</a>
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-register" class="controls-link">Đăng ký</a>
                                       </li>
                                   </ul>
                               </nav>
 
                               <!-- User authenticated -->
-                              <nav class="user-verified" >
+                              <nav class="user-verified" style="display: none">
                                   <ul class="controls-user">
                                     <li class="controls-item user-control-section">
                                       <a href="" class="controls-link control-user-name">
@@ -126,7 +126,7 @@
                   <!-- Nav main -->
                   <ul class="nav-list">
                     <li class="nav-item">
-                      <a href="" class="nav-link">Trang chủ</a>
+                      <a href="/" class="nav-link">Trang chủ</a>
                     </li>
                     
                     <li class="nav-item">
