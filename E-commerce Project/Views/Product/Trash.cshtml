@@ -180,8 +180,6 @@
         const contentBody = document.querySelector(".product-name");
         const productId = event.relatedTarget.dataset.productId;
         const productName = event.relatedTarget.dataset.productName;
-
-        console.log(123)
     
         formForceDelete.action = `/Product/ForceDelete/${productId}`;
         contentBody.textContent = productName;

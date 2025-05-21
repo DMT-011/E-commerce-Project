@@ -1,0 +1,39 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+}
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/admin/adminTableBase.css">
+    @await RenderSectionAsync("StylesViewChild", false)
+}
+
+<!-- Nav : breadcrumbs and control -->
+<div class="page-inner page-inner-custom">
+    <!-- Breadcrumbs -->
+    <div class="page-header">
+        @await Html.PartialAsync("PartialViews/Admin/_BreadScrumSection")
+    </div>
+
+    <div class="control-admin">
+        @await RenderSectionAsync("ControlsAdmin", false)
+    </div>
+
+</div>
+
+<div class="wrapper-table">
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</div>
+
+@await RenderSectionAsync("ModalConfirm", false)
+
+@section Scripts
+{
+    @await RenderSectionAsync("ScriptsViewChild", false)
+}

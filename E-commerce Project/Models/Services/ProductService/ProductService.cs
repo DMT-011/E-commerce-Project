@@ -62,8 +62,7 @@ public class ProductService : IProductService
         var productExistName = await _context.Products
             .Where(item => 
                 item.Id != id &&
-                item.Name == productName &&
-                item.IsDeleted == false)
+                item.Name == productName)
             .FirstOrDefaultAsync();
 
         if (productExistName != null)
@@ -152,5 +151,12 @@ public class ProductService : IProductService
         
         if (product == null) throw new Exception("Product not found");
         return product;
+    }
+
+    public  IQueryable<Product> GetAllProducts()
+    {
+        var products = _context.Products
+            .Where(item => item.IsDisplayed == false && item.IsDeleted == false);
+        return products;
     }
 }

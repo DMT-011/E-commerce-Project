@@ -1,36 +1,9 @@
-
-.control-product .icon-control {
-    margin-right: 4px;
-}
-
-.control-product .btn:first-child {
-    margin-right: 8px;
-}
-    
-.control-product {
-    float: right;
-}
-
-.page-inner-custom .page-header {
-    display: inline-flex;
-}
-
-.product-list-wrapper {
-    margin: 0 30px;
-}
-
 .product-img {
     width: 88px;
 }
 
 .product-item {
     cursor: pointer;
-}
-
-
-.product-list-wrapper table {
-    text-align: center;
-    /* table-layout: fixed; */
 }
 
 .detail-product-inner {

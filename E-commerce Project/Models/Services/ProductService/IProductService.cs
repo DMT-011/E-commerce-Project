@@ -14,4 +14,5 @@ public interface IProductService
     
     // Query
     Task<Product> GetProductByIdAsync(int id);
+    IQueryable<Product> GetAllProducts();
 }

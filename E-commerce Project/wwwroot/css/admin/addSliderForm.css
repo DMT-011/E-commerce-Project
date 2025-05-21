@@ -1,0 +1,25 @@
+﻿.add-slider-form-area {
+    background: #fff;
+    min-height: 280px;  
+    border-radius: 3px;
+}
+
+.slider-img-view {
+    width: 100%;
+    max-width: 120px;
+    padding-bottom: 16px;
+    padding-top: 6px;
+}
+
+.img-slider-wrapper {
+    text-align: center;
+    margin: 6px 0;
+}
+
+.upload-img-item:not(:last-of-type) {
+    margin-bottom: 20px;
+}
+
+.upload-img-item input {
+    width: 100%;
+}

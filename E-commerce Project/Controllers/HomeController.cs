@@ -1,31 +1,27 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using E_commerce_Project.Models;
+using E_commerce_Project.Models.Services.CategoryService;
+using E_commerce_Project.Models.Services.ProductImageService;
+using E_commerce_Project.Models.Services.ProductService;
+
 
 namespace E_commerce_Project.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    private readonly IProductService _productService;
+    private readonly IProductImageService _productImageService;
+    private readonly ICategoryService _categoryService;
+    public HomeController(IProductService productService, IProductImageService productImageService
+    , ICategoryService categoryService)
     {
-        _logger = logger;
+       _productService = productService;
+       _productImageService = productImageService;
+       _categoryService = categoryService;
     }
 
     public IActionResult Index()
     {
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        var categories = _categoryService.GetCategoriesWithProducts();
+        return View(categories);
     }
 }

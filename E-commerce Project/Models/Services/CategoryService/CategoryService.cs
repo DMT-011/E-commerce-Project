@@ -1,7 +1,9 @@
 ﻿using E_commerce_Project.Helpers;
 using E_commerce_Project.Models.Context;
 using E_commerce_Project.Models.Entities;
+using E_commerce_Project.Models.Services.ProductImageService;
 using E_commerce_Project.Models.ViewModels.CategoryViewModel;
+using E_commerce_Project.Models.ViewModels.ProductViewModel;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,11 +13,14 @@ public class CategoryService : ICategoryService
 {
     private readonly ILogger<CategoryService> _logger;
     private readonly ApplicationDbContext _context;
+    private readonly IProductImageService _productImageService;
 
-    public CategoryService(ILogger<CategoryService> logger, ApplicationDbContext context)
+    public CategoryService(ILogger<CategoryService> logger, ApplicationDbContext context
+    , IProductImageService productImageService)
     {
         _logger = logger;
         _context = context;
+        _productImageService = productImageService;
     }
 
     public async Task CreateCategoryAsync(CategoryCreateViewModel model)
@@ -125,4 +130,35 @@ public class CategoryService : ICategoryService
 
         return categories;
     }
+
+    public List<CategoryProductViewModel> GetCategoriesWithProducts()
+    {
+       var categories = GetAllCategories()
+           .Select(item => new CategoryProductViewModel
+           {
+               CategoryName = item.Name,
+               Products = item.Products
+                   .Where(product => product.IsDisplayed == true && product.IsDeleted == false)
+                   .Select(product => new ProductItemViewModel
+                   {
+                       Name = product.Name,
+                       Price = product.Price.ToString(),
+                       PromotionPrice = product.PromotionPrice.ToString(),
+                       Slug = product.Slug,
+                       ImagePath = _productImageService.GetImageMainProductById(product.Id)
+                   }).ToList(),
+           }).ToList();
+       
+           return categories;
+    }   
+
+    public IQueryable<Category> GetAllCategories()
+    {
+        var categories = _context.Categories
+            .Include(item => item.Products)
+            .Where(item => item.IsDeleted == false && item.IsDisplayed == true);
+
+        return categories;
+    }
+
 }

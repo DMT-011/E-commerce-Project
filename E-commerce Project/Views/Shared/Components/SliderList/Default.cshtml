@@ -1,0 +1,15 @@
+﻿@model IEnumerable<E_commerce_Project.Models.ViewModels.SliderViewModel.SliderListViewModel>;
+
+<div class="" id="slider">
+    <div class="container">
+        <div class="slider-wrapper">
+            <div id="main-slider" class="nivoSlider">
+                @foreach (var item in Model)
+                {
+                    <img src="~/@item.ImagePath" alt="">
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

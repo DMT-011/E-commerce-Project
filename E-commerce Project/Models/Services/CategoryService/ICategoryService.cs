@@ -14,4 +14,6 @@ public interface ICategoryService
     
     // Query
     Task<List<SelectListItem>> GetCategoriesWithSelectList();
+    List<CategoryProductViewModel> GetCategoriesWithProducts();
+    IQueryable<Category> GetAllCategories();
 }

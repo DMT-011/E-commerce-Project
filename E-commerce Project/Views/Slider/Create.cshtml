@@ -1,0 +1,130 @@
+﻿@model E_commerce_Project.Models.ViewModels.SliderViewModel.SliderCreateViewModel;
+@{
+    Layout = "_LayoutAdminForm";
+    ViewBag.titleView = "Giao diện";
+    ViewBag.featureCurrent = "Thêm slider";
+}
+
+@section StylesViewChild
+{
+    <link rel="stylesheet" href="~/css/admin/addSliderForm.css" asp-append-version="true">
+}
+
+@section ControlsAdmin
+{
+    <button class="btn btn-primary btn-create-slider">
+        <i class="icon-control fas fa-calendar-check"></i>
+        Xác nhận
+    </button>
+    <a href="/Admin/Slider" class="btn btn-black">
+        <i class="icon-control fas fa-reply"></i>
+        Quay lại
+    </a>
+}
+
+<!-- Add slider form -->
+<form action="/Slider/Create" method="POST" enctype="multipart/form-data" id="form-create-slider" class="add-slider-form-area">
+    <div class="row">
+        <div class="col-12">
+            <div class="label-notice">* Các mục đánh dấu (*) là bắt buộc</div>
+        </div>
+        <!-- Form side left -->
+        <div class="col-9">
+            <div class="form-left">
+                <div class="form-group">
+                    <label for="name-slider" class="form-label">Tên slider</label>
+                    <input asp-for="Name" type="text" class="form-input" id="name-slider">
+                </div>
+
+               @if (ViewBag.countSlider > 0)
+                {
+                    <div class="form-group">
+                        <label for="priority-slider" class="form-label">Thứ tự hiển thị</label>
+                        <select asp-for="Priority" asp-items="@Model.Priorities" type="text" class="form-input" id="priority-slider">
+                            <option value="">[Chọn thứ tự hiển thị]</option>
+                        </select>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Form side right -->
+        <div class="col-3">
+            <div class="form-right">
+                <div class="form-group">
+                    <label for="img-slider" class="form-label">Hình ảnh</label>
+                    <div class="upload-img-item">
+                        <input asp-for="ImageSlide"  type="file" id="img-slider" class="img-slider">
+                        <div class="img-slider-wrapper">
+                            <img accept="image/*" src="" class="slider-img-view" alt="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="slider-status" class="form-label">Trạng thái</label>
+
+                        <select asp-for="IsDisplayed" id="slider-status" class="select-input">
+                            <option value="true">Hiển thị</option>
+                            <option value="false">Không hiển thị</option>
+                        </select>
+                    </div>
+				
+                </div>
+            </div>
+        </div>
+		
+    </div>
+</form>
+
+@section ScriptsViewChild
+{
+    <script>
+        const btnCreateSlider = document.querySelector(".btn-create-slider");
+
+        btnCreateSlider.onclick = function () {
+            document.querySelector("#form-create-slider").submit();
+        }
+    </script>
+    
+    <script>
+        function handleRenderImageOnchange(inputElement, imgElement) {
+            inputElement.addEventListener("input", function(e) {
+                const fileImg = e.target.files[0];
+                const imgWrapper = imgElement.parentElement;
+
+                if (fileImg) {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        // assign url img to img element
+                        imgElement.src = e.target.result;
+                        imgElement.style.display = "inline-block";
+                        imgWrapper.style.borderBottom = "1px dashed #ededed";
+                        imgWrapper.style.display = "block";
+                    }
+
+                    // Read file as a URL
+                    reader.readAsDataURL(fileImg);
+
+
+                } else {
+                    imgElement.src = "";
+                    imgElement.style.display = "none";
+                    imgWrapper.style.display = "none";
+                    imgWrapper.style.borderBottom = "";
+                }
+
+            });
+        }
+
+        const inputImageSlider = document.querySelector(".img-slider");
+        const imageMain = inputImageSlider.parentElement.querySelector(".slider-img-view");
+        const imgWrappers = document.querySelectorAll(".upload-img-item .img-slider-wrapper");
+
+        imgWrappers.forEach(function(imgWrapperItem) {
+            imgWrapperItem.style.display = "none";
+        })
+
+        handleRenderImageOnchange(inputImageSlider, imageMain);
+        
+    </script>
+}

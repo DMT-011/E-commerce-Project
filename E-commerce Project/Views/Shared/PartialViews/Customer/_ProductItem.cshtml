@@ -1,0 +1,30 @@
+﻿@model E_commerce_Project.Models.ViewModels.ProductViewModel.ProductItemViewModel;
+
+<div class="product-item">
+    <div class="product-label">New</div>
+
+    <div class="product-img">
+        <a href="@Model.Slug" class="product-link">
+            <img
+                src="~/@Model.ImagePath"
+                alt="">
+        </a>
+    </div>
+
+    <div class="product-info">
+        <div class="rating-box">
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+        </div>
+
+        <a href="@Model.Slug" class="product-name">@Model.Name</a>
+        <div class="product-price">
+            @Model.Price<sup>đ</sup>
+        </div>
+    </div>
+
+</div>
+

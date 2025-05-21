@@ -4,6 +4,7 @@ using E_commerce_Project.Models.Services.CategoryService;
 using E_commerce_Project.Models.Services.FileService;
 using E_commerce_Project.Models.Services.ProductImageService;
 using E_commerce_Project.Models.Services.ProductService;
+using E_commerce_Project.Models.Services.SliderService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductImageService, ProductImageService>();
+builder.Services.AddScoped<ISliderService, SliderService>();
 
 builder.Services.AddHttpContextAccessor();
 

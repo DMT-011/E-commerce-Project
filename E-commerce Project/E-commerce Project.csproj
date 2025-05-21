@@ -18,7 +18,6 @@
 
     <ItemGroup>
       <Folder Include="Migrations\" />
-      <Folder Include="wwwroot\css\admin\" />
       <Folder Include="wwwroot\css\lib\" />
       <Folder Include="wwwroot\css\main\" />
       <Folder Include="wwwroot\css\user\" />

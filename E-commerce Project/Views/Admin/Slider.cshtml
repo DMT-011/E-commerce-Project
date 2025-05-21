@@ -1,0 +1,125 @@
+﻿@model IEnumerable<E_commerce_Project.Models.ViewModels.AdminViewModel.AdminSliderListViewModel>;
+@{
+  Layout = "_LayoutAdminTable";
+  ViewBag.titleView = "Giao diện";
+  ViewBag.featureCurrent = "Slider";
+}
+
+@section ControlsAdmin
+{
+  <a href="/Slider/Create" class="btn btn-primary ">
+    <i class="icon-control fas fa-plus-circle "></i>
+    Thêm mới
+  </a>
+  <a href="/Slider/Trash" class="btn btn-danger">
+    <i class="icon-control fas fa-trash"></i>
+    Thùng rác
+    <span>(@ViewBag.countProductDel)</span>
+  </a>
+}
+
+<table class="table align-middle table-product-list">
+  <thead>
+  <tr>
+    <th scope="col">ID</th>
+    <th scope="col">Hình</th>
+    <th scope="col">Tên Slider</th>
+    <th scope="col">Thao tác</th>
+  </tr>
+  </thead>
+
+  <tbody class="table-group-divider">
+  @foreach (var item in Model)
+  {
+    <tr class="slide-item">
+      <th scope="row">
+        <span class="id-slide" style="margin-left: 2px">@item.Id</span>
+      </th>
+      <td>
+        <img
+          style="width: 114px"
+          src="~/@item.ImagePath"
+          class="slide-img"
+          alt=""
+        />
+      </td>
+      <td>
+        <a href="#" class="slide-detail-link">@item.Name</a>
+      </td>
+      <td class="product-controls">
+        <a
+          href="/Slider/Update/@item.Id"
+          class="btn btn-black"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          data-bs-title="Chỉnh sửa"
+        >
+          <i class="far fa-edit"></i>
+        </a>
+
+        <button
+          class="btn btn-danger"
+          data-bs-toggle="modal"
+          data-bs-target="#modal-confirm-delete"
+          data-slider-id="@item.Id"
+          data-slider-name="@item.Name"
+        >
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </td>
+
+    </tr>
+  }
+  </tbody>
+</table>
+
+<form action="" method="POST" id="form-delete-slide"></form>
+
+@section ModalConfirm
+{
+  <!-- Modal -->
+  <div class="modal fade" id="modal-confirm-delete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Vứt slide này vào thùng rác ?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Slider sẽ được chuyển vào thùng rác <span style="color: #2bb930">( có thể khôi phục lại )</span>.
+          Bạn có chắc chắn là chuyển slider
+          <span style="font-weight: bold" class="slider-name"></span>
+          đến thùng rác ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
+          <button type="button" class="btn btn-warning btn-confirm-delete">Xác nhận</button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+@section ScriptsViewChild
+{
+  <script>
+  const modalConfirmDelete = document.getElementById('modal-confirm-delete');
+  const formDelete = document.querySelector("#form-delete-slide");
+  const btnConfirmDelete = document.querySelector(".btn-confirm-delete");
+
+  if (modalConfirmDelete) {
+    modalConfirmDelete.addEventListener('show.bs.modal', event => {
+      const contentBody = modalConfirmDelete.querySelector(".slider-name");
+      const sliderId = event.relatedTarget.dataset.sliderId;
+      const sliderName = event.relatedTarget.dataset.sliderName;
+
+      formDelete.action = `/Slider/Delete/${sliderId}`;
+      contentBody.textContent = sliderName;
+    })
+  }
+
+  btnConfirmDelete.onclick = function () {
+    formDelete.submit();
+  }
+</script>
+}

@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "title";
+    Layout = "_LayoutAdmin";
+}
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/admin/adminFormBase.css" asp-append-version="true">
+    @await RenderSectionAsync("StylesViewChild", false)
+}
+
+<div class="page-inner page-inner-custom">
+    <!-- Breadcrumb-->
+    <div class="page-header">
+        @await Html.PartialAsync("PartialViews/Admin/_BreadScrumSection")
+    </div>
+
+    <!-- Control admin -->
+    <div class="control-admin">
+        @await RenderSectionAsync("ControlsAdmin", false)
+    </div>
+    
+    <!-- Content Form admin-->
+    @RenderBody()
+</div>
+
+
+@section Scripts
+{
+    @await RenderSectionAsync("ScriptsViewChild", false)
+}
+

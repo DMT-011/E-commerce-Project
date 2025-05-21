@@ -1,0 +1,132 @@
+﻿@model IEnumerable<E_commerce_Project.Models.ViewModels.SliderViewModel.SliderTrashViewModel>;
+@{
+  Layout = "_LayoutAdminTable";
+  ViewBag.titleView = "Giao diện";
+  ViewBag.featureCurrent = "Thùng rác";
+}
+
+
+@section ControlsAdmin
+{
+  <a href="/Admin/Slider" class="btn btn-black">
+    <i class="icon-control fas fa-reply"></i>
+    Quay lại
+  </a>
+}
+
+<table class="table align-middle table-product-list">
+  <thead>
+  <tr>
+    <th scope="col">ID</th>
+    <th scope="col">Hình</th>
+    <th scope="col">Tên Slider</th>
+    <th scope="col">Thao tác</th>
+  </tr>
+  </thead>
+
+  <tbody class="table-group-divider">
+  @foreach (var item in Model)
+  {
+    <tr class="slide-item">
+      <th scope="row">
+        <span class="id-slide" style="margin-left: 2px">@item.Id</span>
+      </th>
+      <td>
+        <img
+          style="width: 114px"
+          src="~/@item.ImagePath"
+          class="slide-img"
+          alt=""
+        />
+      </td>
+      <td>
+        <a href="#" class="slide-detail-link">@item.Name</a>
+      </td>
+      <td class="product-controls">
+        <button
+          class="btn btn-black btn-restore-slider"
+          data-bs-toggle="tooltip"
+          data-bs-placement="top"
+          data-bs-title="Khôi phục"
+          data-slider-id="@item.Id"
+        >
+          <i class="fas fa-redo-alt"></i>
+        </button>
+
+        <button
+          class="btn btn-danger"
+          data-bs-toggle="modal"
+          data-bs-target="#modal-confirm-forceDelete"
+          data-slider-id="@item.Id"
+          data-slider-name="@item.Name"
+        >
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </td>
+    </tr>
+  }
+  </tbody>
+</table>
+
+<!-- Form restore and force delete slider -->
+<form action="" method="POST" id="form-restore-slider"></form>
+<form action="" method="POST" id="form-force-delete-slider"></form>
+
+@section ModalConfirm
+{
+  <!-- Modal -->
+  <div class="modal fade" id="modal-confirm-forceDelete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" >Xóa vĩnh viễn slider này ?</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Hãy chắc chắn rằng bạn muốn xóa nó.
+          Hành động này sẽ xóa vĩnh viễn slider
+          <span style="font-weight: bold" class="slider-name"></span>
+          , không thể khôi phục lại !
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
+          <button type="button" class="btn btn-danger btn-confirm-forceDel">Xóa vĩnh viễn</button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+@section ScriptsViewChild
+{
+  <script>
+    const formRestore = document.querySelector("#form-restore-slider");
+    const btnRestore = document.querySelectorAll(".btn-restore-slider");
+
+    btnRestore.forEach(item => {
+      item.addEventListener("click", function () {
+        const id = this.dataset.sliderId;
+        formRestore.action = `/Slider/Restore/${id}`;
+        formRestore.submit();
+      })
+    });
+
+    const formForceDelete = document.querySelector("#form-force-delete-slider");
+    const btnConfirmForceDel = document.querySelector(".btn-confirm-forceDel");
+    const modalConfirmForceDel = document.querySelector("#modal-confirm-forceDelete");
+
+    if (modalConfirmForceDel) {
+      modalConfirmForceDel.addEventListener('show.bs.modal', event => {
+        const contentBody = document.querySelector(".slider-name");
+        const sliderId = event.relatedTarget.dataset.sliderId;
+        const sliderName = event.relatedTarget.dataset.sliderName;
+
+        formForceDelete.action = `/Slider/ForceDelete/${sliderId}`;
+        contentBody.textContent = sliderName;
+      });
+    }
+    btnConfirmForceDel.onclick = function () {
+      formForceDelete.submit();
+    }
+  </script>
+}

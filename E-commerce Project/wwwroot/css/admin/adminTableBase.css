@@ -1,0 +1,34 @@
+﻿
+.control-admin .icon-control {
+    margin-right: 4px;
+}
+
+.control-admin .btn:first-child {
+    margin-right: 8px;
+}
+
+.control-admin .btn:only-child {
+    margin-right: 0;
+}
+
+.control-admin {
+    float: right;
+}
+
+.page-inner-custom .page-header {
+    display: inline-flex;
+}
+
+.page-inner-custom {
+    padding-bottom: 16px;
+}
+
+.wrapper-table {
+    margin: 0 30px;
+}
+
+.wrapper-table table {
+    text-align: center;
+    /* table-layout: fixed; */
+}
+
