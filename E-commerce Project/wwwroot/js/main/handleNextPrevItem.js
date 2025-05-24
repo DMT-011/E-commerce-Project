@@ -2,10 +2,12 @@
 const nextBtnProducts = document.querySelectorAll(".product-carousel-nav .product-next-btn");
 const prevBtnProducts = document.querySelectorAll(".product-carousel-nav .product-prev-btn");
 
-const productListCarousels = document.querySelectorAll(".product-carousel:not(.product-max-4)");
 
 const productListNews = document.querySelector(".product-max-4");
 const productNewItems = productListNews.querySelectorAll(".col-3");
+
+const productListCarousels = document.querySelectorAll(".product-carousel:not(.product-max-4)");
+
 
 let currentIndex = 0;
 
@@ -24,16 +26,13 @@ if (productNewItems.length > 4) {
 }
 
 // When quantity product item > 5 show controls carousel 
-productListCarousels.forEach((item, index) => {
-    const itemProducts = item.querySelectorAll(".col-2-4");
-    const parentProduct = itemProducts[index].parentElement;
-
-    if (itemProducts.length > 5) {
-        const productControls = parentProduct.previousElementSibling.querySelector(".product-carousel-nav");
+productListCarousels.forEach(item => {
+    if (item.childElementCount > 5) {
+        const productControls = item.previousElementSibling.querySelector(".product-carousel-nav");
         productControls.style.display = "flex";
+        
     }
-
-});
+})
 
 // Next btn when click next to item
 nextBtnProducts.forEach(nextBtn => {

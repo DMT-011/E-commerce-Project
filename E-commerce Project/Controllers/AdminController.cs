@@ -5,6 +5,8 @@ using E_commerce_Project.Models.Services.SliderService;
 using E_commerce_Project.Models.ViewModels.AdminViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using X.PagedList.Extensions;
+
 
 namespace E_commerce_Project.Controllers;
 
@@ -27,25 +29,33 @@ public class AdminController : Controller
         return View();
     }
 
-    public async Task<IActionResult> Product()
+    public async Task<IActionResult> Product(int? page)
     {
         var count = _context.Products.Count(item => item.IsDeleted == true);
         ViewBag.countProductDel = count;
         
+        int pageSize = 5;
+        int pageNumber = page ?? 1;
+
         var products = _context.Products
-            .Where(item => item.IsDeleted == false)
             .Include(item => item.Category)
+            .AsNoTracking()
+            .OrderByDescending(item => item.UpdatedAt)
+            .Where(item => item.IsDeleted == false)
             .Select(item => new AdminProductListViewModel
             {
                 Id = item.Id,
                 Name = item.Name,
                 Price = item.Price,
                 PromotionPrice = item.PromotionPrice,
-                ImagePath = _productImageService.GetImageMainProductById(item.Id),
                 Quantity = item.Quantity,
                 CategoryName = item.Category.Name,
+                ImagePath = _productImageService.GetImageMainProductById(item.Id),
                 CreatedDate = item.CreatedAt,
-            });
+                
+            })
+            .ToPagedList(pageNumber, pageSize);
+            
         return View(products);
     }
 

@@ -8,6 +8,12 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
     public void Configure(EntityTypeBuilder<Product> builder)
     {
+        builder.Property(x => x.Price)
+            .HasColumnType("decimal(18,0)");
+        
+        builder.Property(x => x.PromotionPrice)
+            .HasColumnType("decimal(18,0)");
+        
         builder.Property(x => x.Slug)
             .HasMaxLength(50)
             .IsRequired();

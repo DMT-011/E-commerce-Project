@@ -131,12 +131,12 @@
 
 						<div class="form-group">
 							<label for="product-price" class="form-label">Giá gốc</label>
-							<input asp-for="Price" type="text"  class="form-input" id="product-price">
+							<input asp-for="Price" type="text"  class="form-input price-format" id="product-price">
 						</div>
 
 						<div class="form-group">
 							<label for="product-price-promotion" class="form-label">Giá khuyến mãi</label>
-							<input asp-for="PromotionPrice" type="text" class="form-input" id="product-price-promotion">
+							<input asp-for="PromotionPrice" type="text" class="form-input price-format" id="product-price-promotion">
 						</div>
 
 						<div class="form-group">
@@ -166,12 +166,25 @@
 
 @section Scripts
 {
+	
 	<script>
 		const btnUpdateProduct = document.querySelector(".btn-update-product");
+		const inputPrice = document.querySelectorAll('.price-format');
 		
 		btnUpdateProduct.onclick = function () {
 			document.querySelector("#form-update-product").submit();
 		}
+		
+		// Format value price when onchange
+		inputPrice.forEach(function (input) {
+			input.addEventListener('input', function (e) {
+				let value = this.value;
+				value = value.replace(/\D/g, '');
+				value = new Intl.NumberFormat('vi-VN').format(value);
+				this.value = value;
+			});
+		})
+		
 	</script>
 	
 	<!-- Tiny editor -->

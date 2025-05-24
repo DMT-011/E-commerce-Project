@@ -1,4 +1,6 @@
-﻿@model IEnumerable<E_commerce_Project.Models.ViewModels.AdminViewModel.AdminProductListViewModel>;
+﻿@using E_commerce_Project.Helpers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model X.PagedList.IPagedList<E_commerce_Project.Models.ViewModels.AdminViewModel.AdminProductListViewModel>;
 @{
   Layout = "_LayoutAdminTable";
   ViewBag.titleView = "Sản phẩm";
@@ -13,15 +15,15 @@
 
 @section ControlsAdmin
 {
-    <a href="/Product/Create" class="btn btn-primary">
-      <i class="icon-control fas fa-plus-circle"></i>
-      Thêm mới
-    </a>
-    <a href="/Product/Trash" class="btn btn-danger ">
-      <i class="icon-control fas fa-trash"></i>
-      Thùng rác
-      <span>(@ViewBag.countProductDel)</span>
-    </a>
+  <a href="/Product/Create" class="btn btn-primary">
+    <i class="icon-control fas fa-plus-circle"></i>
+    Thêm mới
+  </a>
+  <a href="/Product/Trash" class="btn btn-danger ">
+    <i class="icon-control fas fa-trash"></i>
+    Thùng rác
+    <span>(@ViewBag.countProductDel)</span>
+  </a>
 }
 
 <table class="table align-middle table-product-list">
@@ -94,10 +96,10 @@
         @item.CreatedDate
       </td>
       <td class="content-hidden" style="display: none">
-        @item.PromotionPrice
+        @CurrencyFormatterHelper.Format(@item.PromotionPrice ?? 0)
       </td>
       <td class="content-hidden" style="display: none">
-        @item.Price
+        @CurrencyFormatterHelper.Format(@item.Price)
       </td>
     </tr>
   }
@@ -105,31 +107,73 @@
   </tbody>
 </table>
 
+@section Pagination
+{
+  <nav class="pagination">
+    <ul class="pagination-list">
+      <li class="pagination-item">
+        <a href="#" class="pagination-link">
+          <i class="fas fa-angle-double-left pagination-icon"></i>
+        </a>
+      </li>
+
+      <li class="pagination-item">
+        <a href="@Url.Action("Product", new { page = Model.PageNumber - 1})" class="pagination-link">
+          <i class="fas fa-angle-left pagination-icon"></i>
+        </a>
+      </li>
+
+      @* <li class="pagination-item active"> *@
+      @*   <a href="" class="pagination-link">1</a> *@
+      @* </li> *@
+
+      @for (int i = 1; i <= Model.PageCount; i++)
+      {
+        <li class="pagination-item @(i == Model.PageNumber ? "active" : "") ">
+          <a class="pagination-link" href="@Url.Action("Product", new { page = i })">@i</a>
+        </li>
+      }
+
+      <li class="pagination-item">
+        <a href="@Url.Action("Product", new { page = Model.PageNumber + 1})" class="pagination-link">
+          <i class="fas fa-angle-right pagination-icon"></i>
+        </a>
+      </li>
+
+      <li class="pagination-item">
+        <a href="" class="pagination-link">
+          <i class="fas fa-angle-double-right pagination-icon"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+}
+
 
 
 @section ModalConfirm
 {
-    <!-- Modal -->
-    <div class="modal fade" id="modal-confirm-delete" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Vứt sản phẩm này vào thùng rác ?</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            Sản phẩm sẽ được chuyển vào thùng rác <span style="color: #2bb930">( có thể khôi phục lại )</span>.
-            Bạn có chắc chắn là chuyển sản phẩm
-            <span style="font-weight: bold" class="product-name"></span>
-            đến thùng rác ?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
-            <button type="button" class="btn btn-warning btn-confirm-delete">Xác nhận</button>
-          </div>
+  <!-- Modal -->
+  <div class="modal fade" id="modal-confirm-delete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Vứt sản phẩm này vào thùng rác ?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Sản phẩm sẽ được chuyển vào thùng rác <span style="color: #2bb930">( có thể khôi phục lại )</span>.
+          Bạn có chắc chắn là chuyển sản phẩm
+          <span style="font-weight: bold" class="product-name"></span>
+          đến thùng rác ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
+          <button type="button" class="btn btn-warning btn-confirm-delete">Xác nhận</button>
         </div>
       </div>
     </div>
+  </div>
 }
 
 <form action="" method="POST" id="form-delete-product"></form>
@@ -190,27 +234,24 @@
                             <div class="detail-product-name">Loại sản phẩm:</div>
                             <div class="detail-product-value">${productContent[0].textContent}</div>
                           </div>
-
-                          <div class="detail-product-row">
-                            <div class="detail-product-name">Ngày tạo:</div>
-                            <div class="detail-product-value">${productContent[1].textContent}</div>
-                          </div>
-
                           <div class="detail-product-row">
                             <div class="detail-product-name">Giá khuyển mãi:</div>
-                            <div class="detail-product-value">${productContent[2].textContent}</div>
+                            <div class="detail-product-value" style="font-weight: 600">${productContent[2].textContent}<sup>đ</sup></div>
                           </div>
 
                           <div class="detail-product-row">
                             <div class="detail-product-name">Giá:</div>
-                            <div class="detail-product-value">${productContent[3].textContent}</div>
+                            <div class="detail-product-value" style="font-weight: 600">${productContent[3].textContent}<sup>đ</sup></div>
                           </div>
+
+                      <div class="detail-product-row">
+                            <div class="detail-product-name">Ngày tạo:</div>
+                            <div class="detail-product-value">${productContent[1].textContent}</div>
+                      </div>
                          
                       </div>
                     </td>
-                  </tr>
-        
-        `;
+                  </tr>`;
 
             productItemClick.insertAdjacentHTML(
               "afterend",

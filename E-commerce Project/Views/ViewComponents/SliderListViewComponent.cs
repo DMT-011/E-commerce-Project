@@ -18,6 +18,7 @@ public class SliderListViewComponent : ViewComponent
     {
         var sliders = await _context.Slides
             .Where(item => item.IsDisplayed == true && item.IsDeleted == false)
+            .OrderBy(item => item.Priority)
             .Select(item => new SliderListViewModel
             {
                 ImagePath = item.ImagePath

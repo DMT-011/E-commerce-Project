@@ -42,8 +42,8 @@ public class ProductService : IProductService
             Description = model.Description,
             Detail = model.Detail,
             Slug = SlugHelper.GenerateSlug(productName),
-            Price = decimal.Parse(model.Price),
-            PromotionPrice = decimal.Parse(model.PromotionPrice),
+            Price = CurrencyFormatterHelper.RawValue(model.Price),
+            PromotionPrice = CurrencyFormatterHelper.RawValue(model.PromotionPrice),
             Quantity = model.Quantity,
             CategoryId = model.CategoryId,
             IsDisplayed = model.IsDisplayed,
@@ -83,11 +83,12 @@ public class ProductService : IProductService
         product.Description = model.Description;
         product.Detail = model.Detail;
         product.Slug = SlugHelper.GenerateSlug(productName);
-        product.Price = decimal.Parse(model.Price);
-        product.PromotionPrice = decimal.Parse(model.PromotionPrice);
+        product.Price = CurrencyFormatterHelper.RawValue(model.Price);
+        product.PromotionPrice = CurrencyFormatterHelper.RawValue(model.PromotionPrice);
         product.Quantity = model.Quantity;
         product.IsDisplayed = model.IsDisplayed;
         product.HasDiscount = model.HasDiscount;
+        product.CategoryId = model.CategoryId;
 
         await _productImageService.UpdateImagesProductAsync(product.Id, model);
         _context.Products.Update(product);
