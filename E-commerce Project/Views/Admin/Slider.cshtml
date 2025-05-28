@@ -1,8 +1,11 @@
-﻿@model IEnumerable<E_commerce_Project.Models.ViewModels.AdminViewModel.AdminSliderListViewModel>;
+﻿@model X.PagedList.IPagedList<E_commerce_Project.Models.ViewModels.AdminViewModel.AdminSliderListViewModel>;
 @{
   Layout = "_LayoutAdminTable";
   ViewBag.titleView = "Giao diện";
   ViewBag.featureCurrent = "Slider";
+
+  // Action for pagination section
+  ViewBag.action = "Slider";
 }
 
 @section ControlsAdmin
@@ -14,64 +17,84 @@
   <a href="/Slider/Trash" class="btn btn-danger">
     <i class="icon-control fas fa-trash"></i>
     Thùng rác
-    <span>(@ViewBag.countProductDel)</span>
+    <span>(@ViewBag.countSliderDel)</span>
   </a>
 }
 
-<table class="table align-middle table-product-list">
-  <thead>
-  <tr>
-    <th scope="col">ID</th>
-    <th scope="col">Hình</th>
-    <th scope="col">Tên Slider</th>
-    <th scope="col">Thao tác</th>
-  </tr>
-  </thead>
-
-  <tbody class="table-group-divider">
-  @foreach (var item in Model)
-  {
-    <tr class="slide-item">
-      <th scope="row">
-        <span class="id-slide" style="margin-left: 2px">@item.Id</span>
-      </th>
-      <td>
-        <img
-          style="width: 114px"
-          src="~/@item.ImagePath"
-          class="slide-img"
-          alt=""
-        />
-      </td>
-      <td>
-        <a href="#" class="slide-detail-link">@item.Name</a>
-      </td>
-      <td class="product-controls">
-        <a
-          href="/Slider/Update/@item.Id"
-          class="btn btn-black"
-          data-bs-toggle="tooltip"
-          data-bs-placement="top"
-          data-bs-title="Chỉnh sửa"
-        >
-          <i class="far fa-edit"></i>
-        </a>
-
-        <button
-          class="btn btn-danger"
-          data-bs-toggle="modal"
-          data-bs-target="#modal-confirm-delete"
-          data-slider-id="@item.Id"
-          data-slider-name="@item.Name"
-        >
-          <i class="fas fa-trash-alt"></i>
-        </button>
-      </td>
-
+@if (Model.Count > 0)
+{
+  <table class="table align-middle table-product-list">
+    <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Hình</th>
+      <th scope="col">Tên Slider</th>
+      <th scope="col">Thao tác</th>
     </tr>
+    </thead>
+
+    <tbody class="table-group-divider">
+    @foreach (var item in Model)
+    {
+      <tr class="slide-item">
+        <th scope="row">
+          <span class="id-slide" style="margin-left: 2px">@item.Id</span>
+        </th>
+        <td>
+          <img
+            style="width: 114px"
+            src="~/@item.ImagePath"
+            class="slide-img"
+            alt=""
+          />
+        </td>
+        <td>
+          <a href="#" class="slide-detail-link">@item.Name</a>
+        </td>
+        <td class="product-controls">
+          <a
+            href="/Slider/Update/@item.Id"
+            class="btn btn-black"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            data-bs-title="Chỉnh sửa"
+          >
+            <i class="far fa-edit"></i>
+          </a>
+
+          <button
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#modal-confirm-delete"
+            data-slider-id="@item.Id"
+            data-slider-name="@item.Name"
+          >
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+
+      </tr>
+    }
+    </tbody>
+  </table>
+
+  @section Pagination
+  {
+    @await Html.PartialAsync("PartialViews/Admin/_PaginationSection")
+    }
   }
-  </tbody>
-</table>
+
+@if (Model.Count == 0)
+{ 
+  // Context for empty section
+  ViewBag.contentEmpty = "Danh sách slider rỗng, thêm mới ";
+  ViewBag.contentLink = "tại đây";
+  ViewBag.actionEmpty = "/Slider/Create";
+  ViewBag.imgEmpty = "slider-empty.jpg";
+  @await Html.PartialAsync("PartialViews/Admin/_EmptySection")
+}
+
+
 
 <form action="" method="POST" id="form-delete-slide"></form>
 
@@ -102,24 +125,26 @@
 
 @section ScriptsViewChild
 {
+  @await Html.PartialAsync("PartialViews/Admin/_NoticeSection")
+
   <script>
-  const modalConfirmDelete = document.getElementById('modal-confirm-delete');
-  const formDelete = document.querySelector("#form-delete-slide");
-  const btnConfirmDelete = document.querySelector(".btn-confirm-delete");
+    const modalConfirmDelete = document.getElementById('modal-confirm-delete');
+    const formDelete = document.querySelector("#form-delete-slide");
+    const btnConfirmDelete = document.querySelector(".btn-confirm-delete");
 
-  if (modalConfirmDelete) {
-    modalConfirmDelete.addEventListener('show.bs.modal', event => {
-      const contentBody = modalConfirmDelete.querySelector(".slider-name");
-      const sliderId = event.relatedTarget.dataset.sliderId;
-      const sliderName = event.relatedTarget.dataset.sliderName;
+    if (modalConfirmDelete) {
+      modalConfirmDelete.addEventListener('show.bs.modal', event => {
+        const contentBody = modalConfirmDelete.querySelector(".slider-name");
+        const sliderId = event.relatedTarget.dataset.sliderId;
+        const sliderName = event.relatedTarget.dataset.sliderName;
 
-      formDelete.action = `/Slider/Delete/${sliderId}`;
-      contentBody.textContent = sliderName;
-    })
-  }
+        formDelete.action = `/Slider/Delete/${sliderId}`;
+        contentBody.textContent = sliderName;
+      })
+    }
 
-  btnConfirmDelete.onclick = function () {
-    formDelete.submit();
-  }
-</script>
+    btnConfirmDelete.onclick = function () {
+      formDelete.submit();
+    }
+  </script>
 }

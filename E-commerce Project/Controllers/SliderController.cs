@@ -42,6 +42,10 @@ public class SliderController : Controller
     public async Task<IActionResult> Create(SliderCreateViewModel model)
     {
         await _sliderService.CreateSliderAsync(model);
+        TempData["title"] = $"Thêm thành công";
+        TempData["message"] = $"Đã thêm thành công slider {model.Name}.";
+        TempData["icon"] = "fas fa-check";
+        TempData["type"] = "success";
         return RedirectToAction("Slider", "Admin");
     }
 
@@ -73,18 +77,16 @@ public class SliderController : Controller
     public async Task<IActionResult> Update(int id, SliderUpdateViewModel model)
     {
         await _sliderService.UpdateSliderAsync(id, model);
+        TempData["title"] = $"Cập nhập thành công";
+        TempData["message"] = $"Thông tin slider có ID = {id} đã được cập nhật.";
+        TempData["icon"] = "fas fa-edit";
+        TempData["type"] = "info";
         return RedirectToAction("Slider", "Admin");
     }
 
-    public IActionResult Trash()
+    public IActionResult Trash(int? page)
     {
-        var sliders = _sliderService.GetAllSlidesDeleted()
-            .Select(item => new SliderTrashViewModel
-            {
-                Id = item.Id,
-                Name = item.Name,
-                ImagePath = item.ImagePath,
-            });
+        var sliders = _sliderService.GetSlidersWithPaginationAdminTrash(page);
         return View(sliders);
     }
 
@@ -92,6 +94,10 @@ public class SliderController : Controller
     public async Task<IActionResult> Delete(int id)
     {
         await _sliderService.DeleteSliderAsync(id);
+        TempData["title"] = $"Đã chuyển vào thùng rác";
+        TempData["message"] = $"Slider có ID = {id} đã được đưa vào thùng rác.";
+        TempData["icon"] = "fas fa-trash";
+        TempData["type"] = "warning";
         return RedirectToAction("Slider", "Admin");
     }
 
@@ -99,14 +105,22 @@ public class SliderController : Controller
     public async Task<IActionResult> Restore(int id)
     {
         await _sliderService.RestoreSliderAsync(id);
-        return RedirectToAction("Slider", "Admin");
+        TempData["title"] = $"Khôi phục thành công";
+        TempData["message"] = $"Slider có ID = {id} đã được khôi phục.";
+        TempData["icon"] = "fas fa-sync-alt";
+        TempData["type"] = "success";
+        return RedirectToAction("Trash", "Slider");
     }
     
     [HttpPost]
     public async Task<IActionResult> ForceDelete(int id)
     {
         await _sliderService.ForceDeleteSliderAsync(id);
-        return RedirectToAction("Trash");
+        TempData["title"] = "Đã xóa vĩnh viễn";
+        TempData["message"] = $"Slider có ID = {id} đã bị xóa vĩnh viễn khỏi hệ thống.";
+        TempData["icon"] = "fas fa-times";
+        TempData["type"] = "danger";
+        return RedirectToAction("Trash", "Slider");
     }
     
 }

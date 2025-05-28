@@ -3,8 +3,8 @@
 public class ProductSalesViewModel
 {
     public string Name { get; set; }
-    public string Price { get; set; }
+    public decimal Price { get; set; }
+    public decimal PromotionPrice { get; set; }
     public string Slug { get; set; }
     public string ImagePath { get; set; }
-    public string PromotionPrice { get; set; }
 }

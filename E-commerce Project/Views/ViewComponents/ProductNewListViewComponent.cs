@@ -28,7 +28,9 @@ public class ProductNewListViewComponent : ViewComponent
                 Name = item.Name,
                 Slug = item.Slug,
                 ImagePath = _productImageService.GetImageMainProductById(item.Id),
-                Price = item.Price.ToString(),
+                Price = item.Price,
+                PromotionPrice = item.PromotionPrice,
+                HasDiscount = item.HasDiscount,
             }).ToListAsync();
 
         return View(productNews);

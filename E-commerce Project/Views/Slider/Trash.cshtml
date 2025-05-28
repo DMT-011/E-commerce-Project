@@ -1,10 +1,22 @@
-﻿@model IEnumerable<E_commerce_Project.Models.ViewModels.SliderViewModel.SliderTrashViewModel>;
+﻿@model X.PagedList.IPagedList<E_commerce_Project.Models.ViewModels.AdminViewModel.AdminSliderTrashViewModel>;
 @{
   Layout = "_LayoutAdminTable";
   ViewBag.titleView = "Giao diện";
   ViewBag.featureCurrent = "Thùng rác";
+
+  // Action for pagination section
+  ViewBag.action = "Trash";
 }
 
+<style>
+  .empty-img {
+    width: 30%;
+  }
+  
+  .empty-wrapper .image-wrapper {
+    margin-bottom: 36px;
+  }
+</style>
 
 @section ControlsAdmin
 {
@@ -14,59 +26,80 @@
   </a>
 }
 
-<table class="table align-middle table-product-list">
-  <thead>
-  <tr>
-    <th scope="col">ID</th>
-    <th scope="col">Hình</th>
-    <th scope="col">Tên Slider</th>
-    <th scope="col">Thao tác</th>
-  </tr>
-  </thead>
-
-  <tbody class="table-group-divider">
-  @foreach (var item in Model)
-  {
-    <tr class="slide-item">
-      <th scope="row">
-        <span class="id-slide" style="margin-left: 2px">@item.Id</span>
-      </th>
-      <td>
-        <img
-          style="width: 114px"
-          src="~/@item.ImagePath"
-          class="slide-img"
-          alt=""
-        />
-      </td>
-      <td>
-        <a href="#" class="slide-detail-link">@item.Name</a>
-      </td>
-      <td class="product-controls">
-        <button
-          class="btn btn-black btn-restore-slider"
-          data-bs-toggle="tooltip"
-          data-bs-placement="top"
-          data-bs-title="Khôi phục"
-          data-slider-id="@item.Id"
-        >
-          <i class="fas fa-redo-alt"></i>
-        </button>
-
-        <button
-          class="btn btn-danger"
-          data-bs-toggle="modal"
-          data-bs-target="#modal-confirm-forceDelete"
-          data-slider-id="@item.Id"
-          data-slider-name="@item.Name"
-        >
-          <i class="fas fa-trash-alt"></i>
-        </button>
-      </td>
+@if (Model.Count > 0)
+{
+  <table class="table align-middle table-product-list">
+    <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Hình</th>
+      <th scope="col">Tên Slider</th>
+      <th scope="col">Thao tác</th>
     </tr>
+    </thead>
+
+    <tbody class="table-group-divider">
+    @foreach (var item in Model)
+    {
+      <tr class="slide-item">
+        <th scope="row">
+          <span class="id-slide" style="margin-left: 2px">@item.Id</span>
+        </th>
+        <td>
+          <img
+            style="width: 114px"
+            src="~/@item.ImagePath"
+            class="slide-img"
+            alt=""
+          />
+        </td>
+        <td>
+          <a href="#" class="slide-detail-link">@item.Name</a>
+        </td>
+        <td class="product-controls">
+          <button
+            class="btn btn-black btn-restore-slider"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            data-bs-title="Khôi phục"
+            data-slider-id="@item.Id"
+          >
+            <i class="fas fa-sync-alt"></i>
+          </button>
+
+          <button
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#modal-confirm-forceDelete"
+            data-slider-id="@item.Id"
+            data-slider-name="@item.Name"
+          >
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      </tr>
+    }
+    </tbody>
+  </table>
+  
+  @section Pagination
+  {
+    @await Html.PartialAsync("PartialViews/Admin/_PaginationSection", Model)
   }
-  </tbody>
-</table>
+}
+
+@if (Model.Count == 0)
+{
+  // Context for empty section
+  ViewBag.contentEmpty = "Thùng rác rỗng, quay lại danh sách ";
+  ViewBag.contentLink = "slider";
+  ViewBag.actionEmpty = "/Admin/Slider";
+  ViewBag.imgEmpty = "trash-empty-color.jpg";
+  
+  @await Html.PartialAsync("PartialViews/Admin/_EmptySection")
+}
+
+
 
 <!-- Form restore and force delete slider -->
 <form action="" method="POST" id="form-restore-slider"></form>
@@ -79,7 +112,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" >Xóa vĩnh viễn slider này ?</h1>
+          <h1 class="modal-title fs-5">Xóa vĩnh viễn slider này ?</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -99,6 +132,8 @@
 
 @section ScriptsViewChild
 {
+  @await Html.PartialAsync("PartialViews/Admin/_NoticeSection")
+
   <script>
     const formRestore = document.querySelector("#form-restore-slider");
     const btnRestore = document.querySelectorAll(".btn-restore-slider");

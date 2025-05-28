@@ -1,8 +1,11 @@
 ﻿using E_commerce_Project.Models.Context;
 using E_commerce_Project.Models.Entities;
 using E_commerce_Project.Models.Services.FileService;
+using E_commerce_Project.Models.ViewModels.AdminViewModel;
 using E_commerce_Project.Models.ViewModels.SliderViewModel;
 using Microsoft.EntityFrameworkCore;
+using X.PagedList;
+using X.PagedList.Extensions;
 
 namespace E_commerce_Project.Models.Services.SliderService;
 
@@ -228,5 +231,43 @@ public class SliderService : ISliderService
         
         _logger.LogInformation($"Get slider image {slider.Id} successfully");
         return slider;
+    }
+
+    public IPagedList<AdminSliderListViewModel> GetSlidersWithPaginationAdmin(int? page)
+    {
+        int pageSize = 5;    
+        int pageNumber = page ?? 1;
+
+        var sliders = _context.Slides
+            .AsNoTracking()
+            .OrderByDescending(item => item.UpdatedAt)
+            .Where(item => item.IsDeleted == false)
+            .Select(item => new AdminSliderListViewModel
+            {
+                Id = item.Id,
+                Name = item.Name,
+                ImagePath = item.ImagePath
+            })
+            .ToPagedList(pageNumber, pageSize);
+        return sliders;
+    }
+
+    public IPagedList<AdminSliderTrashViewModel> GetSlidersWithPaginationAdminTrash(int? page)
+    {
+        int pageSize = 5;    
+        int pageNumber = page ?? 1;
+
+        var sliders = _context.Slides
+            .AsNoTracking()
+            .OrderByDescending(item => item.UpdatedAt)
+            .Where(item => item.IsDeleted == true)
+            .Select(item => new AdminSliderTrashViewModel
+            {
+                Id = item.Id,
+                Name = item.Name,
+                ImagePath = item.ImagePath
+            })
+            .ToPagedList(pageNumber, pageSize);
+        return sliders;
     }
 }

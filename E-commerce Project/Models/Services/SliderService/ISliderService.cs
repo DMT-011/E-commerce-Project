@@ -1,5 +1,7 @@
 ﻿using E_commerce_Project.Models.Entities;
+using E_commerce_Project.Models.ViewModels.AdminViewModel;
 using E_commerce_Project.Models.ViewModels.SliderViewModel;
+using X.PagedList;
 
 namespace E_commerce_Project.Models.Services.SliderService;
 
@@ -19,5 +21,7 @@ public interface ISliderService
     List<Slide> GetAllSlides();
     List<Slide> GetAllSlidesDeleted();
     Task<Slide> GetSliderByIdAsync(int id);
-    
+    IPagedList<AdminSliderListViewModel> GetSlidersWithPaginationAdmin(int? page);
+    IPagedList<AdminSliderTrashViewModel> GetSlidersWithPaginationAdminTrash(int? page);
+
 }

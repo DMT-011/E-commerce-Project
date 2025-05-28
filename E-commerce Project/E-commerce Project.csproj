@@ -23,7 +23,6 @@
       <Folder Include="wwwroot\css\lib\" />
       <Folder Include="wwwroot\css\main\" />
       <Folder Include="wwwroot\css\user\" />
-      <Folder Include="wwwroot\images\" />
       <Folder Include="wwwroot\js\admin\" />
       <Folder Include="wwwroot\js\lib\" />
       <Folder Include="wwwroot\js\product\" />

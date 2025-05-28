@@ -67,3 +67,11 @@
     display: none;
 }
 
+/* Empty img */
+.empty-img {
+    width: 32%;
+}
+
+.empty-wrapper .image-wrapper {
+    margin-bottom: 36px;
+}   

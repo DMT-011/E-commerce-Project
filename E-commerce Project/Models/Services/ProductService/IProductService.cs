@@ -1,5 +1,7 @@
 ﻿using E_commerce_Project.Models.Entities;
+using E_commerce_Project.Models.ViewModels.AdminViewModel;
 using E_commerce_Project.Models.ViewModels.ProductViewModel;
+using X.PagedList;
 
 namespace E_commerce_Project.Models.Services.ProductService;
 
@@ -14,5 +16,8 @@ public interface IProductService
     
     // Query
     Task<Product> GetProductByIdAsync(int id);
+    Task<Product> GetProductBySlugAsync(string slug);
     IQueryable<Product> GetAllProducts();
+    IPagedList<AdminProductListViewModel> GetProductsWithPaginationAdmin(int? page);
+    IPagedList<AdminProductTrashViewModel> GetProductsWithPaginationAdminTrash(int? page);
 }

@@ -1,10 +1,8 @@
-﻿using E_commerce_Project.Models.Context;
-using E_commerce_Project.Models.Services.CategoryService;
+﻿using E_commerce_Project.Models.Services.CategoryService;
 using E_commerce_Project.Models.Services.ProductImageService;
 using E_commerce_Project.Models.Services.ProductService;
 using E_commerce_Project.Models.ViewModels.ProductViewModel;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace E_commerce_Project.Controllers;
 
@@ -13,19 +11,33 @@ public class ProductController : Controller
     private readonly IProductService _productService;
     private readonly ICategoryService _categoryService;
     private readonly IProductImageService _productImageService;
-    private readonly ApplicationDbContext _context;
 
     public ProductController(IProductService productService, ICategoryService categoryService
-    , IProductImageService productImageService, ApplicationDbContext context)
+    , IProductImageService productImageService)
     {
         _productService = productService;
         _categoryService = categoryService;
         _productImageService = productImageService;
-        _context = context;
     }
-    public IActionResult Index(int id)
+    public async Task<IActionResult> Index(string slug)
     {
-        return View();
+        var product = await _productService.GetProductBySlugAsync(slug);
+        var model = new ProductDetailViewModel
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Quantity = product.Quantity,
+            Price = product.Price,
+            PromotionPrice = product.PromotionPrice,
+            Description = product.Description,
+            Details = product.Detail,
+            HasDiscount = product.HasDiscount,
+            ImageMainPath = _productImageService.GetImageMainProductById(product.Id),
+            ImageSub1Path = _productImageService.GetImageSubProductByOrder(1, product.Id),
+            ImageSub2Path = _productImageService.GetImageSubProductByOrder(2, product.Id),
+            ImageSub3Path = _productImageService.GetImageSubProductByOrder(3, product.Id),
+        };
+        return View(model);
     }
 
     public async Task<IActionResult> Create()
@@ -42,6 +54,10 @@ public class ProductController : Controller
     public async Task<IActionResult> Create(ProductCreateViewModel model)
     {
         await _productService.CreateProductAsync(model);
+        TempData["title"] = $"Thêm thành công";
+        TempData["message"] = $"Đã thêm thành công sản phẩm {model.Name}.";
+        TempData["icon"] = "fas fa-check";
+        TempData["type"] = "success";
         return RedirectToAction("Product", "Admin");
     }
     
@@ -73,31 +89,26 @@ public class ProductController : Controller
     public async Task<IActionResult> Update(int id, ProductUpdateViewModel model)
     {
         await _productService.UpdateProductAsync(id, model);
+        TempData["title"] = $"Cập nhập thành công";
+        TempData["message"] = $"Thông tin sản phẩm có ID = {id} đã được cập nhật.";
+        TempData["icon"] = "fas fa-edit";
+        TempData["type"] = "info";
         return RedirectToAction("Product", "Admin");
     }
 
     public async Task<IActionResult> Delete(int id)
     {
         await _productService.DeleteProductAsync(id);
+        TempData["title"] = $"Đã chuyển vào thùng rác";
+        TempData["message"] = $"Sản phẩm có ID = {id} đã được đưa vào thùng rác.";
+        TempData["icon"] = "fas fa-trash";
+        TempData["type"] = "warning";
         return RedirectToAction("Product", "Admin");
     }
     
-    public IActionResult Trash()
+    public IActionResult Trash(int? page)
     {
-        var products = _context.Products
-            .Where(item => item.IsDeleted == true)
-            .Include(item => item.Category)
-            .Select(item => new ProductTrashViewModel
-            {
-                Id = item.Id,
-                Name = item.Name,
-                Price = item.Price,
-                PromotionPrice = item.PromotionPrice,
-                ImagePath = _productImageService.GetImageMainProductById(item.Id),
-                Quantity = item.Quantity,
-                CategoryName = item.Category.Name,
-                CreatedDate = item.CreatedAt,
-            });
+        var products = _productService.GetProductsWithPaginationAdminTrash(page);
         return View(products);
     }
 
@@ -105,13 +116,21 @@ public class ProductController : Controller
     public async Task<IActionResult> Restore(int id)
     {
         await _productService.RestoreProductAsync(id);
-        return RedirectToAction("Product", "Admin");
+        TempData["title"] = $"Khôi phục thành công";
+        TempData["message"] = $"Sản phẩm có ID = {id} đã được khôi phục.";
+        TempData["icon"] = "fas fa-sync-alt";
+        TempData["type"] = "success";
+        return RedirectToAction("Trash", "Product");
     }
 
     [HttpPost]
     public async Task<IActionResult> ForceDelete(int id)
     {
         await _productService.ForceDeleteProductAsync(id);
-        return RedirectToAction("Trash");
+        TempData["title"] = "Đã xóa vĩnh viễn";
+        TempData["message"] = $"Sản phẩm có ID = {id} đã bị xóa vĩnh viễn khỏi hệ thống.";
+        TempData["icon"] = "fas fa-times";
+        TempData["type"] = "danger";
+        return RedirectToAction("Trash", "Product");
     }
 }

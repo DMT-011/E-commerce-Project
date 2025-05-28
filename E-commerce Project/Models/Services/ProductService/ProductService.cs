@@ -3,8 +3,11 @@ using E_commerce_Project.Models.Context;
 using E_commerce_Project.Models.Entities;
 using E_commerce_Project.Models.Services.FileService;
 using E_commerce_Project.Models.Services.ProductImageService;
+using E_commerce_Project.Models.ViewModels.AdminViewModel;
 using E_commerce_Project.Models.ViewModels.ProductViewModel;
 using Microsoft.EntityFrameworkCore;
+using X.PagedList;
+using X.PagedList.Extensions;
 
 namespace E_commerce_Project.Models.Services.ProductService;
 
@@ -13,15 +16,13 @@ public class ProductService : IProductService
     private readonly ApplicationDbContext _context;
     private readonly ILogger<ProductService> _logger;
     private readonly IProductImageService _productImageService;
-    private readonly IFileService _fileService;
 
     public ProductService(ApplicationDbContext context, ILogger<ProductService> logger
-    , IProductImageService productImageService, IFileService fileService)
+        , IProductImageService productImageService)
     {
         _context = context;
         _logger = logger;
         _productImageService = productImageService;
-        _fileService = fileService;
     }
 
     public async Task CreateProductAsync(ProductCreateViewModel model)
@@ -49,7 +50,7 @@ public class ProductService : IProductService
             IsDisplayed = model.IsDisplayed,
             HasDiscount = model.HasDiscount,
         };
-        
+
         _context.Products.Add(product);
         await _context.SaveChangesAsync();
         await _productImageService.CreateImagesProductAsync(product.Id, model);
@@ -60,7 +61,7 @@ public class ProductService : IProductService
     {
         var productName = model.Name.Trim();
         var productExistName = await _context.Products
-            .Where(item => 
+            .Where(item =>
                 item.Id != id &&
                 item.Name == productName)
             .FirstOrDefaultAsync();
@@ -69,7 +70,7 @@ public class ProductService : IProductService
         {
             throw new Exception("Product name exists");
         }
-                
+
         var product = await _context.Products
             .Where(item => item.Id == id && item.IsDeleted == false)
             .FirstOrDefaultAsync();
@@ -78,7 +79,7 @@ public class ProductService : IProductService
         {
             throw new Exception("Product not found");
         }
-        
+
         product.Name = productName;
         product.Description = model.Description;
         product.Detail = model.Detail;
@@ -104,11 +105,11 @@ public class ProductService : IProductService
 
         if (product == null)
         {
-            throw new Exception("Product not found"); 
+            throw new Exception("Product not found");
         }
-        
+
         product.IsDeleted = true;
-        
+
         _context.Products.Update(product);
         await _context.SaveChangesAsync();
         _logger.LogInformation($"Product: {product} has sort deleted successfully");
@@ -122,9 +123,9 @@ public class ProductService : IProductService
 
         if (product == null)
         {
-            throw new Exception("Product not found"); 
+            throw new Exception("Product not found");
         }
-        
+
         await _productImageService.DeleteImagesProductAsync(product.Id);
         _context.Products.Remove(product);
         await _context.SaveChangesAsync();
@@ -138,7 +139,7 @@ public class ProductService : IProductService
             .FirstOrDefaultAsync();
 
         if (product == null) throw new Exception("Product restore not found!");
-        
+
         product.IsDeleted = false;
         _context.Products.Update(product);
         await _context.SaveChangesAsync();
@@ -149,15 +150,80 @@ public class ProductService : IProductService
         var product = await _context.Products
             .Where(item => item.Id == id && item.IsDeleted == false)
             .FirstOrDefaultAsync();
-        
+
         if (product == null) throw new Exception("Product not found");
         return product;
     }
 
-    public  IQueryable<Product> GetAllProducts()
+    public async Task<Product> GetProductBySlugAsync(string slug)
+    {
+        var product = await _context.Products
+            .Where(item =>
+                item.Slug == slug &&
+                item.IsDisplayed == true &&
+                item.IsDeleted == false)
+            .FirstOrDefaultAsync();
+
+        if (product == null) throw new Exception("Product detail not found!");
+        return product;
+    }
+
+    public IQueryable<Product> GetAllProducts()
     {
         var products = _context.Products
             .Where(item => item.IsDisplayed == false && item.IsDeleted == false);
+        return products;
+    }
+
+    public IPagedList<AdminProductListViewModel> GetProductsWithPaginationAdmin(int? page)
+    {
+        int pageSize = 5;
+        int pageNumber = page ?? 1;
+
+        var products = _context.Products
+            .Include(item => item.Category)
+            .AsNoTracking()
+            .OrderByDescending(item => item.UpdatedAt)
+            .Where(item => item.IsDeleted == false)
+            .Select(item => new AdminProductListViewModel
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Price = item.Price,
+                PromotionPrice = item.PromotionPrice,
+                Quantity = item.Quantity,
+                CategoryName = item.Category.Name,
+                ImagePath = _productImageService.GetImageMainProductById(item.Id),
+                CreatedDate = item.CreatedAt,
+            })
+            .ToPagedList(pageNumber, pageSize);
+
+        return products;
+    }
+
+    public IPagedList<AdminProductTrashViewModel> GetProductsWithPaginationAdminTrash(int? page)
+    {
+        int pageSize = 5;
+        int pageNumber = page ?? 1;
+
+        var products = _context.Products
+            .Include(item => item.Category)
+            .AsNoTracking()
+            .OrderByDescending(item => item.UpdatedAt)
+            .Where(item => item.IsDeleted == true)
+            .Select(item => new AdminProductTrashViewModel
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Price = item.Price,
+                PromotionPrice = item.PromotionPrice,
+                ImagePath = _productImageService.GetImageMainProductById(item.Id),
+                Quantity = item.Quantity,
+                CategoryName = item.Category.Name,
+                CreatedDate = item.CreatedAt,
+            })
+            .ToPagedList(pageNumber, pageSize);
+
         return products;
     }
 }

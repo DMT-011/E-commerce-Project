@@ -142,9 +142,10 @@ public class CategoryService : ICategoryService
                    .Select(product => new ProductItemViewModel
                    {
                        Name = product.Name,
-                       Price = product.Price.ToString(),
-                       PromotionPrice = product.PromotionPrice.ToString(),
+                       Price = product.Price,
+                       PromotionPrice = product.PromotionPrice,
                        Slug = product.Slug,
+                       HasDiscount = product.HasDiscount,
                        ImagePath = _productImageService.GetImageMainProductById(product.Id)
                    }).ToList(),
            }).ToList();

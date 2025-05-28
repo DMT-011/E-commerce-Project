@@ -1,168 +1,162 @@
-﻿@model IEnumerable<E_commerce_Project.Models.ViewModels.ProductViewModel.ProductTrashViewModel>;
+﻿@using E_commerce_Project.Helpers
+@model X.PagedList.IPagedList<E_commerce_Project.Models.ViewModels.AdminViewModel.AdminProductTrashViewModel>;
+
 @{
-  Layout = "_LayoutAdmin";
+  Layout = "_LayoutAdminTable";
+  ViewBag.titleView = "Sản phẩm";
+  ViewBag.featureCurrent = "Thùng rác";
+  // Action for pagination section
+  ViewBag.action = "Trash";
 }
 
-@section Styles
+@section StylesViewChild
 {
-  <link rel="stylesheet" href="~/css/admin/adminDelete.css">
+  <link rel="stylesheet" href="~/css/admin/adminDelete.css" asp-append-version="true">
 }
 
-<div class="page-inner page-inner-custom">
-  <!-- Breadcrumbs -->
-  <div class="page-header">
-    <h3 class="fw-bold mb-3">Sản phẩm</h3>
-    <ul class="breadcrumbs mb-3">
-      <li class="nav-home">
-        <a href="#">
-          <i class="icon-home"></i>
-        </a>
-      </li>
-      <li class="separator">
-        <i class="icon-arrow-right"></i>
-      </li>
-      <li class="nav-item">
-        <a href="#">Sản phẩm</a>
-      </li>
-      <li class="separator">
-        <i class="icon-arrow-right"></i>
-      </li>
-      <li class="nav-item">
-        <a href="#">Thùng rác</a>
-      </li>
-    </ul>
-  </div>
+@section ControlsAdmin
+{
+  <a href="/Admin/Product" class="btn btn-black">
+    <i class="icon-control fas fa-reply"></i>
+    Quay lại
+  </a>
+}
 
-  <div class="control-product">
-    <a href="/Admin/Product" class="btn btn-black">
-      <i class="icon-control fas fa-reply"></i>
-      Quay lại
-    </a>
-  </div>
 
-</div>
+@if (Model.Count > 0)
+{
+  <table class="table align-middle table-product-list">
+    <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Hình ảnh</th>
+      <th scope="col">Tên sản phẩm</th>
+      <th scope="col">Giá</th>
+      <th scope="col">Thao tác</th>
+    </tr>
+    </thead>
 
-<div class="product-list-wrapper">
-  <div class="row">
-    <div class="col-12">
-      <div class="table-responsive">
-        <table class="table align-middle table-product-list">
-          <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Hình ảnh</th>
-            <th scope="col">Tên sản phẩm</th>
-            <th scope="col">Số lượng</th>
-            <th scope="col">Thao tác</th>
-          </tr>
-          </thead>
+    <tbody class="table-group-divider">
+    @foreach (var item in Model)
+    {
+      <tr class="product-item">
+        <th scope="row">
+          <i
+            class="fas fa-angle-right icon-product-right"
+            style="opacity: 0.9"
+          ></i>
+          <i
+            class="fas fa-angle-down icon-product-down hidden-icon-product"
+            style="opacity: 0.9"
+          ></i>
+          <span class="id-product" style="margin-left: 2px"
+          >@item.Id</span
+          >
+        </th>
+        <td>
+          <img
+            src="~/@item.ImagePath"
+            class="product-img"
+            alt=""
+          />
+        </td>
+        <td>
+          <a href="#" class="product-detail-link"
+          >@item.Name</a
+          >
+        </td>
+        <td>@CurrencyFormatterHelper.Format(@item.Price)<sup>đ</sup></td>
+        <td class="product-controls">
+          <button
+            class="btn btn-black btn-restore-product"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            data-bs-title="Khôi phục"
+            data-product-id="@item.Id"
+          >
+            <i class="fas fa-sync-alt"></i>
+          </button>
 
-          <tbody class="table-group-divider">
-          @foreach (var item in Model)
-          {
-            <tr class="product-item">
-              <th scope="row">
-                <i
-                  class="fas fa-angle-right icon-product-right"
-                  style="opacity: 0.9"
-                ></i>
-                <i
-                  class="fas fa-angle-down icon-product-down hidden-icon-product"
-                  style="opacity: 0.9"
-                ></i>
-                <span class="id-product" style="margin-left: 2px"
-                >@item.Id</span
-                >
-              </th>
-              <td>
-                <img
-                  src="~/@item.ImagePath"
-                  class="product-img"
-                  alt=""
-                />
-              </td>
-              <td>
-                <a href="#" class="product-detail-link"
-                >@item.Name</a
-                >
-              </td>
-              <td>@item.Quantity</td>
-              <td class="product-controls">
-                <button
-                  class="btn btn-black btn-restore-product"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="top"
-                  data-bs-title="Khôi phục"
-                  data-product-id="@item.Id"
-                >
-                  <i class="fas fa-redo-alt"></i>
-                </button>
+          <button
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#modal-confirm-forceDelete"
+            data-product-id="@item.Id"
+            data-product-name="@item.Name"
+          >
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
 
-                <button
-                  class="btn btn-danger"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modal-confirm-forceDelete"
-                  data-product-id="@item.Id"
-                  data-product-name="@item.Name"
-                >
-                  <i class="fas fa-trash-alt"></i>
-                </button>
-              </td>
+        <td class="content-hidden" style="display: none">
+          @item.CategoryName
+        </td>
+        <td class="content-hidden" style="display: none">
+          @item.CreatedDate
+        </td>
+        <td class="content-hidden" style="display: none">
+          @CurrencyFormatterHelper.Format(@item.PromotionPrice ?? 0)
+        </td>
+      </tr>
+      <tr style="display: none"></tr>
+    }
+    </tbody>
+  </table>
 
-              <td class="content-hidden" style="display: none">
-                @item.CategoryName
-              </td>
-              <td class="content-hidden" style="display: none">
-                @item.CreatedDate
-              </td>
-              <td class="content-hidden" style="display: none">
-                @item.PromotionPrice
-              </td>
-              <td class="content-hidden" style="display: none">
-                @item.Price
-              </td>
-            </tr>
-            <tr style="display: none"></tr>
-          }
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
+  @section Pagination
+  {
+    @await Html.PartialAsync("PartialViews/Admin/_PaginationSection", Model)
+  }
+}
+
+@if (Model.Count == 0)
+{
+ViewBag.contentEmpty = "Thùng rác rỗng, quay lại danh sách ";
+ViewBag.contentLink = "sản phẩm";
+ViewBag.actionEmpty = "/Admin/Product";
+ViewBag.imgEmpty = "trash-empty-color.jpg";
+  @await Html.PartialAsync("PartialViews/Admin/_EmptySection")
+}
+
+
 
 <!-- Form restore and force delete product -->
 <form action="" method="POST" id="form-restore-product"></form>
 <form action="" method="POST" id="form-force-delete-product"></form>
 
-<!-- Modal -->
-<div class="modal fade" id="modal-confirm-forceDelete" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa vĩnh viễn sản phẩm này ?</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Hãy chắc chắn rằng bạn muốn xóa nó.
-        Hành động này sẽ xóa vĩnh viễn sản phẩm
-        <span style="font-weight: bold" class="product-name"></span>
-        , không thể khôi phục lại !
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
-        <button type="button" class="btn btn-danger btn-confirm-forceDel">Xóa vĩnh viễn</button>
+@section ModalConfirm
+{
+  <!-- Modal -->
+  <div class="modal fade" id="modal-confirm-forceDelete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa vĩnh viễn sản phẩm này ?</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Hãy chắc chắn rằng bạn muốn xóa nó.
+          Hành động này sẽ xóa vĩnh viễn sản phẩm
+          <span style="font-weight: bold" class="product-name"></span>
+          , không thể khôi phục lại !
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
+          <button type="button" class="btn btn-danger btn-confirm-forceDel">Xóa vĩnh viễn</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
+}
 
-@section Scripts
+@section ScriptsViewChild
 {
+  @await Html.PartialAsync("PartialViews/Admin/_NoticeSection");
+
   <script>
     const formRestore = document.querySelector("#form-restore-product");
     const btnRestore = document.querySelectorAll(".btn-restore-product");
-    
+
     btnRestore.forEach(item => {
       item.addEventListener("click", function () {
         const id = this.dataset.productId;
@@ -170,7 +164,7 @@
         formRestore.submit();
       })
     });
-    
+
     const formForceDelete = document.querySelector("#form-force-delete-product");
     const btnConfirmForceDel = document.querySelector(".btn-confirm-forceDel");
     const modalConfirmForceDel = document.querySelector("#modal-confirm-forceDelete");
@@ -180,7 +174,7 @@
         const contentBody = document.querySelector(".product-name");
         const productId = event.relatedTarget.dataset.productId;
         const productName = event.relatedTarget.dataset.productName;
-    
+
         formForceDelete.action = `/Product/ForceDelete/${productId}`;
         contentBody.textContent = productName;
       });
@@ -189,7 +183,7 @@
       formForceDelete.submit();
     }
   </script>
-  
+
   <!-- Script droplist table -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -220,24 +214,18 @@
                 <tr class="detail-product">
                     <td colspan="5">
                       <div class="detail-product-inner">
-                          <div class="detail-product-row">
+                         <div class="detail-product-row">
                             <div class="detail-product-name">Loại sản phẩm:</div>
                             <div class="detail-product-value">${productContent[0].textContent}</div>
                           </div>
-
-                          <div class="detail-product-row">
-                            <div class="detail-product-name">Ngày tạo:</div>
-                            <div class="detail-product-value">${productContent[1].textContent}</div>
-                          </div>
-
                           <div class="detail-product-row">
                             <div class="detail-product-name">Giá khuyển mãi:</div>
-                            <div class="detail-product-value">${productContent[2].textContent}</div>
+                            <div class="detail-product-value" style="font-weight: 600">${productContent[2].textContent.trim()}<sup>đ</sup></div>
                           </div>
 
                           <div class="detail-product-row">
-                            <div class="detail-product-name">Giá:</div>
-                            <div class="detail-product-value">${productContent[3].textContent}</div>
+                                <div class="detail-product-name">Ngày tạo:</div>
+                                <div class="detail-product-value">${productContent[1].textContent}</div>
                           </div>
                          
                       </div>

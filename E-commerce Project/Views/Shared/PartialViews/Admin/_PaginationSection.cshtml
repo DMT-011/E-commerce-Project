@@ -1,0 +1,34 @@
+﻿<nav class="pagination">
+    <ul class="pagination-list">
+        <li class="pagination-item">
+            <a href="@Url.Action($"{@ViewBag.action}", new { page = 1 })" class="pagination-link pagination-first">
+                <span class="pagination-icon">«</span>
+            </a>
+        </li>
+
+        <li class="pagination-item">
+            <a href="@Url.Action($"{@ViewBag.action}", new { page = Model.PageNumber - 1 })" class="pagination-link pagination-prev">
+                <span class="pagination-icon">‹</span>
+            </a>
+        </li>
+
+        @for (int i = 1; i <= Model.PageCount; i++)
+        {
+            <li class="pagination-item @(i == Model.PageNumber ? "active" : "") ">
+                <a class="pagination-link" href="@Url.Action($"{@ViewBag.action}", new { page = i })">@i</a>
+            </li>
+        }
+
+        <li class="pagination-item">
+            <a href="@Url.Action($"{@ViewBag.action}", new { page = Model.PageNumber + 1})" class="pagination-link pagination-next">
+                <span class="pagination-icon">›</span>
+            </a>
+        </li>
+
+        <li class="pagination-item">
+            <a href="@Url.Action($"{@ViewBag.action}", new {page = Model.PageCount})" class="pagination-link pagination-last">
+                <span class="pagination-icon">»</span>
+            </a>
+        </li>
+    </ul>
+</nav>

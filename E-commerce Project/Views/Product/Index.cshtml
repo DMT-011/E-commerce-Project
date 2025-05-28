@@ -1,755 +1,748 @@
-﻿@section Styles {
+﻿@using E_commerce_Project.Helpers
+@model E_commerce_Project.Models.ViewModels.ProductViewModel.ProductDetailViewModel;
+@{
+  // Breadcrumb place
+  ViewBag.currentPlace = @Model.Name;
+}
+
+@section Styles {
   <link rel="stylesheet" href="~/css/product/detailProduct.css">
 }
 
 <div class="main-content" style="margin: 0;">
-        <div class="container">
-            <!-- Breadcrumb area -->
-            <div class="row">
-              <div class="col-12">
-                  <div class="breadcrumb-area">
-                    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                      <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                          <a href="/home.html">Trang chủ</a>
-                        </li>
-                        <li class="breadcrumb-item active" aria-current="page" style="text-transform: capitalize;">iPhone 16 128GB Black</li>
-                      </ol>
-                    </nav>
+  <div class="container">
+    <!-- Breadcrumb area -->
+    <div class="row">
+      <div class="col-12">
+        @await Html.PartialAsync("PartialViews/Customer/_BreadCrumbSection")
+      </div>
+    </div>
 
-                  </div>
-                  
+    <!-- Detail product area -->
+    <div class="row">
+      <!-- Detail product-->
+      <div class="col-9">
+        <!-- Product view area -->
+        <div class="row">
+          <!-- Product view img -->
+          <div class="col-5">
+            <div class="product-view-area">
+              <div class="product-view-slide nivoSlider">
+                <img src="/@Model.ImageMainPath" data-thumb="/@Model.ImageMainPath" alt="">
+                <img src="/@Model.ImageSub1Path" data-thumb="/@Model.ImageSub1Path" alt="">
+                <img src="/@Model.ImageSub2Path" data-thumb="/@Model.ImageSub2Path" alt="">
+                <img src="/@Model.ImageSub3Path" data-thumb="/@Model.ImageSub3Path" alt="">
+              </div>
+
+              <div class="view-large-btn">
+                View large
+                <i class="bi view-large-icon bi-zoom-in"></i>
               </div>
             </div>
-            
-            <!-- Detail product area -->
-            <div class="row">
-                <!-- Detail product-->
-                <div class="col-9">
-                  <!-- Product view area -->
-                  <div class="row">
-                    <!-- Product view img -->
-                    <div class="col-5">
-                      <div class="product-view-area">
-                          <div class="product-view-slide nivoSlider">
-                            <img src="images/product_img/iphone16/iphone-16-128gb-black.png" data-thumb="images/product_img/iphone16/iphone16-plus-detail.png" alt="">
-                            <img src="images/product_img/iphone16/iphone-16-plus-trang-6-638639096614550816-750x500.jpg" data-thumb="images/product_img/iphone16/iphone-16-plus-trang-6-638639096614550816-750x500.jpg" alt="">
-                            <img src="images/product_img/iphone16/iphone-16-plus-trang-9-638639096632418014-750x500.jpg" data-thumb="images/product_img/iphone16/iphone-16-plus-trang-9-638639096632418014-750x500.jpg" alt="">
-                            <img src="images/product_img/iphone16/iphone-16-plus-trang-9-638639096632418014-750x500.jpg" data-thumb="images/product_img/iphone16/iphone-16-plus-trang-9-638639096632418014-750x500.jpg" alt="">
-                          </div>
-
-                          <div class="view-large-btn">
-                            View large
-                            <i class="bi view-large-icon bi-zoom-in"></i>
-                          </div>
-                      </div>
-                    </div>
-                    
-                    <!-- Product desc area -->
-                    <div class="col-7">
-                        <div class="product-wrapper">
-                          <div class="product-description">
-                            <h3 class="product-title-name">iPhone 16 Plus 256GB Black</h3>
-                          </div>
-                          <div class="review-box">
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                          </div>
-                          <div class="product-condition">
-                            <p>
-                              Sản phẩm có sẵn:
-                              <span class="product-condition-quantity">12</span>
-                            </p>
-                            <p>
-                              Tình trạng:
-                              <span class="product-condition-text">New</span>
-                            </p>
-                          </div>
-                          <div class="product-price-area">
-                            <p class="product-price-new">
-                              28.590.000<sup>đ</sup>
-                            </p>
-                            <p class="product-price-old">
-                              29.250.000<sup>đ</sup>
-                            </p>
-                          </div>
-                          <div class="product-desc-text">
-                            <p>Tháng 9/2024 đã chứng kiến một sự kiện công nghệ đáng chú ý khi Apple chính thức công bố dòng sản phẩm iPhone 16. Trong đó, iPhone 16 Plus nổi bật với những cải tiến đột phá, từ hiệu năng vượt trội đến thiết kế sang trọng. Đây chính là một minh chứng rõ ràng cho sự cam kết của Apple trong việc mang đến trải nghiệm công nghệ tối ưu cho người dùng.</p>
-                          </div>
-                          <div class="product-select-quantity">
-                            <span>Số lượng</span>
-                            <input type="number" value="1" min="1" name="productQuantity" id="numberProduct">
-                          </div>
-                          <div class="product-controls">
-                            <button class="buy-product-btn btn btn-dark">Mua ngay</button>
-                            <button class="add-product-cart-btn btn btn-outline-dark">Thêm vào giỏ hàng</button>
-                          </div>
-                        </div>
-                    </div>
-
-                  </div>
-
-                  <!-- Detail info product area -->
-                  <div class="row" style="margin-top: 36px; margin-bottom: 48px">
-                    <div class="col-12">
-                      <div class="detail-info-product-area">
-                        <div class="detail-title-area">
-                          <h3 class="detail-title-text">Chi tiết sản phẩm</h3>
-                        </div>
-
-                        <div class="detail-content-product">
-                          <h3>Thiết kế hoàn thiện với khung viền titan: Đột phá về vật liệu và thẩm mỹ</h3>
-                          <p>Ngay từ cái nhìn đầu tiên, iPhone 16 Pro đã gây ấn tượng mạnh mẽ với thiết kế cao cấp. Thay đổi lớn nhất về ngoại hình là việc Apple đã sử dụng titan, một loại vật liệu siêu nhẹ nhưng vô cùng bền bỉ, thay thế cho thép không gỉ ở các thế hệ trước. Đây là một bước đột phá không chỉ về mặt kỹ thuật mà còn về mặt thẩm mỹ. Titan mang lại cảm giác sang trọng, tinh tế, nhưng vẫn đảm bảo được độ bền vượt trội, bảo vệ thiết bị khỏi va đập và trầy xước trong quá trình sử dụng</p>
-                          <img src="~/images/product_img/detail_product/iphone-16-pro-tongquan.jpg" alt="">
-                          <p>Thiết kế với khung titan giúp iPhone 16 Pro nhẹ hơn nhưng vẫn giữ được độ chắc chắn. Apple cũng giới thiệu một loạt các màu sắc mới, gồm Đen Titan, Trắng Titan, Titan Sa Mạc, và Titan Tự Nhiên. Những tông màu này không chỉ thể hiện phong cách sang trọng mà còn mang đến sự đa dạng, cho phép người dùng dễ dàng thể hiện cá tính riêng của mình thông qua lựa chọn màu sắc. Cùng với đó, các góc cạnh bo tròn mềm mại giúp việc cầm nắm thiết bị trở nên dễ chịu hơn, đặc biệt là khi sử dụng trong thời gian dài</p>
-                          <h3>Màn hình Super Retina XDR: Mở rộng không gian hiển thị, nâng cao chất lượng hình ảnh</h3>
-                          <img src="~/images/product_img/detail_product/iphone-16-pro-man-hinh.jpg" alt="">
-                          <p>Đặc biệt, màn hình của thiết bị còn hỗ trợ công nghệ ProMotion với tốc độ làm mới 120Hz, giúp trải nghiệm lướt chạm và xem nội dung trở nên mượt mà hơn bao giờ hết. Điều này không chỉ nâng cao trải nghiệm khi chơi game có đồ họa cao mà còn giúp giảm hiện tượng giật lag khi duyệt web hoặc sử dụng các ứng dụng nặng. Ngoài ra, độ sáng lên đến 2000 nits cho phép người dùng dễ dàng sử dụng thiết bị ngay cả dưới ánh sáng mặt trời mạnh.</p>
-                        </div>
-
-                      </div>
-
-                    </div>
-                    
-                  </div>
-
-                  <!-- Product same area-->
-                  <div class="row" style="margin-bottom: 48px;">
-                    <div class="col-12">
-                      <div class="product-list-area">
-                        <div class="left-title-area">
-                          <h3 class="left-title">Sản phẩm cùng danh mục</h3>
-                        </div>
-            
-                        <div class="row">
-                          <!-- Product Item -->
-                          <div class="col-3">
-                            <div class="product-item">
-            
-                              <div class="product-img">
-                                <a href="" class="product-link">
-                                  <img src="~/images/product_img/iphone16/iphone-16-128gb-black.png" alt="">
-                                </a>
-                              </div>
-            
-                              <div class="product-info">
-                                <div class="rating-box">
-                                  <i class="bi bi-star-fill"></i>
-                                  <i class="bi bi-star-fill"></i>
-                                  <i class="bi bi-star-fill"></i>
-                                  <i class="bi bi-star-fill"></i>
-                                  <i class="bi bi-star-fill"></i>
-                                </div>
-            
-                                <a href="" class="product-name">Apple macbook air</a>
-                                <div class="product-price">
-                                  18.699.000<sup>đ</sup>
-                                </div>
-                              </div>
-                              
-                            </div>
-                          </div>
-
-                          <div class="col-3">
-                            <div class="product-item">
-            
-                              <div class="product-img">
-                                <a href="" class="product-link">
-                                  <img src="~/images/product_img/iphone16/iphone-16-128gb-black.png" alt="">
-                                </a>
-                              </div>
-            
-                              <div class="product-info">
-                                <div class="rating-box">
-                                  <i class="bi bi-star-fill"></i>
-                                  <i class="bi bi-star-fill"></i>
-                                  <i class="bi bi-star-fill"></i>
-                                  <i class="bi bi-star-fill"></i>
-                                  <i class="bi bi-star-fill"></i>
-                                </div>
-            
-                                <a href="" class="product-name">Apple macbook air</a>
-                                <div class="product-price">
-                                  18.699.000<sup>đ</sup>
-                                </div>
-                              </div>
-                              
-                            </div>
-                          </div>
-
-                          <div class="col-3">
-                            <div class="product-item">
-            
-                              <div class="product-img">
-                                <a href="" class="product-link">
-                                  <img src="~/images/product_img/iphone16/iphone-16-128gb-black.png" alt="">
-                                </a>
-                              </div>
-            
-                              <div class="product-info">
-                                <div class="rating-box">
-                                  <i class="bi bi-star-fill"></i>
-                                  <i class="bi bi-star-fill"></i>
-                                  <i class="bi bi-star-fill"></i>
-                                  <i class="bi bi-star-fill"></i>
-                                  <i class="bi bi-star-fill"></i>
-                                </div>
-            
-                                <a href="" class="product-name">Apple macbook air</a>
-                                <div class="product-price">
-                                  18.699.000<sup>đ</sup>
-                                </div>
-                              </div>
-                              
-                            </div>
-                          </div>
-
-                          <div class="col-3">
-                            <div class="product-item">
-            
-                              <div class="product-img">
-                                <a href="" class="product-link">
-                                  <img src="~/images/product_img/iphone16/iphone-16-128gb-black.png" alt="">
-                                </a>
-                              </div>
-            
-                              <div class="product-info">
-                                <div class="rating-box">
-                                  <i class="bi bi-star-fill"></i>
-                                  <i class="bi bi-star-fill"></i>
-                                  <i class="bi bi-star-fill"></i>
-                                  <i class="bi bi-star-fill"></i>
-                                  <i class="bi bi-star-fill"></i>
-                                </div>
-            
-                                <a href="" class="product-name">Apple macbook air</a>
-                                <div class="product-price">
-                                  18.699.000<sup>đ</sup>
-                                </div>
-                              </div>
-                              
-                            </div>
-                          </div>
-                          
-            
-                        </div>
-
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-                <!-- Product sidebar right -->
-                <div class="col-3">
-                  <!-- Product new sidebar right -->
-                 <div class="product-right-sidebar-wrap">
-                    <!-- Sidebar title -->
-                    <div class="single-right-sidebar">
-                      <div class="left-title-area">
-                        <h3 class="left-title">Sản phẩm vừa nhập về</h3>
-                      </div>
-                    </div>
-
-                    <!-- List products new  -->
-                    <div class="list-product-sidebar-right">
-                      <div class="single-product-item">
-                        <div class="sidebar-product-img">
-                          <a href="#" class="sidebar-product-link">
-                            <img src="~/images/product_img/sidebar/airpods-2-sac-lightning.png" alt="">
-                          </a>
-                        </div>
-
-                        <div class="sidebar-product-desc">
-                            <a href="" class="sidebar-product-name">AirPods 2 sạc Lightning</a>
-                            <div class="customer-comment-box">
-                              <div class="rating-box">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                              </div>
-                            </div>
-                            
-                            <div class="price-box">
-                              <span class="new-price">3.590.000<sup>đ</sup> </span>
-                              <span class="old-price">3.900.000<sup>đ</sup> </span>
-                            </div>
-
-                        </div>
-
-                      </div>
-
-                      <div class="single-product-item">
-
-                        <div class="sidebar-product-img">
-                          <a href="#" class="sidebar-product-link">
-                            <img src="~/images/product_img/sidebar/airpods-pro-(2nd-gen)-usb-c.png" alt="">
-                          </a>
-                        </div>
-
-                        <div class="sidebar-product-desc">
-                            <a href="" class="sidebar-product-name">AirPods 2 sạc Lightning</a>
-                            <div class="customer-comment-box">
-                              <div class="rating-box">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                              </div>
-                            </div>
-                            
-                            <div class="price-box">
-                              <span class="new-price">3.590.000<sup>đ</sup> </span>
-                              <span class="old-price">3.900.000<sup>đ</sup> </span>
-                            </div>
-                        </div>
-
-                      </div>
-
-                      <div class="single-product-item">
-
-                        <div class="sidebar-product-img">
-                          <a href="#" class="sidebar-product-link">
-                            <img src="~/images/product_img/sidebar/airpods-pro-(2nd-gen)-usb-c.png" alt="">
-                          </a>
-                        </div>
-
-                        <div class="sidebar-product-desc">
-                            <a href="" class="sidebar-product-name">AirPods 2 sạc Lightning</a>
-                            <div class="customer-comment-box">
-                              <div class="rating-box">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                              </div>
-                            </div>
-                            
-                            <div class="price-box">
-                              <span class="new-price">3.590.000<sup>đ</sup> </span>
-                              <span class="old-price">3.900.000<sup>đ</sup> </span>
-                            </div>
-                        </div>
-
-                      </div>
-
-                      
-                      <div class="single-product-item">
-
-                        <div class="sidebar-product-img">
-                          <a href="#" class="sidebar-product-link">
-                            <img src="~/images/product_img/sidebar/airpods-pro-(2nd-gen)-usb-c.png" alt="">
-                          </a>
-                        </div>
-
-                        <div class="sidebar-product-desc">
-                            <a href="" class="sidebar-product-name">AirPods 2 sạc Lightning</a>
-                            <div class="customer-comment-box">
-                              <div class="rating-box">
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                                <i class="bi bi-star-fill"></i>
-                              </div>
-                            </div>
-                            
-                            <div class="price-box">
-                              <span class="new-price">3.590.000<sup>đ</sup> </span>
-                              <span class="old-price">3.900.000<sup>đ</sup> </span>
-                            </div>
-                        </div>
-
-                      </div>
-
-                    </div>
-                    
-                 </div>
-
-                 <!-- Product same area -->
-                <div class="product-right-sidebar-wrap">
-                  <!-- Sidebar title -->
-                  <div class="single-right-sidebar">
-                    <div class="left-title-area">
-                      <h3 class="left-title">Sản phẩm tương tự</h3>
-                    </div>
-                  </div>
-
-                  <!-- List products new  -->
-                  <div class="list-product-sidebar-right">
-                    <div class="single-product-item">
-                      <div class="sidebar-product-img">
-                        <a href="#" class="sidebar-product-link">
-                          <img src="~/images/product_img/iphone16/iphone-16-plus-256gb-green.png" alt="">
-                        </a>
-                      </div>
-
-                      <div class="sidebar-product-desc">
-                          <a href="" class="sidebar-product-name">iphone 16 plus 256gb green</a>
-                          <div class="customer-comment-box">
-                            <div class="rating-box">
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                            </div>
-                          </div>
-                          
-                          <div class="price-box">
-                            <span class="new-price">32.350.000<sup>đ</sup> </span>
-                            <span class="old-price">33.200.000<sup>đ</sup> </span>
-                          </div>
-
-                      </div>
-
-                    </div>
-
-                    <div class="single-product-item">
-                      <div class="sidebar-product-img">
-                        <a href="#" class="sidebar-product-link">
-                          <img src="~/images/product_img/iphone16/iphone-16-plus-256gb-green.png" alt="">
-                        </a>
-                      </div>
-
-                      <div class="sidebar-product-desc">
-                          <a href="" class="sidebar-product-name">iphone 16 plus 256gb green</a>
-                          <div class="customer-comment-box">
-                            <div class="rating-box">
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                            </div>
-                          </div>
-                          
-                          <div class="price-box">
-                            <span class="new-price">32.350.000<sup>đ</sup> </span>
-                            <span class="old-price">33.200.000<sup>đ</sup> </span>
-                          </div>
-
-                      </div>
-
-                    </div>
-
-                    <div class="single-product-item">
-                      <div class="sidebar-product-img">
-                        <a href="#" class="sidebar-product-link">
-                          <img src="~/images/product_img/iphone16/iphone-16-plus-256gb-green.png" alt="">
-                        </a>
-                      </div>
-
-                      <div class="sidebar-product-desc">
-                          <a href="" class="sidebar-product-name">iphone 16 plus 256gb green</a>
-                          <div class="customer-comment-box">
-                            <div class="rating-box">
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                            </div>
-                          </div>
-                          
-                          <div class="price-box">
-                            <span class="new-price">32.350.000<sup>đ</sup> </span>
-                            <span class="old-price">33.200.000<sup>đ</sup> </span>
-                          </div>
-
-                      </div>
-
-                    </div>
-
-                    <div class="single-product-item">
-                      <div class="sidebar-product-img">
-                        <a href="#" class="sidebar-product-link">
-                          <img src="~/images/product_img/iphone16/iphone-16-plus-256gb-green.png" alt="">
-                        </a>
-                      </div>
-
-                      <div class="sidebar-product-desc">
-                          <a href="" class="sidebar-product-name">iphone 16 plus 256gb green</a>
-                          <div class="customer-comment-box">
-                            <div class="rating-box">
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                            </div>
-                          </div>
-                          
-                          <div class="price-box">
-                            <span class="new-price">32.350.000<sup>đ</sup> </span>
-                            <span class="old-price">33.200.000<sup>đ</sup> </span>
-                          </div>
-
-                      </div>
-
-                    </div>
-
-                  </div>
-                  
-                </div>
-
-                <!-- Product best seller  -->
-                <div class="product-right-sidebar-wrap">
-                  <!-- Sidebar title -->
-                  <div class="single-right-sidebar">
-                    <div class="left-title-area">
-                      <h3 class="left-title">Sản phẩm bán chạy</h3>
-                    </div>
-                  </div>
-
-                  <!-- List products best seller  -->
-                  <div class="list-product-sidebar-right">
-                    <div class="single-product-item">
-                      <div class="sidebar-product-img">
-                        <a href="#" class="sidebar-product-link">
-                          <img src="~/images/product_img/iphone16/iphone-16-plus-256gb-green.png" alt="">
-                        </a>
-                      </div>
-
-                      <div class="sidebar-product-desc">
-                          <a href="" class="sidebar-product-name">iphone 16 plus 256gb green</a>
-                          <div class="customer-comment-box">
-                            <div class="rating-box" style="display: none;">
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                            </div>
-                          </div>
-                          
-                          <div class="price-box">
-                            <span class="new-price">32.350.000<sup>đ</sup> </span>
-                            <span class="old-price">33.200.000<sup>đ</sup> </span>
-
-                            <div class="sold-quantity">
-                              Đã bán: <span class="sold-number">12</span>
-                            </div>
-
-                          </div>
-
-                      </div>
-
-                    </div>
-
-                    <div class="single-product-item">
-                      <div class="sidebar-product-img">
-                        <a href="#" class="sidebar-product-link">
-                          <img src="~/images/product_img/iphone16/iphone-16-plus-256gb-green.png" alt="">
-                        </a>
-                      </div>
-
-                      <div class="sidebar-product-desc">
-                          <a href="" class="sidebar-product-name">iphone 16 plus 256gb green</a>
-                          <div class="customer-comment-box">
-                            <div class="rating-box" style="display: none;">
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                            </div>
-                          </div>
-                          
-                          <div class="price-box">
-                            <span class="new-price">32.350.000<sup>đ</sup> </span>
-                            <span class="old-price">33.200.000<sup>đ</sup> </span>
-
-                          <div class="sold-quantity">
-                            Đã bán: <span class="sold-number">12</span>
-                          </div>
-
-                          </div>
-
-                      </div>
-
-                    </div>
-
-                    <div class="single-product-item">
-                      <div class="sidebar-product-img">
-                        <a href="#" class="sidebar-product-link">
-                          <img src="~/images/product_img/iphone16/iphone-16-plus-256gb-green.png" alt="">
-                        </a>
-                      </div>
-
-                      <div class="sidebar-product-desc">
-                          <a href="" class="sidebar-product-name">iphone 16 plus 256gb green</a>
-                          <div class="customer-comment-box">
-                            <div class="rating-box" style="display: none;">
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                            </div>
-                          </div>
-                          
-                          <div class="price-box">
-                            <span class="new-price">32.350.000<sup>đ</sup> </span>
-                            <span class="old-price">33.200.000<sup>đ</sup> </span>
-
-                            <div class="sold-quantity">
-                              Đã bán: <span class="sold-number">12</span>
-                            </div>
-
-                          </div>
-
-                      </div>
-
-                    </div>
-
-                    <div class="single-product-item">
-                      <div class="sidebar-product-img">
-                        <a href="#" class="sidebar-product-link">
-                          <img src="~/images/product_img/iphone16/iphone-16-plus-256gb-green.png" alt="">
-                        </a>
-                      </div>
-
-                      <div class="sidebar-product-desc">
-                          <a href="" class="sidebar-product-name">iphone 16 plus 256gb green</a>
-                          <div class="customer-comment-box">
-                            <div class="rating-box" style="display: none;">
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                            </div>
-                          </div>
-                          
-                          <div class="price-box">
-                            <span class="new-price">32.350.000<sup>đ</sup> </span>
-                            <span class="old-price">33.200.000<sup>đ</sup> </span>
-
-                          <div class="sold-quantity">
-                            Đã bán: <span class="sold-number">12</span>
-                          </div>
-
-                          </div>
-
-                      </div>
-
-                    </div>
-
-                    <div class="single-product-item">
-                      <div class="sidebar-product-img">
-                        <a href="#" class="sidebar-product-link">
-                          <img src="~/images/product_img/iphone16/iphone-16-plus-256gb-green.png" alt="">
-                        </a>
-                      </div>
-
-                      <div class="sidebar-product-desc">
-                          <a href="" class="sidebar-product-name">iphone 16 plus 256gb green</a>
-                          <div class="customer-comment-box">
-                            <div class="rating-box" style="display: none;">
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                              <i class="bi bi-star-fill"></i>
-                            </div>
-                          </div>
-                          
-                          <div class="price-box">
-                            <span class="new-price">32.350.000<sup>đ</sup> </span>
-                            <span class="old-price">33.200.000<sup>đ</sup> </span>
-
-                          <div class="sold-quantity">
-                            Đã bán: <span class="sold-number">12</span>
-                          </div>
-
-                          </div>
-
-                      </div>
-
-                    </div>
-
-
-                  </div>
-                  
-                </div>
-
-                <div class="product-right-sidebar-wrap">
-                  <!-- Sidebar title -->
-                  <div class="single-right-sidebar">
-                    <div class="left-title-area">
-                      <h3 class="left-title">Tìm kiếm nhiều nhất</h3>
-                    </div>
-                  </div>
-
-                  <!-- List products search most  -->
-                   <div class="row">
-                      <div class="col-6">
-                        <ul class="list-product-most-search">
-                          <li>
-                            <a href="" class="link-product-most-search">m3 max</a>
-                          </li>
-
-                          <li>
-                            <a href="" class="link-product-most-search">iphone 16 pro</a>
-                          </li>
-
-                          <li>
-                            <a href="" class="link-product-most-search">test</a>
-                          </li>
-
-                          <li>
-                            <a href="" class="link-product-most-search">watch</a>
-                          </li>
-
-                          <li>
-                            <a href="" class="link-product-most-search">airpods 2 pro</a>
-                          </li>
-
-                        </ul>
-                      </div>
-
-                      <div class="col-6">
-                        <ul class="list-product-most-search">
-                          <li>
-                            <a href="" class="link-product-most-search">airpods 2</a>
-                          </li>
-
-                          <li>
-                            <a href="" class="link-product-most-search">airpods 3</a>
-                          </li>
-
-                          <li>
-                            <a href="" class="link-product-most-search">laptop</a>
-                          </li>
-
-                          <li>
-                            <a href="" class="link-product-most-search">airpods2</a>
-                          </li>
-
-                          <li>
-                            <a href="" class="link-product-most-search">macbook pro 16</a>
-                          </li>
-
-                        </ul>
-                      </div>
-                   </div>
-                 
-                </div>
-
-                </div>
+          </div>
+
+          <!-- Product desc area -->
+          <div class="col-7">
+            <div class="product-wrapper">
+              <div class="product-description">
+                <h3 class="product-title-name">@Model.Name</h3>
+              </div>
+              <div class="review-box">
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+                <i class="bi bi-star-fill"></i>
+              </div>
+              <div class="product-condition">
+                <p>
+                  Sản phẩm có sẵn:
+                  <span class="product-condition-quantity">@Model.Quantity</span>
+                </p>
+                <p>
+                  Tình trạng:
+                  <span class="product-condition-text">New</span>
+                </p>
+              </div>
+              <div class="product-price-area">
+                <p class="product-price-new">
+                  @CurrencyFormatterHelper.Format(@Model.HasDiscount ? @Model.PromotionPrice ?? 0 : @Model.Price)<sup>đ</sup>
+                </p>
+                @if (@Model.HasDiscount)
+                {
+                  <p class="product-price-old">
+                    @CurrencyFormatterHelper.Format(@Model.Price)<sup>đ</sup>
+                  </p>
+                }
+              </div>
+              <div class="product-desc-text">
+                @Html.Raw(@Model.Description)
+              </div>
+              <div class="product-select-quantity">
+                <span>Số lượng</span>
+                <input type="number" value="1" min="1" name="productQuantity" id="numberProduct">
+              </div>
+              <div class="product-controls">
+                <button class="buy-product-btn btn btn-dark">Mua ngay</button>
+                <button class="add-product-cart-btn btn btn-outline-dark">Thêm vào giỏ hàng</button>
+              </div>
             </div>
+          </div>
 
         </div>
+
+        <!-- Detail info product area -->
+        <div class="row" style="margin-top: 36px; margin-bottom: 48px">
+          <div class="col-12">
+            <div class="detail-info-product-area">
+              <div class="detail-title-area">
+                <h3 class="detail-title-text">Chi tiết sản phẩm</h3>
+              </div>
+
+              <div class="detail-content-product">
+                @Html.Raw(@Model.Details)
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Product same area-->
+        <div class="row" style="margin-bottom: 48px;">
+          <div class="col-12">
+            <div class="product-list-area">
+              <div class="left-title-area">
+                <h3 class="left-title">Sản phẩm cùng danh mục</h3>
+              </div>
+
+              <div class="row">
+                <!-- Product Item -->
+                <div class="col-3">
+                  <div class="product-item">
+
+                    <div class="product-img">
+                      <a href="" class="product-link">
+                        <img src="~/images/product_img/iphone16/iphone-16-128gb-black.png" alt="">
+                      </a>
+                    </div>
+
+                    <div class="product-info">
+                      <div class="rating-box">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                      </div>
+
+                      <a href="" class="product-name">Apple macbook air</a>
+                      <div class="product-price">
+                        18.699.000<sup>đ</sup>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="col-3">
+                  <div class="product-item">
+
+                    <div class="product-img">
+                      <a href="" class="product-link">
+                        <img src="~/images/product_img/iphone16/iphone-16-128gb-black.png" alt="">
+                      </a>
+                    </div>
+
+                    <div class="product-info">
+                      <div class="rating-box">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                      </div>
+
+                      <a href="" class="product-name">Apple macbook air</a>
+                      <div class="product-price">
+                        18.699.000<sup>đ</sup>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="col-3">
+                  <div class="product-item">
+
+                    <div class="product-img">
+                      <a href="" class="product-link">
+                        <img src="~/images/product_img/iphone16/iphone-16-128gb-black.png" alt="">
+                      </a>
+                    </div>
+
+                    <div class="product-info">
+                      <div class="rating-box">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                      </div>
+
+                      <a href="" class="product-name">Apple macbook air</a>
+                      <div class="product-price">
+                        18.699.000<sup>đ</sup>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="col-3">
+                  <div class="product-item">
+
+                    <div class="product-img">
+                      <a href="" class="product-link">
+                        <img src="~/images/product_img/iphone16/iphone-16-128gb-black.png" alt="">
+                      </a>
+                    </div>
+
+                    <div class="product-info">
+                      <div class="rating-box">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                      </div>
+
+                      <a href="" class="product-name">Apple macbook air</a>
+                      <div class="product-price">
+                        18.699.000<sup>đ</sup>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Product sidebar right -->
+      <div class="col-3">
+        <!-- Product new sidebar right -->
+        <div class="product-right-sidebar-wrap">
+          <!-- Sidebar title -->
+          <div class="single-right-sidebar">
+            <div class="left-title-area">
+              <h3 class="left-title">Sản phẩm vừa nhập về</h3>
+            </div>
+          </div>
+
+          <!-- List products new  -->
+          <div class="list-product-sidebar-right">
+            <div class="single-product-item">
+              <div class="sidebar-product-img">
+                <a href="#" class="sidebar-product-link">
+                  <img src="~/images/product_img/sidebar/airpods-2-sac-lightning.png" alt="">
+                </a>
+              </div>
+
+              <div class="sidebar-product-desc">
+                <a href="" class="sidebar-product-name">AirPods 2 sạc Lightning</a>
+                <div class="customer-comment-box">
+                  <div class="rating-box">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                  </div>
+                </div>
+
+                <div class="price-box">
+                  <span class="new-price">3.590.000<sup>đ</sup> </span>
+                  <span class="old-price">3.900.000<sup>đ</sup> </span>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="single-product-item">
+
+              <div class="sidebar-product-img">
+                <a href="#" class="sidebar-product-link">
+                  <img src="~/images/product_img/sidebar/airpods-pro-(2nd-gen)-usb-c.png" alt="">
+                </a>
+              </div>
+
+              <div class="sidebar-product-desc">
+                <a href="" class="sidebar-product-name">AirPods 2 sạc Lightning</a>
+                <div class="customer-comment-box">
+                  <div class="rating-box">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                  </div>
+                </div>
+
+                <div class="price-box">
+                  <span class="new-price">3.590.000<sup>đ</sup> </span>
+                  <span class="old-price">3.900.000<sup>đ</sup> </span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="single-product-item">
+
+              <div class="sidebar-product-img">
+                <a href="#" class="sidebar-product-link">
+                  <img src="~/images/product_img/sidebar/airpods-pro-(2nd-gen)-usb-c.png" alt="">
+                </a>
+              </div>
+
+              <div class="sidebar-product-desc">
+                <a href="" class="sidebar-product-name">AirPods 2 sạc Lightning</a>
+                <div class="customer-comment-box">
+                  <div class="rating-box">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                  </div>
+                </div>
+
+                <div class="price-box">
+                  <span class="new-price">3.590.000<sup>đ</sup> </span>
+                  <span class="old-price">3.900.000<sup>đ</sup> </span>
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="single-product-item">
+
+              <div class="sidebar-product-img">
+                <a href="#" class="sidebar-product-link">
+                  <img src="~/images/product_img/sidebar/airpods-pro-(2nd-gen)-usb-c.png" alt="">
+                </a>
+              </div>
+
+              <div class="sidebar-product-desc">
+                <a href="" class="sidebar-product-name">AirPods 2 sạc Lightning</a>
+                <div class="customer-comment-box">
+                  <div class="rating-box">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                  </div>
+                </div>
+
+                <div class="price-box">
+                  <span class="new-price">3.590.000<sup>đ</sup> </span>
+                  <span class="old-price">3.900.000<sup>đ</sup> </span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Product same area -->
+        <div class="product-right-sidebar-wrap">
+          <!-- Sidebar title -->
+          <div class="single-right-sidebar">
+            <div class="left-title-area">
+              <h3 class="left-title">Sản phẩm tương tự</h3>
+            </div>
+          </div>
+
+          <!-- List products new  -->
+          <div class="list-product-sidebar-right">
+            <div class="single-product-item">
+              <div class="sidebar-product-img">
+                <a href="#" class="sidebar-product-link">
+                  <img src="~/images/product_img/iphone16/iphone-16-plus-256gb-green.png" alt="">
+                </a>
+              </div>
+
+              <div class="sidebar-product-desc">
+                <a href="" class="sidebar-product-name">iphone 16 plus 256gb green</a>
+                <div class="customer-comment-box">
+                  <div class="rating-box">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                  </div>
+                </div>
+
+                <div class="price-box">
+                  <span class="new-price">32.350.000<sup>đ</sup> </span>
+                  <span class="old-price">33.200.000<sup>đ</sup> </span>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="single-product-item">
+              <div class="sidebar-product-img">
+                <a href="#" class="sidebar-product-link">
+                  <img src="~/images/product_img/iphone16/iphone-16-plus-256gb-green.png" alt="">
+                </a>
+              </div>
+
+              <div class="sidebar-product-desc">
+                <a href="" class="sidebar-product-name">iphone 16 plus 256gb green</a>
+                <div class="customer-comment-box">
+                  <div class="rating-box">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                  </div>
+                </div>
+
+                <div class="price-box">
+                  <span class="new-price">32.350.000<sup>đ</sup> </span>
+                  <span class="old-price">33.200.000<sup>đ</sup> </span>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="single-product-item">
+              <div class="sidebar-product-img">
+                <a href="#" class="sidebar-product-link">
+                  <img src="~/images/product_img/iphone16/iphone-16-plus-256gb-green.png" alt="">
+                </a>
+              </div>
+
+              <div class="sidebar-product-desc">
+                <a href="" class="sidebar-product-name">iphone 16 plus 256gb green</a>
+                <div class="customer-comment-box">
+                  <div class="rating-box">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                  </div>
+                </div>
+
+                <div class="price-box">
+                  <span class="new-price">32.350.000<sup>đ</sup> </span>
+                  <span class="old-price">33.200.000<sup>đ</sup> </span>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="single-product-item">
+              <div class="sidebar-product-img">
+                <a href="#" class="sidebar-product-link">
+                  <img src="~/images/product_img/iphone16/iphone-16-plus-256gb-green.png" alt="">
+                </a>
+              </div>
+
+              <div class="sidebar-product-desc">
+                <a href="" class="sidebar-product-name">iphone 16 plus 256gb green</a>
+                <div class="customer-comment-box">
+                  <div class="rating-box">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                  </div>
+                </div>
+
+                <div class="price-box">
+                  <span class="new-price">32.350.000<sup>đ</sup> </span>
+                  <span class="old-price">33.200.000<sup>đ</sup> </span>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Product best seller  -->
+        <div class="product-right-sidebar-wrap">
+          <!-- Sidebar title -->
+          <div class="single-right-sidebar">
+            <div class="left-title-area">
+              <h3 class="left-title">Sản phẩm bán chạy</h3>
+            </div>
+          </div>
+
+          <!-- List products best seller  -->
+          <div class="list-product-sidebar-right">
+            <div class="single-product-item">
+              <div class="sidebar-product-img">
+                <a href="#" class="sidebar-product-link">
+                  <img src="~/images/product_img/iphone16/iphone-16-plus-256gb-green.png" alt="">
+                </a>
+              </div>
+
+              <div class="sidebar-product-desc">
+                <a href="" class="sidebar-product-name">iphone 16 plus 256gb green</a>
+                <div class="customer-comment-box">
+                  <div class="rating-box" style="display: none;">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                  </div>
+                </div>
+
+                <div class="price-box">
+                  <span class="new-price">32.350.000<sup>đ</sup> </span>
+                  <span class="old-price">33.200.000<sup>đ</sup> </span>
+
+                  <div class="sold-quantity">
+                    Đã bán: <span class="sold-number">12</span>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="single-product-item">
+              <div class="sidebar-product-img">
+                <a href="#" class="sidebar-product-link">
+                  <img src="~/images/product_img/iphone16/iphone-16-plus-256gb-green.png" alt="">
+                </a>
+              </div>
+
+              <div class="sidebar-product-desc">
+                <a href="" class="sidebar-product-name">iphone 16 plus 256gb green</a>
+                <div class="customer-comment-box">
+                  <div class="rating-box" style="display: none;">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                  </div>
+                </div>
+
+                <div class="price-box">
+                  <span class="new-price">32.350.000<sup>đ</sup> </span>
+                  <span class="old-price">33.200.000<sup>đ</sup> </span>
+
+                  <div class="sold-quantity">
+                    Đã bán: <span class="sold-number">12</span>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="single-product-item">
+              <div class="sidebar-product-img">
+                <a href="#" class="sidebar-product-link">
+                  <img src="~/images/product_img/iphone16/iphone-16-plus-256gb-green.png" alt="">
+                </a>
+              </div>
+
+              <div class="sidebar-product-desc">
+                <a href="" class="sidebar-product-name">iphone 16 plus 256gb green</a>
+                <div class="customer-comment-box">
+                  <div class="rating-box" style="display: none;">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                  </div>
+                </div>
+
+                <div class="price-box">
+                  <span class="new-price">32.350.000<sup>đ</sup> </span>
+                  <span class="old-price">33.200.000<sup>đ</sup> </span>
+
+                  <div class="sold-quantity">
+                    Đã bán: <span class="sold-number">12</span>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="single-product-item">
+              <div class="sidebar-product-img">
+                <a href="#" class="sidebar-product-link">
+                  <img src="~/images/product_img/iphone16/iphone-16-plus-256gb-green.png" alt="">
+                </a>
+              </div>
+
+              <div class="sidebar-product-desc">
+                <a href="" class="sidebar-product-name">iphone 16 plus 256gb green</a>
+                <div class="customer-comment-box">
+                  <div class="rating-box" style="display: none;">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                  </div>
+                </div>
+
+                <div class="price-box">
+                  <span class="new-price">32.350.000<sup>đ</sup> </span>
+                  <span class="old-price">33.200.000<sup>đ</sup> </span>
+
+                  <div class="sold-quantity">
+                    Đã bán: <span class="sold-number">12</span>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="single-product-item">
+              <div class="sidebar-product-img">
+                <a href="#" class="sidebar-product-link">
+                  <img src="~/images/product_img/iphone16/iphone-16-plus-256gb-green.png" alt="">
+                </a>
+              </div>
+
+              <div class="sidebar-product-desc">
+                <a href="" class="sidebar-product-name">iphone 16 plus 256gb green</a>
+                <div class="customer-comment-box">
+                  <div class="rating-box" style="display: none;">
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i>
+                  </div>
+                </div>
+
+                <div class="price-box">
+                  <span class="new-price">32.350.000<sup>đ</sup> </span>
+                  <span class="old-price">33.200.000<sup>đ</sup> </span>
+
+                  <div class="sold-quantity">
+                    Đã bán: <span class="sold-number">12</span>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+        <div class="product-right-sidebar-wrap">
+          <!-- Sidebar title -->
+          <div class="single-right-sidebar">
+            <div class="left-title-area">
+              <h3 class="left-title">Tìm kiếm nhiều nhất</h3>
+            </div>
+          </div>
+
+          <!-- List products search most  -->
+          <div class="row">
+            <div class="col-6">
+              <ul class="list-product-most-search">
+                <li>
+                  <a href="" class="link-product-most-search">m3 max</a>
+                </li>
+
+                <li>
+                  <a href="" class="link-product-most-search">iphone 16 pro</a>
+                </li>
+
+                <li>
+                  <a href="" class="link-product-most-search">test</a>
+                </li>
+
+                <li>
+                  <a href="" class="link-product-most-search">watch</a>
+                </li>
+
+                <li>
+                  <a href="" class="link-product-most-search">airpods 2 pro</a>
+                </li>
+
+              </ul>
+            </div>
+
+            <div class="col-6">
+              <ul class="list-product-most-search">
+                <li>
+                  <a href="" class="link-product-most-search">airpods 2</a>
+                </li>
+
+                <li>
+                  <a href="" class="link-product-most-search">airpods 3</a>
+                </li>
+
+                <li>
+                  <a href="" class="link-product-most-search">laptop</a>
+                </li>
+
+                <li>
+                  <a href="" class="link-product-most-search">airpods2</a>
+                </li>
+
+                <li>
+                  <a href="" class="link-product-most-search">macbook pro 16</a>
+                </li>
+
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <!-- Modal view large product -->
@@ -758,20 +751,20 @@
   <div class="modal-view-area">
     <div class="modal-view-carousel owl-carousel owl-theme">
       <div class="modal-view-item">
-        <img src="~/images/product_img/iphone16/iphone-16-128gb-black.png" alt="">
+        <img src="/@Model.ImageMainPath" alt="">
       </div>
 
       <div class="modal-view-item">
-        <img src="~/images/product_img/iphone16/iphone16-plus-detail.png" alt="">
+        <img src="/@Model.ImageSub1Path" alt="">
       </div>
 
       <div class="modal-view-item">
-        <img src="~/images/product_img/iphone16/iphone-16-plus-trang-6-638639096614550816-750x500.jpg" alt="">
+        <img src="/@Model.ImageSub2Path" alt="">
       </div>
 
-          
+
       <div class="modal-view-item">
-        <img src="~/images/product_img/iphone16/iphone-16-plus-trang-9-638639096632418014-750x500.jpg" alt="">
+        <img src="/@Model.ImageSub3Path" alt="">
       </div>
 
     </div>

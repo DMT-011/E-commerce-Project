@@ -12,7 +12,7 @@
 <div class="page-inner page-inner-custom">
     <!-- Breadcrumbs -->
     <div class="page-header">
-        @await Html.PartialAsync("PartialViews/Admin/_BreadScrumSection")
+        @await Html.PartialAsync("PartialViews/Admin/_BreadCrumbSection")
     </div>
 
     <div class="control-admin">
@@ -37,5 +37,43 @@
 
 @section Scripts
 {
+    <script>
+        const nextPagination = document.querySelector(".pagination-next");
+        const prevPagination = document.querySelector(".pagination-prev");
+
+        // Handle block btn prev when pageNumber < 0
+        if (@Model.PageNumber - 1 <= 0) {
+            prevPagination.addEventListener("click", e =>  e.preventDefault());
+        }
+
+        // Handle block btn next when pageNumber > total page
+        if (@Model.PageNumber + 1 > @Model.PageCount) {
+            nextPagination.addEventListener("click", e => e.preventDefault());
+        }
+
+        const firstPagination = document.querySelector(".pagination-first");
+        const lastPagination = document.querySelector(".pagination-last");
+
+        // Block behavior to first page if current first page
+        if (@Model.PageNumber == 1) {
+            firstPagination.addEventListener("click", e => e.preventDefault());
+        }
+
+        // Same ( last page)
+        if (@Model.PageNumber == @Model.PageCount) {
+            lastPagination.addEventListener("click", e => e.preventDefault());
+        }
+        
+        const paginationItem = document.querySelectorAll(".pagination-item");
+        
+        // When click item has class active , block behavior resend request
+        paginationItem.forEach(item => {
+            if (item.classList.contains("active")) {
+                const paginationLink = item.querySelector(".pagination-link");
+                paginationLink.addEventListener("click", e => e.preventDefault());
+            }
+        })
+
+    </script>
     @await RenderSectionAsync("ScriptsViewChild", false)
 }

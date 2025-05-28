@@ -2,57 +2,59 @@
 @model IEnumerable<E_commerce_Project.Models.ViewModels.ProductViewModel.ProductNewListViewModel>;
 
 <!-- New product list -->
-<div class="new-product-area">
-    <div class="left-title-area">
-        <h3 class="left-title">Sản phẩm mới</h3>
+@if (Model.Count() > 0)
+{
+    <div class="new-product-area">
+        <div class="left-title-area">
+            <h3 class="left-title">Sản phẩm mới</h3>
 
-        <div class="product-carousel-nav">
-            <div class="product-prev-btn">
-                <i class="bi bi-arrow-left-square-fill product-next-icon"></i>
-            </div>
+            <div class="product-carousel-nav">
+                <div class="product-prev-btn">
+                    <i class="bi bi-arrow-left-square-fill product-next-icon"></i>
+                </div>
 
-            <div class="product-next-btn">
-                <i class="bi bi-arrow-right-square-fill product-next-icon"></i>
-            </div>
-        </div>
-    </div>
-
-    <div class="row no-wrap product-carousel product-max-4">
-        <!-- Product item -->
-        @foreach (var item in Model)
-        {
-            <div class="col-3">
-                <div class="product-item">
-
-                    <div class="product-label">New</div>
-
-                    <div class="product-img">
-                        <a href="" class="product-link">
-                            <img
-                                src="~/@item.ImagePath"
-                                alt="">
-                        </a>
-                    </div>
-
-                    <div class="product-info">
-                        <div class="rating-box">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                        </div>
-
-                        <a href="" class="product-name">@item.Name</a>
-                        <div class="product-price">
-                            <sup>đ</sup>
-                        </div>
-                    </div>
-
+                <div class="product-next-btn">
+                    <i class="bi bi-arrow-right-square-fill product-next-icon"></i>
                 </div>
             </div>
-        }
+        </div>
+
+        <div class="row no-wrap product-carousel product-max-4">
+            <!-- Product item -->
+            @foreach (var item in Model)
+            {
+                <div class="col-3">
+                    <div class="product-item">
+
+                        <div class="product-label">New</div>
+
+                        <div class="product-img">
+                            <a href="/Product?slug=@item.Slug" class="product-link">
+                                <img
+                                    src="~/@item.ImagePath"
+                                    alt="">
+                            </a>
+                        </div>
+
+                        <div class="product-info">
+                            <div class="rating-box">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+
+                            <a href="" class="product-name">@item.Name</a>
+                            <div class="product-price">
+                                @CurrencyFormatterHelper.Format(@item.HasDiscount ? @item.PromotionPrice ?? 0 : @item.Price)<sup>đ</sup>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            }
+        </div>
+
     </div>
-
-</div>
-
+}

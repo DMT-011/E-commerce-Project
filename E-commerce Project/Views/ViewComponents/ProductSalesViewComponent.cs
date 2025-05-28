@@ -28,8 +28,8 @@ public class ProductSalesViewComponent : ViewComponent
             .Take(3).Select(item => new ProductSalesViewModel
             {
                 Name = item.Name,
-                Price = item.Price.ToString(),
-                PromotionPrice = item.PromotionPrice.ToString(),
+                Price = item.Price,
+                PromotionPrice = item.PromotionPrice ?? 0,
                 Slug = item.Slug,
                 ImagePath = _productImageService.GetImageMainProductById(item.Id)  ,
             }).ToListAsync();

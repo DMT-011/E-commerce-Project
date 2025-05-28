@@ -1,10 +1,11 @@
-﻿@model E_commerce_Project.Models.ViewModels.ProductViewModel.ProductItemViewModel;
+﻿@using E_commerce_Project.Helpers
+@model E_commerce_Project.Models.ViewModels.ProductViewModel.ProductItemViewModel;
 
 <div class="product-item">
     <div class="product-label">New</div>
 
     <div class="product-img">
-        <a href="@Model.Slug" class="product-link">
+        <a href="/Product?slug=@Model.Slug" class="product-link">
             <img
                 src="~/@Model.ImagePath"
                 alt="">
@@ -20,9 +21,9 @@
             <i class="bi bi-star-fill"></i>
         </div>
 
-        <a href="@Model.Slug" class="product-name">@Model.Name</a>
+        <a href="/Product/@Model.Slug" class="product-name">@Model.Name</a>
         <div class="product-price">
-            @Model.Price<sup>đ</sup>
+            @CurrencyFormatterHelper.Format(@Model.HasDiscount ? @Model.PromotionPrice ?? 0 : @Model.Price )<sup>đ</sup>
         </div>
     </div>
 

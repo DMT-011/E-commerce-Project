@@ -5,6 +5,8 @@
   Layout = "_LayoutAdminTable";
   ViewBag.titleView = "Sản phẩm";
   ViewBag.featureCurrent = "Danh sách sản phẩm";
+  // Action for pagination section
+  ViewBag.action = "Product";
 }
 
 @section StylesViewChild
@@ -26,128 +28,106 @@
   </a>
 }
 
-<table class="table align-middle table-product-list">
-  <thead>
-  <tr>
-    <th scope="col">ID</th>
-    <th scope="col">Hình ảnh</th>
-    <th scope="col">Tên sản phẩm</th>
-    <th scope="col">Số lượng</th>
-    <th scope="col">Thao tác</th>
-  </tr>
-  </thead>
-
-  <tbody class="table-group-divider">
-  @foreach (var item in Model)
-  {
-    <tr class="product-item">
-      <th scope="row">
-        <i
-          class="fas fa-angle-right icon-product-right"
-          style="opacity: 0.9"
-        ></i>
-        <i
-          class="fas fa-angle-down icon-product-down hidden-icon-product"
-          style="opacity: 0.9"
-        ></i>
-        <span class="id-product" style="margin-left: 2px"
-        >@item.Id</span
-        >
-      </th>
-      <td>
-        <img
-          src="~/@item.ImagePath"
-          class="product-img"
-          alt=""
-        />
-      </td>
-      <td>
-        <a href="#" class="product-detail-link"
-        >@item.Name</a
-        >
-      </td>
-      <td>@item.Quantity</td>
-      <td class="product-controls">
-        <a
-          href="/Product/Update/@item.Id"
-          class="btn btn-black"
-          data-bs-toggle="tooltip"
-          data-bs-placement="top"
-          data-bs-title="Chỉnh sửa"
-        >
-          <i class="far fa-edit"></i>
-        </a>
-
-        <button
-          class="btn btn-danger"
-          data-bs-toggle="modal"
-          data-bs-target="#modal-confirm-delete"
-          data-product-id="@item.Id"
-          data-product-name="@item.Name"
-        >
-          <i class="fas fa-trash-alt"></i>
-        </button>
-      </td>
-
-      <td class="content-hidden" style="display: none">
-        @item.CategoryName
-      </td>
-      <td class="content-hidden" style="display: none">
-        @item.CreatedDate
-      </td>
-      <td class="content-hidden" style="display: none">
-        @CurrencyFormatterHelper.Format(@item.PromotionPrice ?? 0)
-      </td>
-      <td class="content-hidden" style="display: none">
-        @CurrencyFormatterHelper.Format(@item.Price)
-      </td>
-    </tr>
-  }
-  <tr style="display: none"></tr>
-  </tbody>
-</table>
-
-@section Pagination
+@if (Model.Count > 0)
 {
-  <nav class="pagination">
-    <ul class="pagination-list">
-      <li class="pagination-item">
-        <a href="#" class="pagination-link">
-          <i class="fas fa-angle-double-left pagination-icon"></i>
-        </a>
-      </li>
+  <table class="table align-middle table-product-list">
+    <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Hình ảnh</th>
+      <th scope="col">Tên sản phẩm</th>
+      <th scope="col">Số lượng</th>
+      <th scope="col">Thao tác</th>
+    </tr>
+    </thead>
 
-      <li class="pagination-item">
-        <a href="@Url.Action("Product", new { page = Model.PageNumber - 1})" class="pagination-link">
-          <i class="fas fa-angle-left pagination-icon"></i>
-        </a>
-      </li>
+    <tbody class="table-group-divider">
+    @foreach (var item in Model)
+    {
+      <tr class="product-item">
+        <th scope="row">
+          <i
+            class="fas fa-angle-right icon-product-right"
+            style="opacity: 0.9"
+          ></i>
+          <i
+            class="fas fa-angle-down icon-product-down hidden-icon-product"
+            style="opacity: 0.9"
+          ></i>
+          <span class="id-product" style="margin-left: 2px"
+          >@item.Id</span
+          >
+        </th>
+        <td>
+          <img
+            src="~/@item.ImagePath"
+            class="product-img"
+            alt=""
+          />
+        </td>
+        <td>
+          <a href="#" class="product-detail-link"
+          >@item.Name</a
+          >
+        </td>
+        <td>@item.Quantity</td>
+        <td class="product-controls">
+          <a
+            href="/Product/Update/@item.Id"
+            class="btn btn-black"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            data-bs-title="Chỉnh sửa"
+          >
+            <i class="far fa-edit"></i>
+          </a>
 
-      @* <li class="pagination-item active"> *@
-      @*   <a href="" class="pagination-link">1</a> *@
-      @* </li> *@
+          <button
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#modal-confirm-delete"
+            data-product-id="@item.Id"
+            data-product-name="@item.Name"
+          >
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
 
-      @for (int i = 1; i <= Model.PageCount; i++)
-      {
-        <li class="pagination-item @(i == Model.PageNumber ? "active" : "") ">
-          <a class="pagination-link" href="@Url.Action("Product", new { page = i })">@i</a>
-        </li>
-      }
+        <td class="content-hidden" style="display: none">
+          @item.CategoryName
+        </td>
+        <td class="content-hidden" style="display: none">
+          @item.CreatedDate
+        </td>
+        <td class="content-hidden" style="display: none">
+          @CurrencyFormatterHelper.Format(@item.PromotionPrice ?? 0)
+        </td>
+        <td class="content-hidden" style="display: none">
+          @CurrencyFormatterHelper.Format(@item.Price)
+        </td>
+      </tr>
+    }
+    <tr style="display: none"></tr>
+    </tbody>
+  </table>
 
-      <li class="pagination-item">
-        <a href="@Url.Action("Product", new { page = Model.PageNumber + 1})" class="pagination-link">
-          <i class="fas fa-angle-right pagination-icon"></i>
-        </a>
-      </li>
+  @section Pagination
+  {
+    @await Html.PartialAsync("PartialViews/Admin/_PaginationSection", Model)
+  }
 
-      <li class="pagination-item">
-        <a href="" class="pagination-link">
-          <i class="fas fa-angle-double-right pagination-icon"></i>
-        </a>
-      </li>
-    </ul>
-  </nav>
 }
+
+@if (Model.Count == 0)
+{
+  // Context for empty section
+  ViewBag.contentEmpty = "Danh sách sản phẩm rỗng, thêm mới ";
+  ViewBag.contentLink = "tại đây";
+  ViewBag.actionEmpty = "/Product/Create";
+  ViewBag.imgEmpty = "product-empty.jpg";
+  @await Html.PartialAsync("PartialViews/Admin/_EmptySection")
+}
+
 
 
 
@@ -181,6 +161,8 @@
 
 @section ScriptsViewChild
 {
+  @await Html.PartialAsync("PartialViews/Admin/_NoticeSection");
+
   <script>
     const modalConfirmDelete = document.getElementById('modal-confirm-delete');
     const formDelete = document.querySelector("#form-delete-product");
@@ -236,19 +218,18 @@
                           </div>
                           <div class="detail-product-row">
                             <div class="detail-product-name">Giá khuyển mãi:</div>
-                            <div class="detail-product-value" style="font-weight: 600">${productContent[2].textContent}<sup>đ</sup></div>
+                            <div class="detail-product-value" style="font-weight: 600">${productContent[2].textContent.trim()}<sup>đ</sup></div>
                           </div>
 
                           <div class="detail-product-row">
                             <div class="detail-product-name">Giá:</div>
-                            <div class="detail-product-value" style="font-weight: 600">${productContent[3].textContent}<sup>đ</sup></div>
+                            <div class="detail-product-value" style="font-weight: 600">${productContent[3].textContent.trim()}<sup>đ</sup></div>
                           </div>
 
-                      <div class="detail-product-row">
-                            <div class="detail-product-name">Ngày tạo:</div>
-                            <div class="detail-product-value">${productContent[1].textContent}</div>
-                      </div>
-                         
+                          <div class="detail-product-row">
+                                <div class="detail-product-name">Ngày tạo:</div>
+                                <div class="detail-product-value">${productContent[1].textContent}</div>
+                          </div>
                       </div>
                     </td>
                   </tr>`;
