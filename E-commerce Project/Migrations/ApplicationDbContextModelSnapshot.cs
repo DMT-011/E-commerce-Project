@@ -77,7 +77,7 @@ namespace E_commerce_Project.Migrations
                         .HasColumnType("bit");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,0)");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -86,7 +86,7 @@ namespace E_commerce_Project.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,0)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -98,8 +98,7 @@ namespace E_commerce_Project.Migrations
 
                     b.HasIndex("CartId");
 
-                    b.HasIndex("ProductId")
-                        .IsUnique();
+                    b.HasIndex("ProductId");
 
                     b.ToTable("CartItems");
                 });
@@ -167,7 +166,7 @@ namespace E_commerce_Project.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,0)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -212,13 +211,13 @@ namespace E_commerce_Project.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalOrder")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,0)");
 
                     b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,0)");
 
                     b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,0)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -432,10 +431,6 @@ namespace E_commerce_Project.Migrations
                     b.Property<string>("Avatar")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ConfirmPassword")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -456,9 +451,13 @@ namespace E_commerce_Project.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Password")
+                    b.Property<byte[]>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -504,8 +503,8 @@ namespace E_commerce_Project.Migrations
                         .IsRequired();
 
                     b.HasOne("E_commerce_Project.Models.Entities.Product", "Product")
-                        .WithOne("CartItem")
-                        .HasForeignKey("E_commerce_Project.Models.Entities.CartItem", "ProductId")
+                        .WithMany("CartItem")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -586,8 +585,7 @@ namespace E_commerce_Project.Migrations
 
             modelBuilder.Entity("E_commerce_Project.Models.Entities.Product", b =>
                 {
-                    b.Navigation("CartItem")
-                        .IsRequired();
+                    b.Navigation("CartItem");
 
                     b.Navigation("ProductImages");
                 });

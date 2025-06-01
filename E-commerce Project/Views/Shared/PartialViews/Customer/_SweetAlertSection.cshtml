@@ -1,0 +1,19 @@
+﻿<script>
+    var title = '@Html.Raw(@TempData["title"])';
+    var message = '@Html.Raw(@TempData["message"])';
+    var type = '@Html.Raw(@TempData["type"])';
+    var btnText = '@Html.Raw(@TempData["textBtn"])';
+    if (message) {
+        var option = {
+            title: title,
+            text: message,
+            icon: type,
+            button: {
+                text: btnText,
+                className: `btn-swal-custom btn-swal-custom--${type}`
+            }   
+        }
+        swal(option);
+    }
+</script>
+

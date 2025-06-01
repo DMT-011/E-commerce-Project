@@ -82,15 +82,19 @@ shoppingCartElement.addEventListener("mouseover", function() {
 const btnShowControl = document.querySelector('.user-verified .control-user-name');
 const controlUser = document.querySelector(".user-verified .user-controls-nav");
 
-btnShowControl.onclick = function(e) {
-  e.preventDefault();
-  controlUser.classList.toggle("active");
+if (btnShowControl) {
+  btnShowControl.onclick = function(e) {
+    e.preventDefault();
+    controlUser.classList.toggle("active");
+  }
 }
 
-document.addEventListener("click", function(e) {
-  const isActive = controlUser.classList.contains("active");
+if (controlUser) {
+  document.addEventListener("click", function(e) {
+    const isActive = controlUser.classList.contains("active");
 
-  if (!e.target.closest(".control-user-name") && isActive) {
-    controlUser.classList.remove("active");
-  }
-})
+    if (!e.target.closest(".control-user-name") && isActive) {
+      controlUser.classList.remove("active");
+    }
+  })
+}

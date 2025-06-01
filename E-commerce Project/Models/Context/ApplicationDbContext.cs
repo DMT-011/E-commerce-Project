@@ -57,7 +57,7 @@ public class ApplicationDbContext : DbContext
 
     private int? GetCurrentUserId()
     {
-        var userIdStr = _httpContextAccessor.HttpContext?.User?.FindFirst("id")?.Value;
+        var userIdStr = _httpContextAccessor.HttpContext?.User?.FindFirst("userId")?.Value;
         return int.TryParse(userIdStr, out int userId) ? userId : null;
     }
 }

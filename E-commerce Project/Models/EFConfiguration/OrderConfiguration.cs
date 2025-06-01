@@ -12,5 +12,8 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             .WithOne(x => x.Order)
             .HasForeignKey(x => x.OderId)
             .OnDelete(DeleteBehavior.Restrict);
+        
+        builder.Property(x => x.TotalAmount)
+            .HasColumnType("decimal(18,0)");
     }
 }

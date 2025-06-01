@@ -96,6 +96,7 @@
 
 #modal-login .modal-content {
     background-color: transparent !important;
+    border: none !important;
 }
 
 .login-box .modal-close {

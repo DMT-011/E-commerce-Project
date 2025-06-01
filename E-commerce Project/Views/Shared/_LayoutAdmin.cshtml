@@ -73,6 +73,7 @@
 
         <!-- Bootstrap Notify -->
         <script src="~/js/admin/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+        @await Html.PartialAsync("PartialViews/Admin/_NoticeSection")
 
         <!-- jQuery Vector Maps -->
         <script src="~/js/admin/plugin/jsvectormap/jsvectormap.min.js"></script>
@@ -80,7 +81,7 @@
 
         <!-- Sweet Alert -->
         <script src="~/js/admin/plugin/sweetalert/sweetalert.min.js"></script>
-
+        
         <!-- Kaiadmin JS -->
         <script src="~/js/admin/kaiadmin.min.js"></script>
         @RenderSection("Scripts", false)

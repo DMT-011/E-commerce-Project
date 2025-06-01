@@ -1,10 +1,15 @@
 using E_commerce_Project.Models.Context;
 using E_commerce_Project.Models.Entities;
+using E_commerce_Project.Models.Services.AuthService;
+using E_commerce_Project.Models.Services.CartService;
 using E_commerce_Project.Models.Services.CategoryService;
 using E_commerce_Project.Models.Services.FileService;
+using E_commerce_Project.Models.Services.OrderServive;
 using E_commerce_Project.Models.Services.ProductImageService;
 using E_commerce_Project.Models.Services.ProductService;
 using E_commerce_Project.Models.Services.SliderService;
+using E_commerce_Project.Models.Services.UserService;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,16 +21,53 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+// Add authentication service
+builder.Services.AddAuthentication("CookieAuthCustomer")
+    .AddCookie("CookieAuthCustomer", options =>
+    {
+        options.LoginPath = "/User/Login";
+        options.AccessDeniedPath = "/User/AccessDenied";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+        options.SlidingExpiration = true;
+        options.Events = new CookieAuthenticationEvents
+        {
+            OnRedirectToLogin = context =>
+            {
+                if (context.Request.Path.StartsWithSegments("/api") || 
+                    context.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+                {
+                    context.Response.StatusCode = 401;
+                }
+                else
+                {
+                    context.Response.Redirect(context.RedirectUri);
+                }
+                return Task.CompletedTask;
+            }
+        };
+    });
+
+
 // Add service handle logic business
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductImageService, ProductImageService>();
 builder.Services.AddScoped<ISliderService, SliderService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthSerivce>();
+builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+app.UseAuthorization();
+app.UseAuthentication();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

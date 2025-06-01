@@ -1,0 +1,125 @@
+﻿@using E_commerce_Project.Helpers
+@model IEnumerable<E_commerce_Project.Models.ViewModels.OrderViewModel.OrderDetailViewModel>;
+
+@{
+  // Breadcrumb place
+  ViewBag.currentPlace = "Chi tiết đơn hàng";
+}
+
+@section Styles
+{
+  <link rel="stylesheet" href="~/css/product/detailOrder.css" asp-append-version="true">
+}
+
+<!-- Infomation order && methods payment area -->
+<div class="main-content" style="margin-top: 0">
+  <div class="container">
+    <!-- Breadcrumb area -->
+    <div class="row">
+      <div class="col-12">
+        @await Html.PartialAsync("PartialViews/Customer/_BreadCrumbSection")
+      </div>
+    </div>
+  </div>
+
+  <div class="container" style="margin-top: 10px">
+    @if (Model.Count() > 0)
+    {
+      <div class="row gx-5">
+        @foreach (var order in Model)
+        {
+          <!-- Infomation order product area -->
+          <div class="col-6 order-info-detail order-separate">
+            <h3 class="title-text-order">THÔNG TIN ĐƠN HÀNG</h3>
+
+            <div class="infor-order-area">
+              @foreach (var orderItem in order.OrderItems)
+              {
+                @await Html.PartialAsync("PartialViews/Customer/_OrderItem", orderItem)
+              }
+
+              <div class="order-total-area">
+                <div class="order-total">
+                  <span style="font-weight: 600">Tổng đơn hàng: </span>
+                  <span
+                    style="color: red; font-weight: 500">@CurrencyFormatterHelper.Format(@order.TotalOrderPrice)<sup>đ</sup></span>
+                </div>
+                <div class="order-date">
+                  <span style="font-weight: 600">Ngày đặt hàng:</span> <span>@order.OrderDate</span>
+                </div>
+
+                <div class="order-status">
+                  <span style="font-weight: 600">Trạng thái:</span> <span
+                    style="color: #2f8bff">@order.OrderStatus</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 order-info-detail order-separate">
+            <h3 class="title-text-order">THÔNG TIN KHÁCH HÀNG</h3>
+
+            <div class="infor-order-area">
+              <div class="order-item">
+                <span>Họ tên</span>
+                <span class="user-name-order">@order.OrderUserItem.Name</span>
+              </div>
+
+              <div class="order-item">
+                <span>Số điện thoại</span>
+                <span class="user-phone-order">@order.OrderUserItem.Phone</span>
+              </div>
+
+              <div class="order-item">
+                <span>Địa chỉ</span>
+                <span class="user-address-order">@order.OrderUserItem.Address</span>
+              </div>
+
+
+              <div class="order-item">
+                <span>Email</span>
+                <span style="text-transform: lowercase;" class="user-email-order">@order.OrderUserItem.Email</span>
+              </div>
+
+            </div>
+          </div>
+        }
+        <!--End: Infomation order product area -->
+        <div class="col-12">
+          <div class="return-continute-shop" style="margin-bottom: 52px; margin-top: 24px;">
+            <div class="return-home-btn">
+              <a href="/">
+                <i class="bi bi-arrow-left-circle-fill"></i>
+                Tiếp tục mua hàng
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    }
+    else
+    {
+      <div class="order-wrapper-empty">
+        <img src="/images/empty/empty-order.jpg"  alt="">
+        <div class="empty-order-desc">
+          <p>Hóa đơn hiện tại trống</p>
+        </div>
+      </div>
+      
+      <div class="col-12">
+        <div class="return-continute-shop" style="margin-bottom: 52px; margin-top: 24px;">
+          <div class="return-home-btn">
+            <a href="/">
+              <i class="bi bi-arrow-left-circle-fill"></i>
+              Quay lại trang chủ
+            </a>
+          </div>
+        </div>
+
+      </div>
+      
+    }
+  </div>
+
+</div>
+  

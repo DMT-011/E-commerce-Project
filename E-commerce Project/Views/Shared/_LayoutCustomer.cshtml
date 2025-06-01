@@ -8,13 +8,16 @@
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500&display=swap"
+        rel="stylesheet">
     <!-- Boostrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Css style -->
-    <link rel="stylesheet" href="~/css/main/base.css">
+    <link rel="stylesheet" href="~/css/main/base.css" asp-append-version="true">
     <link rel="stylesheet" href="~/css/main/main.css" asp-append-version="true">
     <link rel="stylesheet" href="~/css/user/login.css" asp-append-version="true">
     <link rel="stylesheet" href="~/css/user/register.css" asp-append-version="true">
@@ -30,7 +33,7 @@
     @* <link rel="shortcut icon" href="assets/img/favicon/apple-favicon.png" type="image/x-icon"> *@
     <title>Apple Store</title>
     <!--Jquery import -->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
     <body>
         <div id="app">
@@ -48,39 +51,169 @@
             @await Html.PartialAsync("PartialViews/Customer/_CopyrightSection")
         </div>
 
+
         <!-- Modal login and Register  -->
-        @await Html.PartialAsync("PartialViews/Customer/_LoginModalSection")
-        @await Html.PartialAsync("PartialViews/Customer/_RegisterModalSection")
-         <!-- Script  -->
+        @await Component.InvokeAsync("UserLogin")
+        @await Component.InvokeAsync("UserRegister")
+
+        <!-- Script  -->
         <script src="~/js/lib/jquery.nivo.slider.js"></script>
         <script src="~/js/lib/owl.carousel.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+                integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+                crossorigin="anonymous"></script>
+        <!-- Sweet Alert -->
+        <script src="~/js/admin/plugin/sweetalert/sweetalert.min.js"></script>
+        @await Html.PartialAsync("PartialViews/Customer/_SweetAlertSection")
+        <!-- Js main -->
         <script src="~/js/main/main.js" asp-append-version="true"></script>
+        <!-- Modal login and register show -->
         <script asp-append-version="true">
-             const btnLinkRegister = document.querySelector(".login-box .btn-move-register");
-             const btnLinkLogin = document.querySelector(".register-box .btn-move-login");
-             const loginModal = document.querySelector("#modal-login");
-             const registerModal = document.querySelector("#modal-register");
-             
-             if (loginModal) {
-                 btnLinkRegister.onclick = function (e) {
-                     e.preventDefault();
-                     // Show register model from login modal
-                     let modalRegisterInstance = new bootstrap.Modal(registerModal);
-                     modalRegisterInstance.show();
-                 }
-             }
+            const btnLinkRegister = document.querySelector(".login-box .btn-move-register");
+            const btnLinkLogin = document.querySelector(".register-box .btn-move-login");
+            const loginModal = document.querySelector("#modal-login");
+            const registerModal = document.querySelector("#modal-register");
 
-             if (registerModal) {
-                 btnLinkLogin.onclick = function (e) {
-                     e.preventDefault();
-                     // Show register model from login modal
-                     let modalLoginInstance = new bootstrap.Modal(loginModal);
-                     modalLoginInstance.show();
-                 }
-             }
-             
-         </script>
+            if (loginModal) {
+                btnLinkRegister.onclick = function (e) {
+                    e.preventDefault();
+                    // Show register model from login modal
+                    let modalRegisterInstance = new bootstrap.Modal(registerModal);
+                    modalRegisterInstance.show();
+                }
+            }
+
+            if (registerModal) {
+                btnLinkLogin.onclick = function (e) {
+                    e.preventDefault();
+                    // Show register model from login modal
+                    let modalLoginInstance = new bootstrap.Modal(loginModal);
+                    modalLoginInstance.show();
+                }
+            }
+            
+            // Handle Ajax cart when user not login
+            var btnCart = document.querySelector(".shopping-cart .btn-cart");
+            btnCart.addEventListener("click", async () => {
+                const res = await fetch("/User/Cart", {
+                    headers: { "X-Requested-With": "XMLHttpRequest" }
+                });
+                
+                if (res.status == 401) {
+                    var options = {
+                        title: "Yêu cầu đăng nhập",
+                        text: "Ôi bạn ơi đăng nhập mới vào được giỏ hàng",
+                        icon: "error",
+                        button: {
+                            text: "Xác nhận",
+                            className: `btn-swal-custom btn-swal-custom--error`
+                        }
+                    }
+                    
+                    swal(options)
+                        .then(value => {
+                            if (value) {
+                                let modalLoginInstance = new bootstrap.Modal(loginModal);
+                                modalLoginInstance.show();
+                            }
+                        });
+                } 
+                
+                if (res.status == 200) {
+                    var cartId = "@(User.FindFirst("cartId")?.Value ?? "")";
+                    if (cartId) {
+                        document.location = `/User/Cart?cartId=${cartId}`;
+                    }
+                }
+            });
+        </script>
+        <!-- Render cart ajax from header -->
+        <script>
+            function renderCartItems() {
+                var cartId = '@(User.FindFirst("cartId")?.Value ?? "")';
+                const cart = document.querySelector(".shopping-cart .cart-product-list");
+                const cartQuantity = document.querySelector(".shopping-cart .cart-quantity");
+                
+                fetch(`/Cart/GetAll?cartId=${cartId}`)
+                    .then((res) => {
+                        return res.json();
+                    })
+                    .then((data) => {
+                        
+                        var cartItems = data.map((item) => {
+                            var price = item.hasDiscount ? item.promotionPrice : item.price;
+                            return `
+                                 <li class="cart-product-item">
+                                     <a href="/Product?slug=${item.slug}" class="cart-product-link">
+                                        <div class="cart-product-img">
+                                          <img src="/${item.imagePath}" alt="">
+                                        </div>
+                                
+                                        <div class="cart-product-content">
+                                            <span class="cart-product-quantity">
+                                              Số lượng mua: 
+                                              <span class="cart-product-number">${item.quantityOrder}</span>
+                                            </span>
+                                
+                                            <span class="cart-product-name">${item.name}</span>
+                                            <span class="cart-product-price-wrap">
+                                                Đơn giá : <span class="cart-product-price">${price}<sup>đ</sup></span>
+                                            </span>
+                                        </div>
+                                    </a>
+                                 </li>
+                            `;
+                        });
+
+                        cartQuantity.textContent =  cartItems.length;
+                        cart.innerHTML = cartItems.join("");
+                    })
+                    .catch((error) => {
+                        console.log("Render cart item failed")
+                    })
+            }    
+
+            function renderTotalPriceCart() {
+                var cartId = '@(User.FindFirst("cartId")?.Value ?? "")';
+               
+                
+                fetch(`/Cart/GetTotalPrice?cartId=${cartId}`)
+                    .then((res) => {
+                        return res.json();
+                    })
+                    .then((data) => {
+                        var totalPrice = data.totalPrice;
+                        const totalPriceBlock = document.querySelector(".shopping-cart .total-price-block");
+
+                        if (totalPrice == 0) {
+                            console.log("Cart empty")
+                            return;
+                        }
+                        
+                        var htmls = `
+                              <p class="total-price-text">
+                                <span>Tổng</span>
+                                <span class="total-price-product">${totalPrice}<sup>đ</sup></span>
+                              </p>
+                              <div class="payment-product">
+                                <a href="/User/Cart?cartId=${cartId}" class="payment-btn">
+                                  Thanh toán
+                                  <i class="bi bi-chevron-right"></i>
+                                </a>
+                              </div>
+                        `;
+                        totalPriceBlock.innerHTML = htmls;
+                    })
+                    .catch((err) => {
+                        console.log("Render total price cart failed");
+                    })
+                   
+            }
+            
+            renderCartItems();
+            renderTotalPriceCart();
+        </script>
+      
         @await RenderSectionAsync("Scripts", required: false)
     </body>
 </html>

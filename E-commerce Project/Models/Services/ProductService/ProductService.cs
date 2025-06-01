@@ -155,6 +155,15 @@ public class ProductService : IProductService
         return product;
     }
 
+    public Product GetProductById(int id)
+    {
+        var product = _context.Products
+            .Where(item => item.Id == id && item.IsDeleted == false)
+            .FirstOrDefault();
+        if (product == null) throw new Exception("Product not found");
+        return product;
+    }
+
     public async Task<Product> GetProductBySlugAsync(string slug)
     {
         var product = await _context.Products

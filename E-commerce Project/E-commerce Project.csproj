@@ -101,6 +101,7 @@
       <_ContentIncludedByDefault Remove="wwwroot\uploads\products\1\iphone-16-128gb-black.png" />
       <_ContentIncludedByDefault Remove="wwwroot\uploads\products\2\iphone-16-128gb-black.png" />
       <_ContentIncludedByDefault Remove="wwwroot\uploads\products\3\iphone-16-128gb-black.png" />
+      <_ContentIncludedByDefault Remove="Views\Shared\Components\UserRegister\Default.cshtml" />
     </ItemGroup>
 
 </Project>

@@ -80,7 +80,9 @@
               </div>
               <div class="product-select-quantity">
                 <span>Số lượng</span>
-                <input type="number" value="1" min="1" name="productQuantity" id="numberProduct">
+                <form id="form-add-cart-item">
+                  <input type="number" value="1" min="1" name="quantity" id="numberProduct">
+                </form>
               </div>
               <div class="product-controls">
                 <button class="buy-product-btn btn btn-dark">Mua ngay</button>
@@ -779,6 +781,102 @@
 
 </div>
 
+
 @section Scripts {
   <script src="~/js/product/detailProduct.js"></script>
+ <!-- Handle add product to cart ajax -->
+  <script asp-append-version="true">
+    
+    function AlertRequiredLogin() {
+      const loginModal = document.querySelector("#modal-login");
+      var options = {
+        title: "Yêu cầu đăng nhập",
+        text: "Ôi bạn ơi đăng nhập mới thêm sản phẩm vào được",
+        icon: "error",
+        button: {
+          text: "Xác nhận",
+          className: `btn-swal-custom btn-swal-custom--error`
+        }
+      }
+
+      swal(options)
+        .then(value => {
+          if (value) {
+            let modalLoginInstance = new bootstrap.Modal(loginModal);
+            modalLoginInstance.show();
+          }
+        });
+    }
+    
+    function AlertAddCartItem(message, title, type) {
+      var options = {
+        title: title,
+        text: message,
+        icon: type,
+        button: {
+          text: "OK",
+          className: `btn-swal-custom btn-swal-custom--${type}`
+        }
+      }
+
+      swal(options);
+    }
+
+  
+    
+    const btnAddProduct = document.querySelector(".add-product-cart-btn");
+    const formAddCartItem = document.querySelector("#form-add-cart-item");
+    
+    formAddCartItem.addEventListener("submit", e => {
+      e.preventDefault();
+    })
+  
+    btnAddProduct.addEventListener("click", () => {
+        var quantity = document.querySelector("#numberProduct").value;
+        var productId = @Model.Id;
+        var cartUserId = "@(User.FindFirst("cartId")?.Value ?? "")";
+        
+        const formData = {
+          quantity: quantity,
+          productId: productId,
+          cartId: cartUserId
+        }
+  
+        fetch("/Product/AddProductToCart", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        })
+          .then(res => res.json())
+          .then(data => {
+            var status = data.status;
+            if (status === "added") {
+              AlertAddCartItem(
+                "Đã thêm sản phẩm này vào giỏ hàng của bạn",
+                "Thêm vào giỏ hàng thành công",
+                "success");
+              
+              renderCartItems();
+              renderTotalPriceCart();
+            }
+            if(status === "updated") {
+              AlertAddCartItem(
+                "Sản phẩm này đã có trong giỏ hàng của bạn",
+                "Đã cập nhật lại số lượng",
+                "info");
+              
+              renderCartItems();
+              renderTotalPriceCart();
+            }
+            
+          })
+          .catch((err) => {
+            AlertRequiredLogin();
+          })
+          
+    });
+
+  </script>
 }

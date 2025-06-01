@@ -1,276 +1,171 @@
-﻿@section Styles
+﻿@using E_commerce_Project.Helpers
+@model IEnumerable<E_commerce_Project.Models.ViewModels.CartViewModel.CartItemTableViewModel>;
+
+@{
+  // Breadcrumb place
+  ViewBag.currentPlace = "Giỏ hàng";
+}
+
+@section Styles
 {
-  <link rel="stylesheet" href="~/css/product/cartProduct.css">
+  <link rel="stylesheet" href="~/css/product/cartProduct.css" asp-append-version="true">
 }
 
 <!-- Main content -->
 <div class="main-content" style="margin: 0;">
   <div class="container">
-      <!-- Breadcrumb area -->
-      <div class="row">
-        <div class="col-12">
-            <div class="breadcrumb-area">
-              <nav  aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="/home.html">Trang chủ</a></li>
-                  <li class="breadcrumb-item active" aria-current="page" style="text-transform: capitalize;">giỏ hàng</li>
-                </ol>
-              </nav>
-            </div>
-            
-        </div>
+    <!-- Breadcrumb area -->
+    <div class="row">
+      <div class="col-12">
+        @await Html.PartialAsync("PartialViews/Customer/_BreadCrumbSection")
       </div>
-      
+    </div>
+
+
+
+    @if (Model.Count() > 0)
+    {
       <!-- Product list in cart  -->
       <div class="row">
-          <div class="col-12">
-            <!-- Product list area -->
-            <div class="table-responsive">
-              <table class="table list-product-cart-area align-middle">
-                <thead class="table-dark">
-                  <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Hình ảnh</th>
-                    <th scope="col">Tên sản phẩm</th>
-                    <th scope="col">Đơn giá</th>
-                    <th scope="col">Số lượng</th>
-                    <th scope="col">Thành tiền</th>
-                    <th scope="col">Xóa</th>
-                  </tr>
-                </thead>
-
-                <tbody class="table-group-divider">
-                  <!-- Item Product -->
-                  <tr>
-                    <th scope="row" style="width: 96px;">
-                      <div class="id-product-text">1</div>
-                    </th>
-                    <td>
-                      <a href="" class="product-link-img-cart">
-                        <img src="~/images/product_img/iphone16/iphone-16-128gb-black.png" alt="">
-                      </a>
-                    </td>
-
-                    <td>
-                      <p class="product-name-cart">
-                        <a href="">
-                          iphone 16 128GB black 
-                        </a>
-                      </p>
-                    </td>
-
-                    <td>
-                      <p class="product-price-cart">
-                        23.900.000<sup>đ</sup>
-                      </p>
-                    </td>
-                    <td>
-                      <div class="product-quantity-cart">
-                        <input type="number" name="quantity-product-select" value="1" min="1" id="">
-                      </div>
-                    </td>
-                    <td>
-                      <div class="total-price-cart">
-                        <span class="price">
-                          23.900.000<sup>đ</sup>
-                        </span>
-                      </div>
-                    </td>
-
-                    <td>
-                      <span class="cart-delete-product">
-                        <a href="">
-                          <i class="bi bi-trash3-fill"></i>
-                        </a>
-                      </span>
-                    </td>
-                  </tr>
-                  
-
-                  <tr>
-                    <th scope="row">
-                      <div class="id-product-text">1</div>
-                    </th>
-                    <td>
-                      <a href="" class="product-link-img-cart">
-                        <img src="~/images/product_img/iphone16/iphone-16-128gb-black.png" alt="">
-                      </a>
-                    </td>
-
-                    <td>
-                      <p class="product-name-cart">
-                        <a href="">
-                          iphone 16 128GB black
-                        </a>
-                      </p>
-                    </td>
-
-                    <td>
-                      <p class="product-price-cart">
-                        23.900.000<sup>đ</sup>
-                      </p>
-                    </td>
-                    <td>
-                      <div class="product-quantity-cart">
-                        <input type="number" name="quantity-product-select" value="1" min="1" id="">
-                      </div>
-                    </td>
-                    <td>
-                      <div class="total-price-cart">
-                        <span class="price">
-                          23.900.000<sup>đ</sup>
-                        </span>
-                      </div>
-                    </td>
-
-                    <td>
-                      <span class="cart-delete-product">
-                        <a href="">
-                          <i class="bi bi-trash3-fill"></i>
-                        </a>
-                      </span>
-                    </td>
-                  </tr>
-                  
-                </tbody>
-
-              </table>
-
-            </div>
-
-          </div>
-          
-          <!-- Return shop area -->
-          <div class="col-12" style="display: block;">
-            <div class="return-continute-shop">
-              <div class="return-home-btn">
-                <a href="">
-                  <i class="bi bi-arrow-left-circle-fill"></i>
-                  Tiếp tục mua hàng
-                </a>
-              </div>
-
-              <div class="order-controls">
-                <button class="remove-all-product-btn btn btn-danger">Xóa tất cả</button>
-                <button class="order-product-btn btn btn-dark">Đặt hàng</button>
-              </div>
-            </div>
-
-          </div>
-       
-      </div>
-      
-  </div>
-</div>
-
-<!-- Infomation order && methods payment area -->
-<div class="main-content" style="margin-top: 42px; display: block;">
-  <div class="container"> 
-    <div class="row gx-5">
-        <!-- Infomation order product area -->
-        <div class="col-6">
-          <h3 class="title-text-order">Thông tin giao hàng</h3>
-          
-          <div class="infor-order-area">
-            <div class="order-item">
-              <span>Họ tên</span>
-              <span class="user-name-order">Dương minh trí</span>
-            </div>
-
-            <div class="order-item">
-              <span>Số điện thoại</span>
-              <span class="user-phone-order">034503733</span>
-            </div>
-
-            <div class="order-item">
-              <span>Địa chỉ</span>
-              <span class="user-address-order">TP.Hồng ngự, P6, Đồng tháp</span>
-            </div>
-
-            
-            <div class="order-item">
-              <span>Email</span>
-              <span style="text-transform: lowercase;" class="user-email-order">duongminhtri711@gmail.com</span>
-            </div>
-
-          </div>
-
-        </div>
-
-        <div class="col-6">
-          <h3 class="title-text-order">Thông tin thanh toán</h3>
-          
-          <div class="infor-order-area">
-            <div class="order-item order-item-price">
-              <span>Đơn hàng</span>
-              <span class="price-order">23.900.000<sup>đ</sup></span>
-            </div>
-
-            <div class="order-item order-item-price">
-              <span>Phí vận chuyển</span>
-              <span class="shipping-fess">0<sup>đ</sup></span>
-            </div>
-
-            <div class="order-item order-item-price">
-              <span>Mã giảm giá</span>
-              <span class="user-address-order">0<sup>đ</sup></span>
-            </div>
-
-            
-            <div class="order-item order-item-price total-price-item">
-              <span>Tổng cộng</span>
-              <span class="total-price-order">23.900.000<sup>đ</sup></span>
-            </div>
-
-          </div>
-
-        </div>
-        <!--End: Infomation order product area -->
-
-        <!-- Option Payment area -->
         <div class="col-12">
-          <div class="payment-area">
-            <h3>Lựa chọn phương thức thanh toán</h3>
-            <div class="option-payment-block">
-              <div class="payment-item">
-                <input type="radio" name="payment-methods" id="scan-payment">
-                <label for="scan-payment">Quét mã thanh toán</label>
-              </div>
+          <!-- Product list area -->
+          <div class="table-responsive">
+            <table class="table list-product-cart-area align-middle">
+              <thead class="table-dark">
+              <tr>
+                <th scope="col">Hình ảnh</th>
+                <th scope="col">Tên sản phẩm</th>
+                <th scope="col">Đơn giá</th>
+                <th scope="col">Số lượng</th>
+                <th scope="col">Thành tiền</th>
+                <th scope="col">Xóa</th>
+              </tr>
+              </thead>
 
-              <div class="payment-item">
-                <input type="radio" name="payment-methods" id="paypal-payment">
-                <label for="paypal-payment">PayPal</label>
-              </div>
+              <tbody class="table-group-divider">
+              @foreach (var item in Model)
+              {
+                <!-- Item Product -->
+                <tr class="table-cart-item">
+                  <td>
+                    <a href="/Product?slug=@item.Slug" class="product-link-img-cart">
+                      <img src="/@item.ImagePath" alt="">
+                    </a>
+                  </td>
 
-              <div class="payment-item">
-                <input type="radio" name="payment-methods" id="ship-cod">
-                <label for="ship-cod">Ship COD</label>
-              </div>
+                  <td>
+                    <p class="product-name-cart">
+                      <a href="/Product?slug=@item.Slug">
+                        @item.Name
+                      </a>
+                    </p>
+                  </td>
 
-            </div>
+                  <td>
+                    <p class="product-price-cart">
+                      @CurrencyFormatterHelper.Format(@item.Price)<sup>đ</sup>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="product-quantity-cart">
+                      <input type="number" name="quantity-product-select" value="@item.QuantityOrder" min="1" id="">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="total-price-cart">
+                    <span class="price">
+                      @CurrencyFormatterHelper.Format(@item.TotalPrice)<sup>đ</sup>
+                    </span>
+                    </div>
+                  </td>
 
-            <button class="payment-confirm-btn btn btn-dark">
-              Hoàn tất
-              <i class="bi bi-bag-check-fill"></i>
-            </button>
+                  <td>
+                  <span class="cart-delete-product">
+                    <a href="">
+                      <i class="bi bi-trash3-fill"></i>
+                    </a>
+                  </span>
+                  </td>
+                </tr>
+              }
+              </tbody>
+
+            </table>
+
           </div>
 
         </div>
 
-        <div class="col-12">
-          <div class="return-continute-shop" style="margin-bottom: 52px; margin-top: 22px;">
+        <!-- Return shop area -->
+        <div class="col-12" style="display: block;">
+          <div class="return-continute-shop">
             <div class="return-home-btn">
-              <a href="home.html">
+              <a href="/">
                 <i class="bi bi-arrow-left-circle-fill"></i>
                 Tiếp tục mua hàng
               </a>
             </div>
+
+            <div class="order-controls">
+              <button class="remove-all-product-btn btn btn-danger">Xóa tất cả</button>
+              <button class="order-product-btn btn btn-dark">Đặt hàng</button>
+            </div>
           </div>
 
         </div>
 
-    </div>
+      </div>
+    }
+    else
+    {
+      <!-- Cart empty  -->
+      <div class="empty-cart-wrapper">
+        <img src="/images/empty/empty-cart.jpg" alt="">
+        <div class="empty-desc">
+          <p>Giỏ hàng hiện tại rỗng</p>
+        </div>
+      </div>
+      
+      <!-- Return shop area -->
+      <div class="col-12" style="display: block;">
+        <div class="return-continute-shop">
+          <div class="return-home-btn">
+            <a href="/">
+              <i class="bi bi-arrow-left-circle-fill"></i>
+              Quay lại trang chủ
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    }
 
   </div>
-  
 </div>
+
+<form action="/Cart/Payment?userId=@User.FindFirst("userId")?.Value" method="POST" id="form-payment-product"></form>
+
+<!-- Infomation order && methods payment area -->
+@await Component.InvokeAsync("PaymentOrder", int.Parse(@User.FindFirst("userId")?.Value))
+
+@section Scripts
+{
+  <script>
+    const btnOrderProduct = document.querySelector(".order-product-btn");
+    const paymentBlock = document.querySelector(".payment-block");
+    const orderControlBlock = document.querySelector(".return-continute-shop");
+
+    btnOrderProduct.addEventListener("click", (e) => {
+      paymentBlock.style.display = "block";
+      orderControlBlock.style.display = "none";
+    });
+
+    const formPayment = document.querySelector("#form-payment-product");
+    const btnConfirmPayment = document.querySelector(".payment-confirm-btn")
+
+    btnConfirmPayment.addEventListener("click", (e) => {
+      formPayment.submit();
+    })
+  </script>
+}

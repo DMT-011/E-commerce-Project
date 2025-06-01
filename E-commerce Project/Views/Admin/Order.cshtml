@@ -1,0 +1,138 @@
+﻿
+@{
+    Layout = "_LayoutAdminTable";
+    ViewBag.titleView = "Sản phẩm";
+    ViewBag.featureCurrent = "Danh sách đơn hàng";
+    // Action for pagination section
+    ViewBag.action = "Order";
+}
+
+@section StylesViewChild
+{
+    <link rel="stylesheet" href="~/css/admin/adminOrder.css">
+}
+
+@section ControlsAdmin
+{
+    <a href="/Product/Trash" class="btn btn-danger ">
+        <i class="icon-control fas fa-trash"></i>
+        Thùng rác
+        <span>(@ViewBag.countProductDel)</span>
+    </a>
+}
+
+@if (Model.Count > 0)
+{
+    <table class="table align-middle table-product-list">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Hình ảnh</th>
+            <th scope="col">Tên sản phẩm</th>
+            <th scope="col">Số lượng</th>
+            <th scope="col">Thao tác</th>
+        </tr>
+        </thead>
+
+        <tbody class="table-group-divider">
+        @foreach (var item in Model)
+        {
+            <tr class="product-item">
+                <th scope="row">
+                    <i
+                        class="fas fa-angle-right icon-product-right"
+                        style="opacity: 0.9"
+                    ></i>
+                    <i
+                        class="fas fa-angle-down icon-product-down hidden-icon-product"
+                        style="opacity: 0.9"
+                    ></i>
+                    <span class="id-product" style="margin-left: 2px"
+                    >@item.Id</span
+                    >
+                </th>
+                <td>
+                    <img
+                        src="~/@item.ImagePath"
+                        class="product-img"
+                        alt=""
+                    />
+                </td>
+                <td>
+                    <a href="#" class="product-detail-link"
+                    >@item.Name</a
+                    >
+                </td>
+                <td>@item.Quantity</td>
+                <td class="product-controls">
+                    <a
+                        href="/Product/Update/@item.Id"
+                        class="btn btn-black"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        data-bs-title="Chỉnh sửa"
+                    >
+                        <i class="far fa-edit"></i>
+                    </a>
+
+                    <button
+                        class="btn btn-danger"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modal-confirm-delete"
+                        data-product-id="@item.Id"
+                        data-product-name="@item.Name"
+                    >
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </td>
+
+                <td class="content-hidden" style="display: none">
+                    @item.CategoryName
+                </td>
+                <td class="content-hidden" style="display: none">
+                    @item.CreatedDate
+                </td>
+                <td class="content-hidden" style="display: none">
+                   
+                </td>
+                <td class="content-hidden" style="display: none">
+                   
+                </td>
+            </tr>
+        }
+        <tr style="display: none"></tr>
+        </tbody>
+    </table>
+
+    @section Pagination
+    {
+        @await Html.PartialAsync("PartialViews/Admin/_PaginationSection")
+    }
+
+}
+
+@section ModalConfirm
+{
+    <!-- Modal -->
+    <div class="modal fade" id="modal-confirm-delete" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Vứt sản phẩm này vào thùng rác ?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Sản phẩm sẽ được chuyển vào thùng rác <span style="color: #2bb930">( có thể khôi phục lại )</span>.
+                    Bạn có chắc chắn là chuyển sản phẩm
+                    <span style="font-weight: bold" class="product-name"></span>
+                    đến thùng rác ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-warning btn-confirm-delete">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

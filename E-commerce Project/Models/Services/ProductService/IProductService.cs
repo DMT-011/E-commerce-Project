@@ -16,6 +16,7 @@ public interface IProductService
     
     // Query
     Task<Product> GetProductByIdAsync(int id);
+    Product GetProductById(int id);
     Task<Product> GetProductBySlugAsync(string slug);
     IQueryable<Product> GetAllProducts();
     IPagedList<AdminProductListViewModel> GetProductsWithPaginationAdmin(int? page);

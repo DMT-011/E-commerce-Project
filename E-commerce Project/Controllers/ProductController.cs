@@ -1,8 +1,12 @@
-﻿using E_commerce_Project.Models.Services.CategoryService;
+﻿using E_commerce_Project.Models.Entities;
+using E_commerce_Project.Models.Services.CartService;
+using E_commerce_Project.Models.Services.CategoryService;
 using E_commerce_Project.Models.Services.ProductImageService;
 using E_commerce_Project.Models.Services.ProductService;
+using E_commerce_Project.Models.ViewModels.CartViewModel;
 using E_commerce_Project.Models.ViewModels.ProductViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace E_commerce_Project.Controllers;
 
@@ -11,14 +15,17 @@ public class ProductController : Controller
     private readonly IProductService _productService;
     private readonly ICategoryService _categoryService;
     private readonly IProductImageService _productImageService;
+    private readonly ICartService _cartService;
 
     public ProductController(IProductService productService, ICategoryService categoryService
-    , IProductImageService productImageService)
+    , IProductImageService productImageService, ICartService cartService)
     {
         _productService = productService;
         _categoryService = categoryService;
         _productImageService = productImageService;
+        _cartService = cartService;
     }
+
     public async Task<IActionResult> Index(string slug)
     {
         var product = await _productService.GetProductBySlugAsync(slug);
@@ -38,6 +45,13 @@ public class ProductController : Controller
             ImageSub3Path = _productImageService.GetImageSubProductByOrder(3, product.Id),
         };
         return View(model);
+    }
+
+    [HttpPost]
+    public async Task<JsonResult> AddProductToCart([FromBody] CartItemViewModel model)
+    {
+        var respone=  await _cartService.AddProductToCartAsync(model);
+        return Json(respone);
     }
 
     public async Task<IActionResult> Create()

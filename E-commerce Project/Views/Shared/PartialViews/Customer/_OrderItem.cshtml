@@ -1,0 +1,25 @@
+﻿@using E_commerce_Project.Helpers
+@model E_commerce_Project.Models.ViewModels.OrderViewModel.OrderItemViewModel;
+
+<div class="order-product-item">
+    <a href="/Product?slug=@Model.Slug" class="order-img-link">
+        <img src="/@Model.ImagePath" alt="" class="order-product-img">
+    </a>
+    <div class="order-product-info">
+        <div class="order-product-name">
+            <span class="order-title">Tên sản phẩm:</span> <a href="/Product?slug=@Model.Slug" class="order-product-link">@Model.Name</a>
+        </div>
+        <div class="order-product-quantity">
+            <span class="order-title">Số lượng mua:</span> <span>@Model.QuantityOrder</span>
+        </div>
+        <div class="order-product-price">
+            <span class="order-title">Giá:</span> <span
+                style="color: red; font-weight: 500">@CurrencyFormatterHelper.Format(@Model.Price)<sup>đ</sup></span>
+        </div>
+
+        <div class="order-product-status">
+            <span class="order-title">Tình trạng:</span> Mới
+        </div>
+    </div>
+
+</div>

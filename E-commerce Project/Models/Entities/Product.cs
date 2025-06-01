@@ -18,7 +18,7 @@ public class Product : AuditableEntity
     
     public int CategoryId { get; set; }
     public Category Category { get; set; }
-    public CartItem CartItem { get; set; }
+    public ICollection<CartItem> CartItem { get; set; }
     public ICollection<ProductImage> ProductImages { get; set; }
     
 }

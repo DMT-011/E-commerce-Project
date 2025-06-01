@@ -1,250 +1,185 @@
-﻿
-<header id="header">
-        <!-- Top header -->
-        <div class="header-top">
-            <div class="container">
+﻿<header id="header">
+  <!-- Top header -->
+  <div class="header-top">
+    <div class="container">
 
-                <div class="row">
-                    <!-- Title welcome  -->
-                    <div class="col-6">
-                        <div class="header-menu-left" >
-                            <div class="welcome-text">
-                              Welcome <span class="text-red separate">apple store</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Controls user -->
-                    <div class="col-6">
-                        <div class="header-menu-right">
-                              <!-- User non-authentication -->
-                              <nav class="user-unverified" style="display: unset;">
-                                  <ul class="controls-user">
-                                      <li class="controls-item">
-                                        <a  href="#" data-bs-toggle="modal" data-bs-target="#modal-login" class="controls-link separate">Đăng nhập</a>
-                                      </li>
-                                    
-                                      <li class="controls-item" >
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-register" class="controls-link">Đăng ký</a>
-                                      </li>
-                                  </ul>
-                              </nav>
-
-                              <!-- User authenticated -->
-                              <nav class="user-verified" style="display: none">
-                                  <ul class="controls-user">
-                                    <li class="controls-item user-control-section">
-                                      <a href="" class="controls-link control-user-name">
-                                        <div class="avatar-wrapper">
-                                          <img src="~/images/avatars/amh1tqh06166z417.jpg" class="avatar-user">
-                                        </div>
-                                        <span class="user-full-name">Dương Minh Trí</span>
-                                      </a>
-                                      
-                                      <ul class="user-controls-nav">
-                                        <li class="user-control-item">
-                                          <a href="">Thông tin người dùng</a>
-                                        </li>
-
-                                        <li class="user-control-item separate-control">
-                                          <a href="">Đơn hàng</a>
-                                        </li>
-                                        <li class="user-control-item separate-control">
-                                          <a href="">Đổi mật khẩu</a>
-                                        </li>
-
-
-                                        <li class="user-control-item">
-                                          <a href="">Đăng xuất</a>
-                                        </li>
-                                      </ul>
-                                     
-                                    </li>
-                                 </ul>
-                              </nav>
-                        </div>
-
-                        
-                         
-                    </div>
-
-                </div>
-
+      <div class="row">
+        <!-- Title welcome  -->
+        <div class="col-6">
+          <div class="header-menu-left">
+            <div class="welcome-text">
+              Welcome <span class="text-red separate">apple store</span>
             </div>
-        </div>
-
-        <!-- Header search middle -->
-        <div class="header-middle">
-          <div class="container">
-
-              <div class="row ">
-
-                <div class="col-12">
-
-                    <div class="logo-app">
-                      <img src="~/images/logo_app/LogoApple.png" alt="" class="logo-img">
-                    </div>
-  
-                    <div class="header-search">
-                      <select name="category" class="select-category">
-                        <option  value="0">Danh mục</option>
-                        <option value="2">Macbook</option>
-                        <option value="3">iphone 16</option>
-                      </select>
-                      
-                      <input type="text" placeholder="Nhập tên sản phẩm..." class="search-input">
-  
-                      <button class="btn-search">
-                        <i class="bi search-icon bi-search"></i>
-                      </button>
-                    </div>
-  
-                    <div class="header-contact">
-
-                      <div class="contact-btn">
-                        <i class="bi contact-icon bi-telephone-fill"></i>
-                      </div>
-                      
-                      <div class="contact-content">
-                        <h3 class="contact-buy">Ưu đãi mua web applestore giá 400k</h3>
-                        <span class="contact-phone">Liên hệ ngay 0762884181</span>
-                      </div>
-  
-                    </div>
-
-                </div>
-
-              </div>
-
           </div>
         </div>
-
-        <nav id="header-nav-main">
-          <div class="container">
-              <div class="row">
-
-                <div class="col-12">
-                  <!-- Nav main -->
-                  <ul class="nav-list">
-                    <li class="nav-item">
-                      <a href="/" class="nav-link">Trang chủ</a>
-                    </li>
-                    
-                    <li class="nav-item">
-                      <a href="" class="nav-link">
-                        danh mục sản phẩm
-                        <i class="nav-arrow-down-icon bi bi-caret-down-fill"></i>
+        <!-- Controls user -->
+        <div class="col-6">
+          <div class="header-menu-right">
+              @if (@User.Identity.IsAuthenticated)
+              {
+                <!-- User authenticated -->
+                <nav class="user-verified">
+                  <ul class="controls-user">
+                    <li class="controls-item user-control-section">
+                      <a href="" class="controls-link control-user-name">
+                        <div class="avatar-wrapper">
+                          <img src="~/images/avatars/amh1tqh06166z417.jpg" class="avatar-user">
+                        </div>
+                        <span class="user-full-name">@User.Identity.Name</span>
                       </a>
 
-                      <ul class="subnav-menu">
-                          <li class="subnav-item">
-                            <a href="" class="subnav-link">Macbook ></a>
-                          </li>
+                      <ul class="user-controls-nav">
+                        <li class="user-control-item">
+                          <a href="">Thông tin người dùng</a>
+                        </li>
 
-                          <li class="subnav-item">
-                            <a href="" class="subnav-link">iphone 16 ></a>
-                          </li>
+                        <li class="user-control-item separate-control">
+                          <a href="/User/Order?userId=@User.FindFirst("userId")?.Value">Đơn hàng</a>
+                        </li>
+                        <li class="user-control-item separate-control">
+                          <a href="">Đổi mật khẩu</a>
+                        </li>
 
-                          <li class="subnav-item">
-                            <a href="" class="subnav-link">iphone 16 pro ></a>
-                          </li>
 
-                          <li class="subnav-item">
-                            <a href="" class="subnav-link">iphone 16 plus ></a>
-                          </li>
-
+                        <li class="user-control-item">
+                          <a href="/User/Logout">Đăng xuất</a>
+                        </li>
                       </ul>
-                      
+
                     </li>
-                    
-                    <li class="nav-item">
-                      <a href="" class="nav-link">Liên hệ</a>
-                    </li>
-                    
-                    <li class="nav-item">
-                      <a href="" class="nav-link">Giới thiệu</a>
-                    </li>
-                    
-                    <li class="nav-item">
-                      <a href="" class="nav-link">Điều khoản sử dụng website</a>
-                    </li>
-                    
                   </ul>
-                  
-                  <!-- Cart -->
-                  <div class="shopping-cart">
-                      <p class="cart-text">
-                        <i class="cart-icon bi bi-cart-fill"></i>
-                        Giỏ hàng
-                        <span class="cart-quantity">2</span>
-                      </p>
+                </nav>
+              }
+              else
+              {
+                <!-- User non-authentication -->
+                <nav class="user-unverified">
+                  <ul class="controls-user">
+                    <li class="controls-item">
+                      <a href="#" data-bs-toggle="modal" data-bs-target="#modal-login" class="controls-link separate">Đăng
+                        nhập</a>
+                    </li>
 
-                      <!-- List product in cart -->
-                      <ul class="cart-product-list">
-                        <li class="cart-product-item">
-                          <a href="#" class="cart-product-link">
-                            <div class="cart-product-img">
-                              <img src="~/images/product_img/iphone16/iphone-16-128gb-black.png" alt="">
-                            </div>
-
-                            <div class="cart-product-content">
-                              <span class="cart-product-quantity">
-                                Số lượng mua: 
-                                <span class="cart-product-number">5</span>
-                              </span>
-
-                              <span class="cart-product-name">iphone 16 plus 256GB black</span>
-                              <span class="cart-product-price-wrap">
-                                Đơn giá : 
-                                <span class="cart-product-price">28.590.000<sup>đ</sup></span>
-                              </span>
-                            </div>
-
-                          </a>
-                        </li>
-                        
-                        <li class="cart-product-item">
-                          <a href="#" class="cart-product-link">
-                            <div class="cart-product-img">
-                              <img src="~/images/product_img/iphone16/iphone-16-128gb-black.png" alt="">
-                            </div>
-
-                            <div class="cart-product-content">
-                              <span class="cart-product-quantity">
-                                Số lượng mua: 
-                                <span class="cart-product-number">5</span>
-                              </span>
-
-                              <span class="cart-product-name">iphone 16 plus 256GB black</span>
-                              <span class="cart-product-price-wrap">
-                                Đơn giá : 
-                                <span class="cart-product-price">28.590.000<sup>đ</sup></span>
-                              </span>
-                            </div>
-
-                          </a>
-                        </li>
-
-                      </ul>
-
-                      <!-- Total price product area -->
-                      <div class="total-price-block">
-                        <p class="total-price-text">
-                          <span>Tổng</span>
-                          <span class="total-price-product">28.590.000<sup>đ</sup></span>
-                        </p>
-
-                        <div class="payment-product">
-                          <button class="payment-btn">
-                            Thanh toán
-                            <i class="bi bi-chevron-right"></i>
-                          </button>
-                        </div>
-                      </div>
-                   </div>
-
-                </div>
-
-              </div>
+                    <li class="controls-item">
+                      <a href="#" data-bs-toggle="modal" data-bs-target="#modal-register" class="controls-link">Đăng
+                        ký</a>
+                    </li>
+                  </ul>
+                </nav>
+              }
           </div>
-        </nav>
-      </header>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Header search middle -->
+  <div class="header-middle">
+    <div class="container">
+
+      <div class="row ">
+
+        <div class="col-12">
+
+          <div class="logo-app">
+            <img src="~/images/logo_app/LogoApple.png" alt="" class="logo-img">
+          </div>
+
+          <div class="header-search">
+            <select name="category" class="select-category">
+              <option value="0">Danh mục</option>
+              <option value="2">Macbook</option>
+              <option value="3">iphone 16</option>
+            </select>
+
+            <input type="text" placeholder="Nhập tên sản phẩm..." class="search-input">
+
+            <button class="btn-search">
+              <i class="bi search-icon bi-search"></i>
+            </button>
+          </div>
+
+          <div class="header-contact">
+
+            <div class="contact-btn">
+              <i class="bi contact-icon bi-telephone-fill"></i>
+            </div>
+
+            <div class="contact-content">
+              <h3 class="contact-buy">Ưu đãi mua web applestore giá 400k</h3>
+              <span class="contact-phone">Liên hệ ngay 0762884181</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <nav id="header-nav-main">
+    <div class="container">
+      <div class="row">
+
+        <div class="col-12">
+          <!-- Nav main -->
+          <ul class="nav-list">
+            <li class="nav-item">
+              <a href="/" class="nav-link">Trang chủ</a>
+            </li>
+
+            <li class="nav-item">
+              <a href="" class="nav-link">
+                danh mục sản phẩm
+                <i class="nav-arrow-down-icon bi bi-caret-down-fill"></i>
+              </a>
+
+              <ul class="subnav-menu">
+                <li class="subnav-item">
+                  <a href="" class="subnav-link">Macbook ></a>
+                </li>
+
+                <li class="subnav-item">
+                  <a href="" class="subnav-link">iphone 16 ></a>
+                </li>
+
+                <li class="subnav-item">
+                  <a href="" class="subnav-link">iphone 16 pro ></a>
+                </li>
+
+                <li class="subnav-item">
+                  <a href="" class="subnav-link">iphone 16 plus ></a>
+                </li>
+
+              </ul>
+
+            </li>
+
+            <li class="nav-item">
+              <a href="" class="nav-link">Liên hệ</a>
+            </li>
+
+            <li class="nav-item">
+              <a href="" class="nav-link">Giới thiệu</a>
+            </li>
+
+            <li class="nav-item">
+              <a href="" class="nav-link">Điều khoản sử dụng website</a>
+            </li>
+
+          </ul>
+
+          <!-- Cart -->
+          @await Component.InvokeAsync("HeaderCart")
+
+        </div>
+
+      </div>
+    </div>
+  </nav>
+</header>

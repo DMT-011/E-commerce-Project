@@ -184,4 +184,45 @@ body {
     transition: transform 0.42s ease;
 }
 
+/* btn swal custom*/
+.btn-swal-custom {
+    border-radius: 3px;
+}
+
+.btn-swal-custom.swal-button:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.btn-swal-custom--success {
+    background: #32cf37;
+    color: #fff;
+    border-color: #32cf37;
+}
+
+.btn-swal-custom--info {
+    background: #48abf7;
+    color: #fff;
+    border-color: #48abf7;
+}
+
+.btn-swal-custom--warning {
+    background: #ffab45;
+    color: #000;
+    border-color: #ffab45;
+}
+
+.btn-swal-custom--error {
+    background: #f25a61;
+    color: #fff;
+    border-color: #f25a61;
+}
+
+.btn-swal-custom:hover {
+    opacity: 0.8;
+}
+
+.swal-footer {
+    text-align: center;
+}
 

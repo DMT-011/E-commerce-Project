@@ -1,0 +1,115 @@
+﻿@using E_commerce_Project.Helpers
+@model E_commerce_Project.Models.ViewModels.OrderViewModel.OrderPaymentViewModel;
+
+<div class="main-content payment-block" style="margin-top: 42px">
+  <div class="container">
+    <div class="row gx-5">
+      <!-- Infomation order product area -->
+      <div class="col-6">
+        <h3 class="title-text-order">Thông tin giao hàng</h3>
+
+        <div class="infor-order-area">
+          <div class="order-item">
+            <span>Họ tên</span>
+            <span class="user-name-order">@Model.Name</span>
+          </div>
+
+          <div class="order-item">
+            <span>Số điện thoại</span>
+            <span class="user-phone-order">@Model.Phone</span>
+          </div>
+
+          <div class="order-item">
+            <span>Địa chỉ</span>
+            <span class="user-address-order">@Model.Address</span>
+          </div>
+
+
+          <div class="order-item">
+            <span>Email</span>
+            <span style="text-transform: lowercase;" class="user-email-order">@Model.Email</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="col-6">
+        <h3 class="title-text-order">Thông tin thanh toán</h3>
+
+        <div class="infor-order-area">
+          <div class="order-item order-item-price">
+            <span>Đơn hàng</span>
+            <span class="price-order">@CurrencyFormatterHelper.Format(@Model.TotalOrder)<sup>đ</sup></span>
+          </div>
+
+          <div class="order-item order-item-price">
+            <span>Phí vận chuyển</span>
+            <span class="shipping-fess">0<sup>đ</sup></span>
+          </div>
+
+          <div class="order-item order-item-price">
+            <span>Mã giảm giá</span>
+            <span class="user-address-order">0<sup>đ</sup></span>
+          </div>
+
+
+          <div class="order-item order-item-price total-price-item">
+            <span>Tổng cộng</span>
+            <span class="total-price-order">@CurrencyFormatterHelper.Format(@Model.TotalOrder)<sup>đ</sup></span>
+          </div>
+
+        </div>
+
+      </div>
+      <!--End: Infomation order product area -->
+
+      <!-- Option Payment area -->
+      <div class="col-12">
+        <div class="payment-area">
+          <h3>Lựa chọn phương thức thanh toán</h3>
+          <div class="option-payment-block">
+            <div class="payment-item">
+              <input type="radio" name="payment-methods" id="scan-payment" disabled="disabled">
+              <label for="scan-payment">Quét mã thanh toán</label>
+            </div>
+
+            <div class="payment-item">
+              <input type="radio" name="payment-methods" id="paypal-payment" disabled="disabled">
+              <label for="paypal-payment">PayPal</label>
+            </div>
+
+            <div class="payment-item">
+              <input type="radio" name="payment-methods" id="ship-cod">
+              <label for="ship-cod">Ship COD</label>
+            </div>
+
+          </div>
+
+          <button class="payment-confirm-btn btn btn-dark">
+            Hoàn tất
+            <i class="bi bi-bag-check-fill"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <div class="col-12">
+        <div class="return-continute-shop" style="margin-bottom: 52px; margin-top: 22px;">
+          <div class="return-home-btn">
+            <a href="/">
+              <i class="bi bi-arrow-left-circle-fill"></i>
+              Tiếp tục mua hàng
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<form action=""></form>
