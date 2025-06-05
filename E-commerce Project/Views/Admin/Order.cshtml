@@ -1,23 +1,26 @@
-﻿
+﻿@using E_commerce_Project.Helpers
+@using E_commerce_Project.Models.Enums
+@model X.PagedList.IPagedList<E_commerce_Project.Models.ViewModels.AdminViewModel.AdminOrderListViewModel>;
 @{
     Layout = "_LayoutAdminTable";
-    ViewBag.titleView = "Sản phẩm";
+    ViewBag.titleView = "Đơn hàng";
     ViewBag.featureCurrent = "Danh sách đơn hàng";
     // Action for pagination section
     ViewBag.action = "Order";
+  
 }
 
 @section StylesViewChild
 {
-    <link rel="stylesheet" href="~/css/admin/adminOrder.css">
+    <link rel="stylesheet" href="~/css/admin/adminOrder.css" asp-append-version="true">
 }
 
 @section ControlsAdmin
 {
-    <a href="/Product/Trash" class="btn btn-danger ">
+    <a href="/Order/Trash" class="btn btn-danger ">
         <i class="icon-control fas fa-trash"></i>
         Thùng rác
-        <span>(@ViewBag.countProductDel)</span>
+        <span>(@ViewBag.countOrderDel)</span>
     </a>
 }
 
@@ -27,9 +30,9 @@
         <thead>
         <tr>
             <th scope="col">ID</th>
-            <th scope="col">Hình ảnh</th>
-            <th scope="col">Tên sản phẩm</th>
-            <th scope="col">Số lượng</th>
+            <th scope="col">Tên khách hàng</th>
+            <th scope="col">Trạng thái</th>
+            <th scope="col">Tổng tiền đơn hàng</th>
             <th scope="col">Thao tác</th>
         </tr>
         </thead>
@@ -42,61 +45,67 @@
                     <i
                         class="fas fa-angle-right icon-product-right"
                         style="opacity: 0.9"
-                    ></i>
+                    >
+                    </i>
                     <i
                         class="fas fa-angle-down icon-product-down hidden-icon-product"
                         style="opacity: 0.9"
-                    ></i>
-                    <span class="id-product" style="margin-left: 2px"
-                    >@item.Id</span
                     >
+                    </i>
+                    <span class="id-product" style="margin-left: 2px">@item.Id</span>
+                    
                 </th>
                 <td>
-                    <img
-                        src="~/@item.ImagePath"
-                        class="product-img"
-                        alt=""
-                    />
+                    <a href="#" class="product-detail-link">@item.FullName</a>
                 </td>
                 <td>
-                    <a href="#" class="product-detail-link"
-                    >@item.Name</a
-                    >
+                    <button
+                        class="badge btn-status-order"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modal-update-order"
+                        data-order-id="@item.Id"
+                        data-status="@item.OrderStatus"
+                    >Hoàn thành</button>
                 </td>
-                <td>@item.Quantity</td>
+                <td>
+                    @CurrencyFormatterHelper.Format(@item.TotalOrder)<sup>đ</sup>
+                </td>
+                
                 <td class="product-controls">
                     <a
-                        href="/Product/Update/@item.Id"
+                        href="/Order/Detail/@item.Id"
                         class="btn btn-black"
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
-                        data-bs-title="Chỉnh sửa"
+                        data-bs-title="Chi tiết đơn hàng"
                     >
-                        <i class="far fa-edit"></i>
+                        <i class="fas fa-eye"></i>
                     </a>
 
                     <button
                         class="btn btn-danger"
                         data-bs-toggle="modal"
                         data-bs-target="#modal-confirm-delete"
-                        data-product-id="@item.Id"
-                        data-product-name="@item.Name"
+                        data-order-id="@item.Id"
+                        data-order-name="@item.FullName"
                     >
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </td>
 
                 <td class="content-hidden" style="display: none">
-                    @item.CategoryName
+                    @item.OrderDateCreate
                 </td>
                 <td class="content-hidden" style="display: none">
-                    @item.CreatedDate
+                    @((int) item.OrderStatus == 1 ? item.OrderDateUpdate : null)
                 </td>
+
                 <td class="content-hidden" style="display: none">
-                   
+                    @(item.AdminName ?? "")
                 </td>
+
                 <td class="content-hidden" style="display: none">
-                   
+                    @item.OrderNote
                 </td>
             </tr>
         }
@@ -111,6 +120,19 @@
 
 }
 
+@if (Model.Count == 0)
+{
+    ViewBag.contentEmpty = "Danh sách đơn hàng rỗng";
+    ViewBag.contentLink = "";
+    ViewBag.actionEmpty = "";
+    ViewBag.imgEmpty = "no-order.png";
+    @await Html.PartialAsync("PartialViews/Admin/_EmptySection")
+}
+
+
+
+<form action="" method="POST" id="form-delete-order"></form>
+
 @section ModalConfirm
 {
     <!-- Modal -->
@@ -118,14 +140,14 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Vứt sản phẩm này vào thùng rác ?</h5>
+                    <h5 class="modal-title">Vứt đơn hàng này vào thùng rác ?</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Sản phẩm sẽ được chuyển vào thùng rác <span style="color: #2bb930">( có thể khôi phục lại )</span>.
-                    Bạn có chắc chắn là chuyển sản phẩm
+                    
+                    Bạn có chắc chắn là chuyển đơn hàng của khách hàng
                     <span style="font-weight: bold" class="product-name"></span>
-                    đến thùng rác ?
+                    đến thùng rác ? <span style="color: #2bb930">( có thể khôi phục lại )</span>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
@@ -134,5 +156,194 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal-update-order" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cập nhập trạng thái đơn hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST" id="form-update-order">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-label-wrapper">
+                                    <label for="OrderStatus" class="form-label">Trạng thái</label>
+                                    <label for="OrderNote" class="form-label">Ghi chú</label>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="form-input-wrapper">
+                                    <select name="OrderStatus" id="OrderStatus" class="form-input">
+                                        <option value="0">Chờ xử lý</option>
+                                        <option value="1">Hoàn thành</option>
+                                        <option value="2">Hủy đơn hàng</option>
+                                    </select>
+                                    <textarea name="OrderNote" id="OrderNote" class="form-input" style="min-height: 86px" ></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-black btn-confirm-update-order">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
+@section ScriptsViewChild
+{
+    <script>
+        const btnStatusOrders = document.querySelectorAll(".btn-status-order");
+        
+        if (btnStatusOrders) {
+           
+            btnStatusOrders.forEach((btn) => {
+                const status = btn.dataset.status;
+                
+                switch (status) {
+                    case "Pending":
+                        btn.classList.add("badge-black");
+                        btn.textContent = "Chờ xử lý";
+                        break;
+                    case "Processed":
+                        btn.classList.add("badge-success");
+                        btn.textContent = "Hoàn thành";
+                        btn.setAttribute("disabled", "disabled");
+                        break
+                    case "Cancelled":
+                        btn.classList.add("badge-danger");
+                        btn.textContent = "Đã hủy";
+                        btn.setAttribute("disabled", "disabled");
+                        break;
+                }
+            })
+        }
+    </script>
+    
+    <script>
+        const modalConfirmDelete = document.getElementById("modal-confirm-delete");
+        const formDelete = document.querySelector("#form-delete-order");
+        const btnConfirmDelete = document.querySelector(".btn-confirm-delete");
+
+       
+        if (modalConfirmDelete) {
+            modalConfirmDelete.addEventListener('show.bs.modal', event => {
+                const contentBody = document.querySelector(".product-name");
+                const productId = event.relatedTarget.dataset.orderId;
+                const productName = event.relatedTarget.dataset.orderName;
+
+                formDelete.action = `/Order/Delete/${productId}`;
+                contentBody.textContent = productName;
+            })
+        }
+
+        btnConfirmDelete.onclick = function () {
+            formDelete.submit();
+        }
+    </script>
+    
+    <script>
+        const btnUpdateOrder = document.querySelector(".btn-confirm-update-order")
+        const formUpdateOrder = document.querySelector("#form-update-order");
+
+        const modalConfirmUpdate = document.getElementById('modal-update-order');
+
+        if (modalConfirmUpdate) {
+            modalConfirmUpdate.addEventListener('show.bs.modal', event => {
+                const orderId = event.relatedTarget.dataset.orderId;
+                formUpdateOrder.action = `/Order/Update/${orderId}`;
+            });
+        }
+        
+        btnUpdateOrder.addEventListener("click", (e) => {
+            formUpdateOrder.submit();
+        })
+    </script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const productItems = document.querySelectorAll(
+                ".table-product-list .product-item"
+            );
+
+            // Show detail product when click on productItem 
+            productItems.forEach(function (productItem) {
+                productItem.addEventListener("click", function () {
+                    const productItemClick = this;
+                    const productIconRight = productItemClick.querySelector(
+                        ".icon-product-right"
+                    );
+                    const productIconDown =
+                        productItemClick.querySelector(".icon-product-down");
+                    const hasNextElement = productItemClick.nextElementSibling;
+
+                    if (hasNextElement.classList.contains("detail-product")) {
+                        hasNextElement.classList.toggle("hidden-detail-product");
+
+                        productIconDown.classList.toggle("hidden-icon-product");
+                        productIconRight.classList.toggle("hidden-icon-product");
+                    } else {
+                        const productContent =
+                            productItemClick.querySelectorAll(".content-hidden");
+                        const detailProductElement = `
+                <tr class="detail-product">
+                    <td colspan="5">
+                      <div class="detail-product-inner">
+                          <div class="detail-product-row">
+                            <div class="detail-product-name">Ngày đặt hàng:</div>
+                            <div class="detail-product-value">${productContent[0].textContent}</div>
+                          </div>
+                          <div class="detail-product-row">
+                            <div class="detail-product-name">Ngày xuất hàng:</div>
+                            <div class="detail-product-value" >${productContent[1].textContent}</div>
+                          </div>
+
+                           <div class="detail-product-row">
+                            <div class="detail-product-name">Quản trị viên duyệt:</div>
+                            <div class="detail-product-value" >${productContent[2].textContent}</div>
+                          </div>
+
+                          <div class="detail-product-row">
+                            <div class="detail-product-name">Ghi chú:</div>
+                            <div class="detail-product-value" >${productContent[3].textContent}</div>
+                          </div>
+                      </div>
+                    </td>
+                  </tr>`;
+
+                        productItemClick.insertAdjacentHTML(
+                            "afterend",
+                            detailProductElement
+                        );
+                        productIconRight.classList.add("hidden-icon-product");
+                        productIconDown.classList.remove("hidden-icon-product");
+                    }
+                });
+            });
+
+          
+            const productControls = document.querySelectorAll(".table-product-list .product-controls");
+
+            productControls.forEach(productControl => {
+                const btnControls = productControl.querySelectorAll(".btn");
+
+                btnControls.forEach(btnItems => {
+                    btnItems.addEventListener("click", function (e) {
+                        e.stopPropagation();
+                    });
+
+                });
+
+            });
+        });
+
+    </script>
+}

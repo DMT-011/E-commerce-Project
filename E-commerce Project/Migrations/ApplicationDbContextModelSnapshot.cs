@@ -162,8 +162,17 @@ namespace E_commerce_Project.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsLocked")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("OrderNote")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("ShippingDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,0)");
@@ -229,6 +238,8 @@ namespace E_commerce_Project.Migrations
 
                     b.HasIndex("OderId");
 
+                    b.HasIndex("ProductId");
+
                     b.ToTable("OrderDetails");
                 });
 
@@ -276,13 +287,16 @@ namespace E_commerce_Project.Migrations
                     b.Property<decimal?>("PromotionPrice")
                         .HasColumnType("decimal(18,0)");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
                     b.Property<string>("Slug")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("SoldQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StockQuantity")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -488,7 +502,7 @@ namespace E_commerce_Project.Migrations
                     b.HasOne("E_commerce_Project.Models.Entities.User", "User")
                         .WithOne("Cart")
                         .HasForeignKey("E_commerce_Project.Models.Entities.Cart", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -503,7 +517,7 @@ namespace E_commerce_Project.Migrations
                         .IsRequired();
 
                     b.HasOne("E_commerce_Project.Models.Entities.Product", "Product")
-                        .WithMany("CartItem")
+                        .WithMany("CartItems")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -518,7 +532,7 @@ namespace E_commerce_Project.Migrations
                     b.HasOne("E_commerce_Project.Models.Entities.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -529,10 +543,18 @@ namespace E_commerce_Project.Migrations
                     b.HasOne("E_commerce_Project.Models.Entities.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("E_commerce_Project.Models.Entities.Product", "Product")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("E_commerce_Project.Models.Entities.Product", b =>
@@ -585,7 +607,9 @@ namespace E_commerce_Project.Migrations
 
             modelBuilder.Entity("E_commerce_Project.Models.Entities.Product", b =>
                 {
-                    b.Navigation("CartItem");
+                    b.Navigation("CartItems");
+
+                    b.Navigation("OrderDetails");
 
                     b.Navigation("ProductImages");
                 });

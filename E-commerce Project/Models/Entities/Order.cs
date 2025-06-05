@@ -8,6 +8,10 @@ public class Order : AuditableEntity
     public decimal TotalAmount { get; set; }
     public int OrderStatus { get; set; } // 1: Pending, 2: Processed , 3: Cancelled
     
+    public string? OrderNote { get; set; }
+    public DateTime? ShippingDate { get; set; }
+    
+    public bool IsLocked { get; set; }
     public int UserId { get; set; }
     
     public User User { get; set; }

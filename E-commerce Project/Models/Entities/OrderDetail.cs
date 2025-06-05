@@ -13,4 +13,5 @@ public class OrderDetail : AuditableEntity
     
     public int OderId { get; set; }
     public Order Order { get; set; }
+    public Product Product { get; set; }
 }

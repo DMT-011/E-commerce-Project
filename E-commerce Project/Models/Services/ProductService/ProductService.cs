@@ -32,10 +32,7 @@ public class ProductService : IProductService
             .Where(item => item.Name == productName)
             .FirstOrDefaultAsync();
 
-        if (product != null)
-        {
-            throw new Exception("Product name already exists");
-        }
+        if (product != null) throw new Exception("Product name already exists");
 
         product = new Product
         {
@@ -45,7 +42,7 @@ public class ProductService : IProductService
             Slug = SlugHelper.GenerateSlug(productName),
             Price = CurrencyFormatterHelper.RawValue(model.Price),
             PromotionPrice = CurrencyFormatterHelper.RawValue(model.PromotionPrice),
-            Quantity = model.Quantity,
+            StockQuantity = model.Quantity,
             CategoryId = model.CategoryId,
             IsDisplayed = model.IsDisplayed,
             HasDiscount = model.HasDiscount,
@@ -66,19 +63,13 @@ public class ProductService : IProductService
                 item.Name == productName)
             .FirstOrDefaultAsync();
 
-        if (productExistName != null)
-        {
-            throw new Exception("Product name exists");
-        }
+        if (productExistName != null) throw new Exception("Product name exists");
 
         var product = await _context.Products
             .Where(item => item.Id == id && item.IsDeleted == false)
             .FirstOrDefaultAsync();
 
-        if (product == null)
-        {
-            throw new Exception("Product not found");
-        }
+        if (product == null)  throw new Exception("Product not found");
 
         product.Name = productName;
         product.Description = model.Description;
@@ -86,7 +77,7 @@ public class ProductService : IProductService
         product.Slug = SlugHelper.GenerateSlug(productName);
         product.Price = CurrencyFormatterHelper.RawValue(model.Price);
         product.PromotionPrice = CurrencyFormatterHelper.RawValue(model.PromotionPrice);
-        product.Quantity = model.Quantity;
+        product.StockQuantity = model.Quantity;
         product.IsDisplayed = model.IsDisplayed;
         product.HasDiscount = model.HasDiscount;
         product.CategoryId = model.CategoryId;
@@ -200,7 +191,7 @@ public class ProductService : IProductService
                 Name = item.Name,
                 Price = item.Price,
                 PromotionPrice = item.PromotionPrice,
-                Quantity = item.Quantity,
+                Quantity = item.StockQuantity,
                 CategoryName = item.Category.Name,
                 ImagePath = _productImageService.GetImageMainProductById(item.Id),
                 CreatedDate = item.CreatedAt,
@@ -227,7 +218,7 @@ public class ProductService : IProductService
                 Price = item.Price,
                 PromotionPrice = item.PromotionPrice,
                 ImagePath = _productImageService.GetImageMainProductById(item.Id),
-                Quantity = item.Quantity,
+                Quantity = item.StockQuantity,
                 CategoryName = item.Category.Name,
                 CreatedDate = item.CreatedAt,
             })

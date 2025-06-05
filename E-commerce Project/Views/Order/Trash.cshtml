@@ -1,0 +1,187 @@
+@using E_commerce_Project.Helpers
+@model X.PagedList.IPagedList<E_commerce_Project.Models.ViewModels.AdminViewModel.AdminOrderTrashViewModel>;
+
+@{
+    Layout = "_LayoutAdminTable";
+    ViewBag.titleView = "Đơn hàng";
+    ViewBag.featureCurrent = "Thùng rác";
+}
+
+@section StylesViewChild
+{
+    <link rel="stylesheet" href="~/css/admin/adminOrderTrash.css">
+}
+
+@section ControlsAdmin
+{
+    <a href="/Admin/Order" class="btn btn-black">
+        <i class="icon-control fas fa-reply"></i>
+        Quay lại
+    </a>
+}
+
+@if (Model.Count > 0)
+{
+    <table class="table align-middle table-product-list">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Tên khách hàng</th>
+            <th scope="col">Tổng tiền đơn hàng</th>
+            <th scope="col">Thao tác</th>
+        </tr>
+        </thead>
+
+        <tbody class="table-group-divider">
+        @foreach (var item in Model)
+        {
+            <tr class="product-item">
+                <th scope="row">
+                    <i
+                        class="fas fa-angle-right icon-product-right"
+                        style="opacity: 0.9"
+                    ></i>
+                    <i
+                        class="fas fa-angle-down icon-product-down hidden-icon-product"
+                        style="opacity: 0.9"
+                    ></i>
+                    <span class="id-product" style="margin-left: 2px"
+                    >@item.Id</span
+                    >
+                </th>
+                <td>
+                    @item.FullName
+                </td>
+                <td>@CurrencyFormatterHelper.Format(item.TotalPriceOrder)<sup>đ</sup></td>
+                <td class="product-controls">
+                    <button
+                        class="btn btn-black btn-restore-order"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        data-bs-title="Khôi phục"
+                        data-order-id="@item.Id"
+                    >
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </td>
+
+                <td class="content-hidden" style="display: none">
+                    @item.OrderCreateDate
+                </td>
+                <td class="content-hidden" style="display: none">
+                    @item.OrderNote
+                </td>
+            </tr>
+            <tr style="display: none"></tr>
+        }
+        </tbody>
+    </table>
+
+    @section Pagination
+    {
+        @await Html.PartialAsync("PartialViews/Admin/_PaginationSection", Model)
+    }
+}
+
+@if (Model.Count == 0)
+{
+    ViewBag.contentEmpty = "Thùng rác rỗng, quay lại danh sách ";
+    ViewBag.contentLink = "đơn hàng";
+    ViewBag.actionEmpty = "/Admin/Order";
+    ViewBag.imgEmpty = "trash-empty-color.jpg";
+    @await Html.PartialAsync("PartialViews/Admin/_EmptySection")
+}
+
+
+<!-- Form restore and force delete product -->
+<form action="" method="POST" id="form-restore-order"></form>
+
+
+
+@section ScriptsViewChild
+{
+    <script>
+        const formRestore = document.querySelector("#form-restore-order");
+        const btnRestore = document.querySelectorAll(".btn-restore-order");
+
+        btnRestore.forEach(item => {
+            item.addEventListener("click", function () {
+                const id = this.dataset.orderId;
+                formRestore.action = `/Order/Restore/${id}`;
+                formRestore.submit();
+            })
+        });
+    </script>
+
+    <!-- Script droplist table -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const productItems = document.querySelectorAll(
+                ".table-product-list .product-item"
+            );
+
+            // Show detail product when click on productItem 
+            productItems.forEach(function (productItem) {
+                productItem.addEventListener("click", function () {
+                    const productItemClick = this;
+                    const productIconRight = productItemClick.querySelector(
+                        ".icon-product-right"
+                    );
+                    const productIconDown =
+                        productItemClick.querySelector(".icon-product-down");
+                    const hasNextElement = productItemClick.nextElementSibling;
+
+                    if (hasNextElement.classList.contains("detail-product")) {
+                        hasNextElement.classList.toggle("hidden-detail-product");
+
+                        productIconDown.classList.toggle("hidden-icon-product");
+                        productIconRight.classList.toggle("hidden-icon-product");
+                    } else {
+                        const productContent =
+                            productItemClick.querySelectorAll(".content-hidden");
+                        const detailProductElement = `
+                <tr class="detail-product">
+                    <td colspan="5">
+                      <div class="detail-product-inner">
+                         <div class="detail-product-row">
+                            <div class="detail-product-name">Ngày đặt hàng:</div>
+                            <div class="detail-product-value">${productContent[0].textContent}</div>
+                          </div>
+                          <div class="detail-product-row">
+                            <div class="detail-product-name">Ghi chú:</div>
+                            <div class="detail-product-value">${productContent[1].textContent.trim()}</div>
+                          </div>
+                      </div>
+                    </td>
+                  </tr>
+        
+        `;
+                        productItemClick.insertAdjacentHTML(
+                            "afterend",
+                            detailProductElement
+                        );
+                        productIconRight.classList.add("hidden-icon-product");
+                        productIconDown.classList.remove("hidden-icon-product");
+                    }
+                });
+            });
+
+            //Remove event when click controls
+            const productControls = document.querySelectorAll(".table-product-list .product-controls");
+
+            productControls.forEach(productControl => {
+                const btnControls = productControl.querySelectorAll(".btn");
+
+                btnControls.forEach(btnItems => {
+                    btnItems.addEventListener("click", function (e) {
+                        e.stopPropagation();
+                    });
+
+                });
+
+            });
+        });
+    </script>
+
+}
+

@@ -23,9 +23,13 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasForeignKey(x => x.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasMany<CartItem>(x => x.CartItem)
+        builder.HasMany<CartItem>(x => x.CartItems)
             .WithOne(x => x.Product)
             .HasForeignKey(x => x.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasMany<OrderDetail>(x => x.OrderDetails)
+            .WithOne(x => x.Product)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

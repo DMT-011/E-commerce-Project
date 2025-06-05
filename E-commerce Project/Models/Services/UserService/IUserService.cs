@@ -7,4 +7,7 @@ public interface IUserService
 {
     // Command
     Task CreateUserAsync(UserCreateViewModel model);
+    
+    // Query
+    User GetUserByIdAsync(int id);
 }

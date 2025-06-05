@@ -185,6 +185,17 @@
 			});
 		})
 		
+		const formUpdateProduct = document.querySelector("#form-update-product");
+		
+		if (formUpdateProduct) {
+			formUpdateProduct.addEventListener("submit", (e) => {
+				const prices = document.querySelector(".price-format");
+				prices.forEach(price => {
+					price.value.replace(".", "").trim();
+				})
+			})
+		}
+		
 	</script>
 	
 	<!-- Tiny editor -->

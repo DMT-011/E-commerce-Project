@@ -40,14 +40,14 @@ public class ApplicationDbContext : DbContext
         {
             if (entry.State == EntityState.Added)
             {
-                entry.Entity.CreatedAt = DateTime.Now.ToUniversalTime();
-                entry.Entity.UpdatedAt = DateTime.Now.ToUniversalTime();
+                entry.Entity.CreatedAt = DateTime.Now.ToLocalTime();
+                entry.Entity.UpdatedAt = DateTime.Now.ToLocalTime();
                 entry.Entity.CreatedBy = userId;
                 entry.Entity.IsDeleted = false;
 
             } else if (entry.State == EntityState.Modified)
             {
-                entry.Entity.UpdatedAt = DateTime.Now.ToUniversalTime();
+                entry.Entity.UpdatedAt = DateTime.Now.ToLocalTime();
                 entry.Entity.UpdatedBy = userId;
             } 
         }

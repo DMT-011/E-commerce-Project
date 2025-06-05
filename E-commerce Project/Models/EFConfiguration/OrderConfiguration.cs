@@ -11,7 +11,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.HasMany<OrderDetail>(x => x.OrderDetails)
             .WithOne(x => x.Order)
             .HasForeignKey(x => x.OderId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
         
         builder.Property(x => x.TotalAmount)
             .HasColumnType("decimal(18,0)");

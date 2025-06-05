@@ -7,4 +7,8 @@ public class OrderItemViewModel
     public decimal Price {get; set;}
     public string ImagePath {get; set;}
     public string Slug {get; set;}
+    
+    
+    
+    public decimal TotalOrderItemPrice {get; set;}
 }

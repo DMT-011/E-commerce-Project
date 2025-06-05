@@ -11,11 +11,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasOne<Cart>(x => x.Cart)
             .WithOne(x => x.User)
             .HasForeignKey<Cart>(x => x.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany<Order>(x => x.Orders)
             .WithOne(x => x.User)
             .HasForeignKey(x => x.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

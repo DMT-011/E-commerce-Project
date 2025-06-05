@@ -1,0 +1,76 @@
+﻿.product-img {
+    width: 88px;
+}
+
+.product-item {
+    cursor: pointer;
+}
+
+.detail-product-inner {
+    display: table;
+    margin-left: 25px;
+}
+
+.detail-product-row {
+    display: table-row;
+    line-height: 1.6;
+}
+
+.detail-product-name,
+.detail-product-value {
+    display: table-cell;
+    padding-right: 10px;
+    text-align: left;
+}
+
+.detail-product-name {
+    font-weight: 700;
+}
+
+.detail-product-value {
+    color: #333;
+    font-weight: 400;
+}
+
+.hidden-detail-product {
+    display: none;
+}
+
+.hidden-icon-product {
+    display: none;
+}
+
+
+/* Form in modal change status*/
+#form-update-order {
+    min-height: 150px;
+}
+    
+.form-label {
+    display: block;
+    text-align: right;
+}
+
+.form-label:first-child {
+    margin-bottom: 33px;
+    margin-top: 3px;
+}
+
+.form-input {
+    display: block;
+    width: 100%;
+}
+
+.form-input:first-child {
+    margin-bottom: 26px;
+    padding: 6px 8px;
+    font-size: 14px;
+}
+
+.form-input-wrapper {
+    padding: 0 16px;
+}
+
+.btn-status-order {
+    font-size: 12px;
+}

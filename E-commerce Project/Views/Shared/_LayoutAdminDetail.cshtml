@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+}
+
+@section Styles
+{
+    <link rel="stylesheet" href="~/css/admin/adminDetailBase.css" asp-append-version="true">
+    @await RenderSectionAsync("StylesViewChild", false)
+}
+
+
+<!-- Nav : breadcrumbs and control -->
+<div class="page-inner page-inner-custom">
+    <!-- Breadcrumbs -->
+    <div class="page-header">
+        @await Html.PartialAsync("PartialViews/Admin/_BreadCrumbSection")
+    </div>
+
+    <div class="control-admin" style="float: right">
+        @await RenderSectionAsync("ControlsAdmin", false)
+    </div>
+</div>
+
+<div class="detail-body">
+    @RenderBody()
+</div>

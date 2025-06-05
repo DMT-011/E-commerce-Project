@@ -73,4 +73,14 @@ public class UserService : IUserService
         await _cartService.CreateCartAsync(user.Id);
         _logger.LogInformation($"User {userName} with ID {user.Id} created successfully");
     }
+
+    public User GetUserByIdAsync(int id)
+    {
+        var user = _context.Users
+            .Where(item => item.Id == id && item.IsDeleted == false)
+            .SingleOrDefault();
+        
+        if (user == null) throw new Exception($"User with ID {id} not found");
+        return user;
+    }
 }

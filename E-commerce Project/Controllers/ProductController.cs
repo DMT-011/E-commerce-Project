@@ -1,4 +1,5 @@
-﻿using E_commerce_Project.Models.Entities;
+﻿using E_commerce_Project.Helpers;
+using E_commerce_Project.Models.Entities;
 using E_commerce_Project.Models.Services.CartService;
 using E_commerce_Project.Models.Services.CategoryService;
 using E_commerce_Project.Models.Services.ProductImageService;
@@ -33,7 +34,7 @@ public class ProductController : Controller
         {
             Id = product.Id,
             Name = product.Name,
-            Quantity = product.Quantity,
+            Quantity = product.StockQuantity,
             Price = product.Price,
             PromotionPrice = product.PromotionPrice,
             Description = product.Description,
@@ -82,9 +83,9 @@ public class ProductController : Controller
         {
             Id = product.Id,
             Name = product.Name,
-            Quantity = product.Quantity,
-            Price = product.Price.ToString(),
-            PromotionPrice = product.PromotionPrice.ToString(),
+            Quantity = product.StockQuantity,
+            Price = CurrencyFormatterHelper.Format(product.Price),
+            PromotionPrice = CurrencyFormatterHelper.Format(product.PromotionPrice ?? 0),
             Description = product.Description,
             Detail = product.Detail,
             HasDiscount = product.HasDiscount,
