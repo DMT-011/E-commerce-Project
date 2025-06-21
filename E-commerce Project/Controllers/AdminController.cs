@@ -1,4 +1,5 @@
 ﻿using E_commerce_Project.Models.Context;
+using E_commerce_Project.Models.Services.CategoryService;
 using E_commerce_Project.Models.Services.OrderServive;
 using E_commerce_Project.Models.Services.ProductService;
 using E_commerce_Project.Models.Services.SliderService;
@@ -14,17 +15,24 @@ public class AdminController : Controller
     private readonly ISliderService _sliderService;
     private readonly IProductService _productService;
     private readonly IOrderService _orderService;
+    private readonly ICategoryService _categoryService;
 
     public AdminController(ApplicationDbContext context, IProductService productService
-    , ISliderService sliderService, IOrderService orderService)
+    , ISliderService sliderService, IOrderService orderService, ICategoryService categoryService)
     {
         _context = context;
         _sliderService = sliderService;
         _productService = productService;
         _orderService = orderService;
+        _categoryService = categoryService;
     }
 
     public IActionResult Index()
+    {
+        return View();
+    }
+
+    public IActionResult Login()
     {
         return View();
     }
@@ -51,5 +59,12 @@ public class AdminController : Controller
         var count = _context.Orders.Count(item => item.IsDeleted == true);
         ViewBag.countOrderDel = count;
         return View(orders);
+    }
+
+    public IActionResult Category(int? page)
+    {
+        ViewBag.countCategoryDel = _context.Categories.Count(item => item.IsDeleted == true);
+        var categories = _categoryService.GetCategoriesWithPaginationAdmin(page);
+        return View(categories);
     }
 }

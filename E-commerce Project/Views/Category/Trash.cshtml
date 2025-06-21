@@ -1,7 +1,7 @@
-﻿@model X.PagedList.IPagedList<E_commerce_Project.Models.ViewModels.AdminViewModel.AdminSliderTrashViewModel>;
+﻿@model X.PagedList.IPagedList<E_commerce_Project.Models.ViewModels.AdminViewModel.AdminCategoryTrashViewModel>;
 @{
   Layout = "_LayoutAdminTable";
-  ViewBag.titleView = "Giao diện";
+  ViewBag.titleView = "Danh mục sản phẩm";
   ViewBag.featureCurrent = "Thùng rác";
 
   // Action for pagination section
@@ -10,17 +10,13 @@
 
 <style>
   .empty-img {
-    width: 40%;
-  }
-  
-  .empty-wrapper .image-wrapper {
-    margin-bottom: 36px;
+    width: 40% !important;
   }
 </style>
 
 @section ControlsAdmin
 {
-  <a href="/Admin/Slider" class="btn btn-black">
+  <a href="/Admin/Category" class="btn btn-black">
     <i class="icon-control fas fa-reply"></i>
     Quay lại
   </a>
@@ -32,8 +28,8 @@
     <thead>
     <tr>
       <th scope="col">ID</th>
-      <th scope="col">Hình</th>
-      <th scope="col">Tên Slider</th>
+      <th scope="col">Tên danh mục</th>
+      <th scope="col">Ngày tạo</th>
       <th scope="col">Thao tác</th>
     </tr>
     </thead>
@@ -46,23 +42,18 @@
           <span class="id-slide" style="margin-left: 2px">@item.Id</span>
         </th>
         <td>
-          <img
-            style="width: 114px"
-            src="~/@item.ImagePath"
-            class="slide-img"
-            alt=""
-          />
+         @item.Name
         </td>
         <td>
-          <a href="#" class="slide-detail-link">@item.Name</a>
+          @item.DateCreated
         </td>
-        <td class="product-controls">
+        <td >
           <button
-            class="btn btn-black btn-restore-slider"
+            class="btn btn-black btn-restore-category"
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             data-bs-title="Khôi phục"
-            data-slider-id="@item.Id"
+            data-category-id="@item.Id"
           >
             <i class="fas fa-sync-alt"></i>
           </button>
@@ -71,8 +62,8 @@
             class="btn btn-danger"
             data-bs-toggle="modal"
             data-bs-target="#modal-confirm-forceDelete"
-            data-slider-id="@item.Id"
-            data-slider-name="@item.Name"
+            data-category-id="@item.Id"
+            data-category-name="@item.Name"
           >
             <i class="fas fa-trash-alt"></i>
           </button>
@@ -92,8 +83,8 @@
 {
   // Context for empty section
   ViewBag.contentEmpty = "Thùng rác rỗng, quay lại danh sách ";
-  ViewBag.contentLink = "slider";
-  ViewBag.actionEmpty = "/Admin/Slider";
+  ViewBag.contentLink = "danh mục";
+  ViewBag.actionEmpty = "/Admin/Category";
   ViewBag.imgEmpty = "trash-empty-color.jpg";
   
   @await Html.PartialAsync("PartialViews/Admin/_EmptySection")
@@ -102,8 +93,8 @@
 
 
 <!-- Form restore and force delete slider -->
-<form action="" method="POST" id="form-restore-slider"></form>
-<form action="" method="POST" id="form-force-delete-slider"></form>
+<form action="" method="POST" id="form-restore-category"></form>
+<form action="" method="POST" id="form-force-delete-category"></form>
 
 @section ModalConfirm
 {
@@ -112,13 +103,13 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5">Xóa vĩnh viễn slider này ?</h1>
+          <h1 class="modal-title fs-5">Xóa vĩnh viễn danh mục này ?</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           Hãy chắc chắn rằng bạn muốn xóa nó.
-          Hành động này sẽ xóa vĩnh viễn slider
-          <span style="font-weight: bold" class="slider-name"></span>
+          Hành động này sẽ xóa vĩnh viễn danh mục
+          <span style="font-weight: bold" class="category-name"></span>
           , không thể khôi phục lại !
         </div>
         <div class="modal-footer">
@@ -134,29 +125,29 @@
 {
 
   <script>
-    const formRestore = document.querySelector("#form-restore-slider");
-    const btnRestore = document.querySelectorAll(".btn-restore-slider");
+    const formRestore = document.querySelector("#form-restore-category");
+    const btnRestore = document.querySelectorAll(".btn-restore-category");
 
     btnRestore.forEach(item => {
       item.addEventListener("click", function () {
-        const id = this.dataset.sliderId;
-        formRestore.action = `/Slider/Restore/${id}`;
+        const id = this.dataset.categoryId;
+        formRestore.action = `/Category/Restore/${id}`;
         formRestore.submit();
       })
     });
 
-    const formForceDelete = document.querySelector("#form-force-delete-slider");
+    const formForceDelete = document.querySelector("#form-force-delete-category");
     const btnConfirmForceDel = document.querySelector(".btn-confirm-forceDel");
     const modalConfirmForceDel = document.querySelector("#modal-confirm-forceDelete");
 
     if (modalConfirmForceDel) {
       modalConfirmForceDel.addEventListener('show.bs.modal', event => {
-        const contentBody = document.querySelector(".slider-name");
-        const sliderId = event.relatedTarget.dataset.sliderId;
-        const sliderName = event.relatedTarget.dataset.sliderName;
+        const contentBody = document.querySelector(".category-name");
+        const categoryId = event.relatedTarget.dataset.categoryId;
+        const categoryName = event.relatedTarget.dataset.categoryName;
 
-        formForceDelete.action = `/Slider/ForceDelete/${sliderId}`;
-        contentBody.textContent = sliderName;
+        formForceDelete.action = `/Category/ForceDelete/${categoryId}`;
+        contentBody.textContent = categoryName;
       });
     }
     btnConfirmForceDel.onclick = function () {

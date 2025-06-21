@@ -36,13 +36,13 @@ public class CartService : ICartService
        _logger.LogInformation($"Cart {cart.Id}  created successfully");
     }
 
-    public async Task<CartItemResultViewModel> AddProductToCartAsync([FromBody] CartItemViewModel model)
+    public async Task<CartItemResultViewModel> AddProductToCartAsync([FromBody] CartItemViewModel model, int cartId)
     {
         var product = await _productService.GetProductByIdAsync(model.ProductId);
-
+        
         var CartItemExist = await _context.CartItems
             .Where(item =>
-                item.CartId == model.CartId &&
+                item.CartId == cartId &&
                 item.ProductId == model.ProductId &&
                 item.IsDeleted == false)
             .FirstOrDefaultAsync();
@@ -68,7 +68,7 @@ public class CartService : ICartService
             Quantity = model.Quantity,
             Price = price,
             TotalPrice = price * model.Quantity,
-            CartId = model.CartId,
+            CartId = cartId,
         };
     
         _context.CartItems.Add(cartItem);

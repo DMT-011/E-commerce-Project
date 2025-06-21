@@ -35,15 +35,17 @@ public class UserController : Controller
         return View();
     }
 
-    public IActionResult Order(int userId)
+    public IActionResult Order()
     {
+        var userId = int.Parse(User.FindFirst("userId")?.Value);
         var model = _orderService.GetOrderDetails(userId);
         return View(model);
     }
 
     [Authorize(AuthenticationSchemes = "CookieAuthCustomer")]
-    public async Task<IActionResult> Cart(int cartId)
+    public async Task<IActionResult> Cart()
     {
+        var cartId = int.Parse(User.FindFirst("cartId")?.Value);
         var cartItems = await _cartService.GetAllCartItemsAsync(cartId);
         var model = cartItems.Select(item => new CartItemTableViewModel
         {

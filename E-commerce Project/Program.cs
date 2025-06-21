@@ -10,6 +10,7 @@ using E_commerce_Project.Models.Services.ProductService;
 using E_commerce_Project.Models.Services.SliderService;
 using E_commerce_Project.Models.Services.UserService;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -87,5 +88,12 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "productSlug",
+    pattern: "Product/{slug}",
+    defaults: new { Controller = "Product", action = "Index" }
+    );
+
 
 app.Run();

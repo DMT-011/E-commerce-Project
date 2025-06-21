@@ -120,29 +120,24 @@
                 } 
                 
                 if (res.status == 200) {
-                    var cartId = "@(User.FindFirst("cartId")?.Value ?? "")";
-                    if (cartId) {
-                        document.location = `/User/Cart?cartId=${cartId}`;
-                    }
+                   document.location = "/User/Cart";
                 }
             });
         </script>
         <!-- Render cart ajax from header -->
         <script>
-            function renderCartItems() {
-                var cartId = '@(User.FindFirst("cartId")?.Value ?? "")';
+            async function handleRenderCart() {
                 const cart = document.querySelector(".shopping-cart .cart-product-list");
                 const cartQuantity = document.querySelector(".shopping-cart .cart-quantity");
+                const totalPriceBlock = document.querySelector(".shopping-cart .total-price-block");
                 
-                fetch(`/Cart/GetAll?cartId=${cartId}`)
-                    .then((res) => {
-                        return res.json();
-                    })
-                    .then((data) => {
-                        
-                        var cartItems = data.map((item) => {
-                            var price = item.hasDiscount ? item.promotionPrice : item.price;
-                            return `
+                
+                const getAllCartItem = await fetch("/Cart/GetAll").then(res => res.json());
+                const getTotalCart = await fetch("/Cart/GetTotalPrice").then(res => res.json());
+
+                var cartItem = getAllCartItem.map((item) => {
+                    var price = item.hasDiscount ? item.promotionPrice : item.price;
+                    return `
                                  <li class="cart-product-item">
                                      <a href="/Product?slug=${item.slug}" class="cart-product-link">
                                         <div class="cart-product-img">
@@ -163,55 +158,31 @@
                                     </a>
                                  </li>
                             `;
-                        });
+                });
+                cartQuantity.textContent =  cartItem.length;
+                cart.innerHTML = cartItem.join("");
 
-                        cartQuantity.textContent =  cartItems.length;
-                        cart.innerHTML = cartItems.join("");
-                    })
-                    .catch((error) => {
-                        console.log("Render cart item failed")
-                    })
-            }    
 
-            function renderTotalPriceCart() {
-                var cartId = '@(User.FindFirst("cartId")?.Value ?? "")';
-               
-                
-                fetch(`/Cart/GetTotalPrice?cartId=${cartId}`)
-                    .then((res) => {
-                        return res.json();
-                    })
-                    .then((data) => {
-                        var totalPrice = data.totalPrice;
-                        const totalPriceBlock = document.querySelector(".shopping-cart .total-price-block");
-
-                        if (totalPrice == 0) {
-                            console.log("Cart empty")
-                            return;
-                        }
-                        
-                        var htmls = `
+                var totalPrice = getTotalCart.totalPrice;
+                if (totalPrice !=0) {
+                    var totalBlock = `
                               <p class="total-price-text">
                                 <span>Tổng</span>
                                 <span class="total-price-product">${totalPrice}<sup>đ</sup></span>
                               </p>
                               <div class="payment-product">
-                                <a href="/User/Cart?cartId=${cartId}" class="payment-btn">
+                                <a href="/User/Cart" class="payment-btn">
                                   Thanh toán
                                   <i class="bi bi-chevron-right"></i>
                                 </a>
                               </div>
                         `;
-                        totalPriceBlock.innerHTML = htmls;
-                    })
-                    .catch((err) => {
-                        console.log("Render total price cart failed");
-                    })
-                   
+
+                    totalPriceBlock.innerHTML = totalBlock;
+                }
             }
-            
-            renderCartItems();
-            renderTotalPriceCart();
+
+            handleRenderCart();
         </script>
       
         @await RenderSectionAsync("Scripts", required: false)

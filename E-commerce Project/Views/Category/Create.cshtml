@@ -1,0 +1,80 @@
+﻿@model E_commerce_Project.Models.ViewModels.CategoryViewModel.CategoryCreateViewModel;
+@{
+    Layout = "_LayoutAdminForm";
+    ViewBag.titleView = "Danh mục sản phẩm";
+    ViewBag.featureCurrent = "Thêm danh mục";
+}
+
+@section StylesViewChild
+{
+    <link rel="stylesheet" href="~/css/admin/addCategoryForm.css" asp-append-version="true">
+}
+
+@section ControlsAdmin
+{
+    <button class="btn btn-primary btn-create-category">
+        <i class="icon-control fas fa-calendar-check"></i>
+        Xác nhận
+    </button>
+    <a href="/Admin/Category" class="btn btn-black">
+        <i class="icon-control fas fa-reply"></i>
+        Quay lại
+    </a>
+}
+
+<!-- Add slider form -->
+<form action="/Category/Create" method="POST" id="form-create-category" class="add-category-form-area">
+    <div class="row">
+        <div class="col-12">
+            <div class="label-notice">* Các mục đánh dấu (*) là bắt buộc</div>
+        </div>
+        <!-- Form side left -->
+        <div class="col-9">
+            <div class="form-left">
+                <div class="form-group">
+                    <label for="name-slider" class="form-label">Tên danh mục</label>
+                    <input asp-for="Name" type="text" class="form-input" id="name-slider">
+                </div>
+              @if (ViewBag.countCategory > 0)
+                {
+                    <div class="form-group">
+                        <label for="priority-category" class="form-label">Thứ tự hiển thị</label>
+                        <select asp-for="Order" asp-items="@Model.Orders" type="text" class="form-input" id="priority-category">
+                            <option value="">[Chọn thứ tự hiển thị]</option>
+                        </select>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Form side right -->
+        <div class="col-3">
+            <div class="form-right">
+                <div class="form-group">
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label for="category-status" class="form-label">Trạng thái</label>
+
+                            <select asp-for="IsDisplayed" id="category-status" class="select-input">
+                                <option value="true">Hiển thị</option>
+                                <option value="false">Không hiển thị</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		
+    </div>
+</form>
+
+@section ScriptsViewChild
+{
+    <script>
+        const btnCreateCategory = document.querySelector(".btn-create-category");
+
+        btnCreateCategory.onclick = function () {
+            document.querySelector("#form-create-category").submit();
+        }
+    </script>
+}

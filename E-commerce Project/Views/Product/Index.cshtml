@@ -822,8 +822,6 @@
       swal(options);
     }
 
-  
-    
     const btnAddProduct = document.querySelector(".add-product-cart-btn");
     const formAddCartItem = document.querySelector("#form-add-cart-item");
     
@@ -834,12 +832,10 @@
     btnAddProduct.addEventListener("click", () => {
         var quantity = document.querySelector("#numberProduct").value;
         var productId = @Model.Id;
-        var cartUserId = "@(User.FindFirst("cartId")?.Value ?? "")";
         
         const formData = {
           quantity: quantity,
           productId: productId,
-          cartId: cartUserId
         }
   
         fetch("/Product/AddProductToCart", {
@@ -857,18 +853,15 @@
                 "Đã thêm sản phẩm này vào giỏ hàng của bạn",
                 "Thêm vào giỏ hàng thành công",
                 "success");
-              
-              renderCartItems();
-              renderTotalPriceCart();
+
+              handleRenderCart();
             }
             if(status === "updated") {
               AlertAddCartItem(
                 "Sản phẩm này đã có trong giỏ hàng của bạn",
                 "Đã cập nhật lại số lượng",
                 "info");
-              
-              renderCartItems();
-              renderTotalPriceCart();
+              handleRenderCart();
             }
             
           })

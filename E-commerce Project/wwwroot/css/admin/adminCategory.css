@@ -1,14 +1,10 @@
-﻿.product-img {
-    width: 88px;
-}
-
-.product-item {
+﻿.product-item {
     cursor: pointer;
 }
 
 .detail-product-inner {
     display: table;
-    margin-left: 25px;
+    margin-left: 50px;
 }
 
 .detail-product-row {
@@ -41,5 +37,5 @@
 }
 
 .empty-img {
-    width: 40%;
+    width: 26% !important;
 }

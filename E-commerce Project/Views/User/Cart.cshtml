@@ -21,8 +21,6 @@
       </div>
     </div>
 
-
-
     @if (Model.Count() > 0)
     {
       <!-- Product list in cart  -->
@@ -144,7 +142,7 @@
   </div>
 </div>
 
-<form action="/Cart/Payment?userId=@User.FindFirst("userId")?.Value" method="POST" id="form-payment-product"></form>
+<form action="/Cart/Payment" method="POST" id="form-payment-product"></form>
 
 <!-- Infomation order && methods payment area -->
 @await Component.InvokeAsync("PaymentOrder", int.Parse(@User.FindFirst("userId")?.Value))

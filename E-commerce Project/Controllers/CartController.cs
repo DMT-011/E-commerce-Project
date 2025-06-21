@@ -24,8 +24,9 @@ public class CartController : Controller
         _orderService = orderService;
     }
 
-    public async Task<JsonResult> GetAll(int cartId)
+    public async Task<JsonResult> GetAll()
     {
+        var cartId = int.Parse(User.FindFirst("cartId")?.Value);
         var cartItems = await _cartService.GetAllCartItemsAsync(cartId);
         var productItems = cartItems.Select(item => new CartItemListViewModel
         {
@@ -41,8 +42,9 @@ public class CartController : Controller
         return Json(productItems);
     }
     
-    public async Task<JsonResult> GetTotalPrice(int cartId)
+    public async Task<JsonResult> GetTotalPrice()
     {
+        var cartId = int.Parse(User.FindFirst("cartId")?.Value);
         var respone =  await _cartService.GetTotalPriceCartAsync(cartId);
         return Json(new
         {
@@ -61,6 +63,6 @@ public class CartController : Controller
         TempData["message"] = " ";
         TempData["textBtn"] = "OK";
         TempData["type"] = "success";
-        return RedirectToAction("Order", "User", new { userId = userId });
+        return RedirectToAction("Order", "User");
     }
 }

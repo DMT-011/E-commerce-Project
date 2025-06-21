@@ -9,7 +9,7 @@ public interface ICartService
 {
     // Command
     Task CreateCartAsync(int userId);
-    Task<CartItemResultViewModel> AddProductToCartAsync([FromBody] CartItemViewModel model);
+    Task<CartItemResultViewModel> AddProductToCartAsync([FromBody] CartItemViewModel model, int cartId);
     
     // Query
     Task<List<CartItem>> GetAllCartItemsAsync(int cartId);

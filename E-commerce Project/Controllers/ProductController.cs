@@ -51,7 +51,8 @@ public class ProductController : Controller
     [HttpPost]
     public async Task<JsonResult> AddProductToCart([FromBody] CartItemViewModel model)
     {
-        var respone=  await _cartService.AddProductToCartAsync(model);
+        var cartId = int.Parse(User.FindFirst("cartId")?.Value);
+        var respone=  await _cartService.AddProductToCartAsync(model, cartId);
         return Json(respone);
     }
 

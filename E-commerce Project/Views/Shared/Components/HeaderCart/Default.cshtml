@@ -2,7 +2,7 @@
   <p class="cart-text btn-cart">
     <i class="cart-icon bi bi-cart-fill"></i>
     Giỏ hàng
-    @if (User.Identity.IsAuthenticated == true)
+    @if (User.Identity.IsAuthenticated)
     {
       <span class="cart-quantity"></span>
     }
