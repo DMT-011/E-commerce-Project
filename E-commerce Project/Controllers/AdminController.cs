@@ -3,7 +3,8 @@ using E_commerce_Project.Models.Services.CategoryService;
 using E_commerce_Project.Models.Services.OrderServive;
 using E_commerce_Project.Models.Services.ProductService;
 using E_commerce_Project.Models.Services.SliderService;
-using E_commerce_Project.Models.ViewModels.AdminViewModel;
+using E_commerce_Project.Models.Services.UserService;
+using E_commerce_Project.Models.ViewModels.UserViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -16,15 +17,18 @@ public class AdminController : Controller
     private readonly IProductService _productService;
     private readonly IOrderService _orderService;
     private readonly ICategoryService _categoryService;
+    private readonly IUserService _userService;
 
     public AdminController(ApplicationDbContext context, IProductService productService
-    , ISliderService sliderService, IOrderService orderService, ICategoryService categoryService)
+    , ISliderService sliderService, IOrderService orderService, ICategoryService categoryService,
+    IUserService userService)
     {
         _context = context;
         _sliderService = sliderService;
         _productService = productService;
         _orderService = orderService;
         _categoryService = categoryService;
+        _userService = userService;
     }
 
     public IActionResult Index()
@@ -37,7 +41,23 @@ public class AdminController : Controller
         return View();
     }
 
-    public async Task<IActionResult> Product(int? page)
+    public IActionResult Create()
+    {
+        return View();
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> Create(UserCreateViewModel model)
+    {
+        await _userService.CreateUserAsync(model);
+        TempData["title"] = $"Thêm thành công";
+        TempData["message"] = $"Đã thêm thành công tài khoản có tên {model.FullName}.";
+        TempData["icon"] = "fas fa-check";
+        TempData["type"] = "success";
+        return View();
+    }
+
+    public IActionResult Product(int? page)
     {
         var products = _productService.GetProductsWithPaginationAdmin(page);
         var count = _context.Products.Count(item => item.IsDeleted == true);

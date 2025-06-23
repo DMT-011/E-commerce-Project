@@ -1,4 +1,6 @@
-﻿namespace E_commerce_Project.Models.ViewModels.UserViewModel;
+﻿using E_commerce_Project.Models.Enums;
+
+namespace E_commerce_Project.Models.ViewModels.UserViewModel;
 
 public class UserCreateViewModel
 {
@@ -9,8 +11,10 @@ public class UserCreateViewModel
     public string Email { get; set; }
     public string Phone { get; set; }
     public string Address { get; set; }
-    public int Gender { get; set; } // 1: male, 2: female, 3: other
+    public GenderType Gender { get; set; } // 1: male, 2: female, 3: other
     public string? Avatar { get; set; }
-    public int AccountStatus { get; set; }
-    public int RoleId { get; set; }
+    public AccountStatusType AccountStatus { get; set; }
+    public UserRoleType Role { get; set; }
+    
+    public IFormFile ImageAvatar { get; set; }
 }

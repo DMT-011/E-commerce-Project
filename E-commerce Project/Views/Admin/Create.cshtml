@@ -1,0 +1,168 @@
+﻿@model E_commerce_Project.Models.ViewModels.UserViewModel.UserCreateViewModel;
+@{
+    Layout = "_LayoutAdminForm";
+    ViewBag.titleView = "Tài khoản";
+    ViewBag.featureCurrent = "Thêm quản trị viên";
+}
+
+@section StylesViewChild
+{
+    <link rel="stylesheet" href="~/css/admin/adminCreateForm.css" asp-append-version="true">
+}
+
+@section ControlsAdmin
+{
+    <button class="btn btn-primary btn-create-admin">
+        <i class="icon-control fas fa-calendar-check"></i>
+        Xác nhận
+    </button>
+    <a href="/Admin/Slider" class="btn btn-black">
+        <i class="icon-control fas fa-reply"></i>
+        Quay lại
+    </a>
+}
+
+<!-- Add slider form -->
+<form action="/Admin/Create" method="POST" enctype="multipart/form-data" id="form-create-admin" class="add-admin-form-area">
+    <div class="row">
+        <div class="col-12">
+            <div class="label-notice">* Các mục đánh dấu (*) là bắt buộc</div>
+        </div>
+        <!-- Form side left -->
+        <div class="col-9">
+            <div class="form-left">
+                <div class="form-group separate-form-group">
+                    <label for="full-name" class="form-label">Họ tên</label>
+                    <input asp-for="FullName" type="text" class="form-input" id="full-name">
+                </div>
+
+                <div class="form-group">
+                    <label for="user-name" class="form-label">Tên đăng nhập</label>
+                    <input asp-for="Username" type="text" class="form-input" id="user-name">
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Mật khẩu</label>
+                    <input asp-for="Password" type="password" class="form-input" id="password">
+                </div>
+
+                <div class="form-group separate-form-group">
+                    <label for="password-confirm" class="form-label">Nhập lại mật khẩu</label>
+                    <input asp-for="PasswordConfirm" type="password" class="form-input" id="password-confirm">
+                </div>
+
+                <div class="form-group">
+                    <label for="email-user" class="form-label">Email</label>
+                    <input asp-for="Email" type="email" class="form-input" id="email-user">
+                </div>
+
+                <div class="form-group">
+                    <label for="phone-user" class="form-label">Số diện thoại</label>
+                    <input asp-for="Phone" type="text" class="form-input" id="phone-user">
+                </div>
+
+                <div class="form-group">
+                    <label for="address-user" class="form-label">Địa chỉ</label>
+                    <input asp-for="Address" type="text" class="form-input" id="address-user">
+                </div>
+            </div>
+        </div>
+
+        <!-- Form side right -->
+        <div class="col-3">
+            <div class="form-right">
+                <div class="form-group">
+                    <label for="img-avatar" class="form-label">Ảnh đại diện</label>
+                    <div class="upload-img-item">
+                        <input asp-for="ImageAvatar" type="file" id="img-avatar" class="img-avatar">
+                        <div class="img-avatar-wrapper">
+                            <img accept="image/*" src="" class="avatar-img-view" alt="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group separate-form-group">
+                    <label for="gender-user" class="form-label">Giới tính</label>
+
+                    <select asp-for="Gender" id="gender-user" class="select-input">
+                        <option value="0">Nam</option>
+                        <option value="1">Nữ</option>
+                        <option value="2">Khác</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="role-user" class="form-label">Phân quyền</label>
+
+                    <select asp-for="Role" id="role-user" class="select-input">
+                        <option value="0">Khách hàng</option>
+                        <option value="1">Quản trị viên hệ thống</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="account-status" class="form-label">Trạng thái tài khoản</label>
+                    <select asp-for="AccountStatus" id="account-status" class="select-input">
+                        <option value="0">Kích hoạt</option>
+                        <option value="1">Không kích hoạt</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+		
+    </div>
+</form>
+
+@section ScriptsViewChild
+{
+    <script>
+        const btnCreateAdmin = document.querySelector(".btn-create-admin");
+
+        btnCreateAdmin.onclick = function () {
+            document.querySelector("#form-create-admin").submit();
+        }
+    </script>
+    
+    <script>
+        function handleRenderImageOnchange(inputElement, imgElement) {
+            inputElement.addEventListener("input", function(e) {
+                const fileImg = e.target.files[0];
+                const imgWrapper = imgElement.parentElement;
+
+                if (fileImg) {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        // assign url img to img element
+                        imgElement.src = e.target.result;
+                        imgElement.style.display = "inline-block";
+                        imgWrapper.style.borderBottom = "1px dashed #ededed";
+                        imgWrapper.style.display = "block";
+                    }
+
+                    // Read file as a URL
+                    reader.readAsDataURL(fileImg);
+
+
+                } else {
+                    imgElement.src = "";
+                    imgElement.style.display = "none";
+                    imgWrapper.style.display = "none";
+                    imgWrapper.style.borderBottom = "";
+                }
+
+            });
+        }
+
+        const inputImageAvatar = document.querySelector(".img-avatar");
+        const imageMain = inputImageAvatar.parentElement.querySelector(".avatar-img-view");
+        const imgWrappers = document.querySelectorAll(".upload-img-item .img-avatar-wrapper");
+
+        imgWrappers.forEach(function(imgWrapperItem) {
+            imgWrapperItem.style.display = "none";
+        })
+
+        handleRenderImageOnchange(inputImageAvatar, imageMain);
+        
+    </script>
+}

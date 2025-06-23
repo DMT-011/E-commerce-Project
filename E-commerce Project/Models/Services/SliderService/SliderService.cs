@@ -176,7 +176,7 @@ public class SliderService : ISliderService
         var sliderFolder = _fileService.GetUploadsFolderByIdItem("sliders", $"{slider.Id}");
         var imageSlider = model.ImageSlide;
 
-        if (imageSlider == null && imageSlider.Length < 0)
+        if (imageSlider == null || imageSlider.Length == 0)
         {
             throw new Exception("Image slider is empty");
         } 

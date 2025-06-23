@@ -16,8 +16,7 @@ public class User : AuditableEntity
     public string? Avatar { get; set; }
     public int AccountStatus { get; set; }
     
-    public int RoleId { get; set; }
+    public int Role { get; set; }
     public Cart Cart { get; set; }
-    public Role Role { get; set; }
     public ICollection<Order> Orders { get; set; }
 }

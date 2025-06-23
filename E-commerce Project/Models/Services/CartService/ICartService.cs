@@ -14,4 +14,6 @@ public interface ICartService
     // Query
     Task<List<CartItem>> GetAllCartItemsAsync(int cartId);
     Task<decimal> GetTotalPriceCartAsync(int cartId);
+
+    Cart GetCartByIdUser(int id);
 }

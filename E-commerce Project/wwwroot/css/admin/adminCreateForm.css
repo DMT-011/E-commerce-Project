@@ -1,0 +1,37 @@
+﻿.add-admin-form-area {
+    background: #fff;
+    min-height: 280px;
+    border-radius: 3px;
+}
+
+.avatar-img-view {
+    width: 100%;
+    max-width: 120px;
+    padding-bottom: 16px;
+    padding-top: 6px;
+}
+
+.img-avatar-wrapper {
+    text-align: center;
+    margin: 6px 0;
+}
+
+.upload-img-item:not(:last-of-type) {
+    margin-bottom: 20px;
+}
+
+.upload-img-item input {
+    width: 100%;
+}
+
+
+/* Overlay form base css */
+.form-left .form-group:not(:last-child) {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.separate-form-group {
+    border-bottom: 1px dashed #ccc !important;
+    padding-bottom: 22px !important;
+}

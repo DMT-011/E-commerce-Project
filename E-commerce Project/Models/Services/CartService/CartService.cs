@@ -97,4 +97,13 @@ public class CartService : ICartService
         _logger.LogInformation("Get total price succesfully");
         return totalPriceCart;
     }
+
+    public Cart GetCartByIdUser(int id)
+    {
+        var cart = _context.Carts
+            .Where(item => item.UserId == id)
+            .FirstOrDefault();
+        if (cart == null) _logger.LogWarning("Cart not found");
+        return cart;
+    }
 }

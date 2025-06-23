@@ -79,6 +79,9 @@ public class UserController : Controller
         
         if(user == null) throw new Exception("User does not exists");
 
+        var checkUserCart = _cartService.GetCartByIdUser(user.Id);
+        if (checkUserCart == null) await _cartService.CreateCartAsync(user.Id);
+
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, user.FullName),
