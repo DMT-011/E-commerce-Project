@@ -131,13 +131,22 @@
                 const cartQuantity = document.querySelector(".shopping-cart .cart-quantity");
                 const totalPriceBlock = document.querySelector(".shopping-cart .total-price-block");
                 
-                
-                const getAllCartItem = await fetch("/Cart/GetAll").then(res => res.json());
-                const getTotalCart = await fetch("/Cart/GetTotalPrice").then(res => res.json());
+                try {
+                    const getAllCartItem = await fetch("/Cart/GetAll")
+                        .then(res => res.json())
+                        .catch(err => {
+                            console.warn("Get all cart item failed");
+                        });
 
-                var cartItem = getAllCartItem.map((item) => {
-                    var price = item.hasDiscount ? item.promotionPrice : item.price;
-                    return `
+                    const getTotalCart = await fetch("/Cart/GetTotalPrice")
+                        .then(res => res.json())
+                        .catch(err => {
+                            console.warn("Get total cart item failed");
+                        });;
+
+                    var cartItem = getAllCartItem.map((item) => {
+                        var price = item.hasDiscount ? item.promotionPrice : item.price;
+                        return `
                                  <li class="cart-product-item">
                                      <a href="/Product?slug=${item.slug}" class="cart-product-link">
                                         <div class="cart-product-img">
@@ -158,14 +167,14 @@
                                     </a>
                                  </li>
                             `;
-                });
-                cartQuantity.textContent =  cartItem.length;
-                cart.innerHTML = cartItem.join("");
+                    });
+                    cartQuantity.textContent =  cartItem.length;
+                    cart.innerHTML = cartItem.join("");
 
-
-                var totalPrice = getTotalCart.totalPrice;
-                if (totalPrice !=0) {
-                    var totalBlock = `
+                    var totalPrice = getTotalCart.totalPrice;
+                    
+                    if (totalPrice !=0) {
+                        var totalBlock = `
                               <p class="total-price-text">
                                 <span>Tổng</span>
                                 <span class="total-price-product">${totalPrice}<sup>đ</sup></span>
@@ -178,10 +187,12 @@
                               </div>
                         `;
 
-                    totalPriceBlock.innerHTML = totalBlock;
+                        totalPriceBlock.innerHTML = totalBlock;
+                    }
+                } catch (err) {
+                    console.warn("Data cart render failed ( must is login )");
                 }
             }
-
             handleRenderCart();
         </script>
       

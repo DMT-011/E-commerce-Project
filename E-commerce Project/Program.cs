@@ -26,6 +26,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(option =>
 builder.Services.AddAuthentication("CookieAuthCustomer")
     .AddCookie("CookieAuthCustomer", options =>
     {
+        options.Cookie.Name = "UserAuthCookie";
         options.LoginPath = "/User/Login";
         options.AccessDeniedPath = "/User/AccessDenied";
         options.Cookie.HttpOnly = true;
@@ -48,6 +49,16 @@ builder.Services.AddAuthentication("CookieAuthCustomer")
                 return Task.CompletedTask;
             }
         };
+    })
+    .AddCookie("CookieAuthAdmin", options =>
+    {
+        options.Cookie.Name = "AdminAuthCookie";
+        options.LoginPath = "/Admin/Login";
+        options.AccessDeniedPath = "/Admin/AccessDenied";
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+        options.SlidingExpiration = true;
     });
 
 
@@ -93,7 +104,7 @@ app.MapControllerRoute(
     name: "productSlug",
     pattern: "Product/{slug}",
     defaults: new { Controller = "Product", action = "Index" }
-    );
+);
 
 
 app.Run();

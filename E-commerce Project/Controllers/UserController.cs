@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace E_commerce_Project.Controllers;
 
+[Authorize(AuthenticationSchemes = "CookieAuthCustomer")]
 public class UserController : Controller
 {
     private readonly IUserService _userService;
@@ -42,7 +43,6 @@ public class UserController : Controller
         return View(model);
     }
 
-    [Authorize(AuthenticationSchemes = "CookieAuthCustomer")]
     public async Task<IActionResult> Cart()
     {
         var cartId = int.Parse(User.FindFirst("cartId")?.Value);
@@ -62,6 +62,7 @@ public class UserController : Controller
     }
 
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> Register(UserCreateViewModel model)
     {
         await _userService.CreateUserAsync(model);
@@ -73,10 +74,10 @@ public class UserController : Controller
     }
 
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> Login(string? returnUrl, UserLoginViewModel model)
     {
         var user = await _authService.AuthenticateCustomer(model);
-        
         if(user == null) throw new Exception("User does not exists");
 
         var checkUserCart = _cartService.GetCartByIdUser(user.Id);
@@ -91,7 +92,7 @@ public class UserController : Controller
         
         var identity = new ClaimsIdentity(claims, "CookieAuthCustomer");
         var principal = new ClaimsPrincipal(identity);
-        await HttpContext.SignInAsync(principal);
+        await HttpContext.SignInAsync("CookieAuthCustomer", principal);
         
         TempData["title"] = "Đăng nhập thành công"; 
         TempData["message"] = "Nhấn OK để tiếp tục";

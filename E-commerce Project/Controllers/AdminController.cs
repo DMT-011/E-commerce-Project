@@ -1,15 +1,21 @@
-﻿using E_commerce_Project.Models.Context;
+﻿using System.Security.Claims;
+using E_commerce_Project.Models.Context;
+using E_commerce_Project.Models.Services.AuthService;
 using E_commerce_Project.Models.Services.CategoryService;
 using E_commerce_Project.Models.Services.OrderServive;
 using E_commerce_Project.Models.Services.ProductService;
 using E_commerce_Project.Models.Services.SliderService;
 using E_commerce_Project.Models.Services.UserService;
+using E_commerce_Project.Models.ViewModels.AdminViewModel;
 using E_commerce_Project.Models.ViewModels.UserViewModel;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace E_commerce_Project.Controllers;
 
+[Authorize(AuthenticationSchemes = "CookieAuthAdmin")]
 public class AdminController : Controller
 {
     private readonly ApplicationDbContext _context;
@@ -18,10 +24,11 @@ public class AdminController : Controller
     private readonly IOrderService _orderService;
     private readonly ICategoryService _categoryService;
     private readonly IUserService _userService;
+    private readonly IAuthService _authService;
 
     public AdminController(ApplicationDbContext context, IProductService productService
-    , ISliderService sliderService, IOrderService orderService, ICategoryService categoryService,
-    IUserService userService)
+        , ISliderService sliderService, IOrderService orderService, ICategoryService categoryService,
+        IUserService userService, IAuthService authService)
     {
         _context = context;
         _sliderService = sliderService;
@@ -29,6 +36,7 @@ public class AdminController : Controller
         _orderService = orderService;
         _categoryService = categoryService;
         _userService = userService;
+        _authService = authService;
     }
 
     public IActionResult Index()
@@ -36,8 +44,10 @@ public class AdminController : Controller
         return View();
     }
 
-    public IActionResult Login()
+    [AllowAnonymous]
+    public IActionResult Login(string? returnUrl)
     {
+        ViewBag.returnUrl = returnUrl;
         return View();
     }
 
@@ -45,7 +55,44 @@ public class AdminController : Controller
     {
         return View();
     }
-    
+
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<IActionResult> Login(string? returnUrl, AdminLoginViewModel model)
+    {
+        var user = await _authService.AuthenticateAdmin(model);
+        if (user == null) throw new Exception("Admin does not exists");
+
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, user.FullName),
+            new Claim("userId", user.Id.ToString()),
+        };
+
+        var identity = new ClaimsIdentity(claims, "CookieAuthAdmin");
+        var principal = new ClaimsPrincipal(identity);
+        await HttpContext.SignInAsync("CookieAuthAdmin", principal);
+        
+        TempData["title"] = $"Đăng nhập thành công";
+        TempData["message"] = $"Xin chào quản trị viên {user.FullName}.";
+        TempData["icon"] = "fas fa-info";
+        TempData["type"] = "info";  
+        
+        if (Url.IsLocalUrl(returnUrl)) return Redirect(returnUrl);
+        
+        return RedirectToAction("Index", "Admin");
+    }
+
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync("CookieAuthAdmin");
+        TempData["title"] = $"Đã đăng xuất";
+        TempData["message"] = $"Đã đăng xuất khỏi hệ thống";
+        TempData["icon"] = "fas fa-info";
+        TempData["type"] = "info";  
+        return RedirectToAction("Login", "Admin");
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(UserCreateViewModel model)
     {
