@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using E_commerce_Project.Models.Context;
+using E_commerce_Project.Models.Enums;
 using E_commerce_Project.Models.Services.AuthService;
 using E_commerce_Project.Models.Services.CategoryService;
 using E_commerce_Project.Models.Services.OrderServive;
@@ -56,6 +57,13 @@ public class AdminController : Controller
         return View();
     }
 
+    public IActionResult Account(int? page)
+    {
+        var model = _userService.GetAllAccountListWithPagination(page);
+        ViewBag.countAccountDel = _userService.GetTotalAccountAdminDelete();
+        return View(model);
+    }
+
     [HttpPost]
     [AllowAnonymous]
     public async Task<IActionResult> Login(string? returnUrl, AdminLoginViewModel model)
@@ -63,10 +71,23 @@ public class AdminController : Controller
         var user = await _authService.AuthenticateAdmin(model);
         if (user == null) throw new Exception("Admin does not exists");
 
+        var isAccountActive = user.AccountStatus == (int)AccountStatusType.Active;
+
+        if (!isAccountActive)
+        {
+            TempData["title"] = $"Đăng nhập thất bại";
+            TempData["message"] = $"Tài khoản này đã bị vô hiệu hóa, không thể đăng nhập !";
+            TempData["icon"] = "fas fa-times";
+            TempData["type"] = "danger";
+            return View();
+        }
+
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, user.FullName),
             new Claim("userId", user.Id.ToString()),
+            new Claim("avatar", user.Avatar),
+            new Claim("email", user.Email),
         };
 
         var identity = new ClaimsIdentity(claims, "CookieAuthAdmin");
@@ -86,8 +107,8 @@ public class AdminController : Controller
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync("CookieAuthAdmin");
-        TempData["title"] = $"Đã đăng xuất";
-        TempData["message"] = $"Đã đăng xuất khỏi hệ thống";
+        TempData["title"] = "Đã đăng xuất";
+        TempData["message"] = "Đã đăng xuất khỏi hệ thống";
         TempData["icon"] = "fas fa-info";
         TempData["type"] = "info";  
         return RedirectToAction("Login", "Admin");
@@ -101,7 +122,7 @@ public class AdminController : Controller
         TempData["message"] = $"Đã thêm thành công tài khoản có tên {model.FullName}.";
         TempData["icon"] = "fas fa-check";
         TempData["type"] = "success";
-        return View();
+        return RedirectToAction("Account", "Admin");
     }
 
     public IActionResult Product(int? page)
@@ -134,4 +155,11 @@ public class AdminController : Controller
         var categories = _categoryService.GetCategoriesWithPaginationAdmin(page);
         return View(categories);
     }
+
+    [HttpPost]
+    public async Task<JsonResult> UpdateStatus([FromBody] UserStatusAccountViewModel model)
+    {
+        var response = await _userService.UpdateStatusAccountUserAsync(model);
+        return Json(response);
+    } 
 }

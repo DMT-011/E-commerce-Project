@@ -1,3 +1,4 @@
+using E_commerce_Project.Authentication.CookieEvents;
 using E_commerce_Project.Models.Context;
 using E_commerce_Project.Models.Entities;
 using E_commerce_Project.Models.Services.AuthService;
@@ -59,7 +60,13 @@ builder.Services.AddAuthentication("CookieAuthCustomer")
         options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
         options.SlidingExpiration = true;
+        options.EventsType = typeof(CustomCookieAuthenticationEvents);
     });
+
+// builder.WebHost.ConfigureKestrel(options =>
+// {
+//     options.ListenAnyIP(5248);
+// });
 
 
 // Add service handle logic business
@@ -73,13 +80,14 @@ builder.Services.AddScoped<IAuthService, AuthSerivce>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
+// Service custom cookie event validation
+builder.Services.AddScoped<CustomCookieAuthenticationEvents>();
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-app.UseAuthorization();
-app.UseAuthentication();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -94,6 +102,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

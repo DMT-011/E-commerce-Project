@@ -6,6 +6,7 @@ using E_commerce_Project.Models.Services.ProductImageService;
 using E_commerce_Project.Models.Services.ProductService;
 using E_commerce_Project.Models.ViewModels.CartViewModel;
 using E_commerce_Project.Models.ViewModels.ProductViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,6 +28,7 @@ public class ProductController : Controller
         _cartService = cartService;
     }
 
+    [AllowAnonymous]
     public async Task<IActionResult> Index(string slug)
     {
         var product = await _productService.GetProductBySlugAsync(slug);
@@ -47,15 +49,17 @@ public class ProductController : Controller
         };
         return View(model);
     }
-
+    
     [HttpPost]
+    [Authorize(AuthenticationSchemes = "CookieAuthCustomer")]
     public async Task<JsonResult> AddProductToCart([FromBody] CartItemViewModel model)
     {
         var cartId = int.Parse(User.FindFirst("cartId")?.Value);
         var respone=  await _cartService.AddProductToCartAsync(model, cartId);
         return Json(respone);
     }
-
+    
+    [Authorize(AuthenticationSchemes = "CookieAuthAdmin")]
     public async Task<IActionResult> Create()
     {
         var model = new ProductCreateViewModel
@@ -67,6 +71,7 @@ public class ProductController : Controller
     }
     
     [HttpPost]
+    [Authorize(AuthenticationSchemes = "CookieAuthAdmin")]
     public async Task<IActionResult> Create(ProductCreateViewModel model)
     {
         await _productService.CreateProductAsync(model);
@@ -77,6 +82,7 @@ public class ProductController : Controller
         return RedirectToAction("Product", "Admin");
     }
     
+    [Authorize(AuthenticationSchemes = "CookieAuthAdmin")]
     public async Task<IActionResult> Update(int id)
     {
         var product = await _productService.GetProductByIdAsync(id);
@@ -102,6 +108,7 @@ public class ProductController : Controller
     }
     
     [HttpPost]
+    [Authorize(AuthenticationSchemes = "CookieAuthAdmin")]
     public async Task<IActionResult> Update(int id, ProductUpdateViewModel model)
     {
         await _productService.UpdateProductAsync(id, model);
@@ -111,7 +118,9 @@ public class ProductController : Controller
         TempData["type"] = "info";
         return RedirectToAction("Product", "Admin");
     }
-
+    
+    [HttpPost]
+    [Authorize(AuthenticationSchemes = "CookieAuthAdmin")]
     public async Task<IActionResult> Delete(int id)
     {
         await _productService.DeleteProductAsync(id);
@@ -122,6 +131,7 @@ public class ProductController : Controller
         return RedirectToAction("Product", "Admin");
     }
     
+    [Authorize(AuthenticationSchemes = "CookieAuthAdmin")]
     public IActionResult Trash(int? page)
     {
         var products = _productService.GetProductsWithPaginationAdminTrash(page);
@@ -129,6 +139,7 @@ public class ProductController : Controller
     }
 
     [HttpPost]
+    [Authorize(AuthenticationSchemes = "CookieAuthAdmin")]
     public async Task<IActionResult> Restore(int id)
     {
         await _productService.RestoreProductAsync(id);
@@ -140,6 +151,7 @@ public class ProductController : Controller
     }
 
     [HttpPost]
+    [Authorize(AuthenticationSchemes = "CookieAuthAdmin")]
     public async Task<IActionResult> ForceDelete(int id)
     {
         await _productService.ForceDeleteProductAsync(id);

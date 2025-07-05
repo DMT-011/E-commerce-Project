@@ -62,6 +62,18 @@ public class UserController : Controller
     }
 
     [HttpPost]
+    [Authorize(AuthenticationSchemes = "CookieAuthAdmin")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        await _userService.DeleteUserAsync(id);
+        TempData["title"] = $"Đã chuyển vào thùng rác";
+        TempData["message"] = $"Tài khoản có ID = {id} đã được đưa vào thùng rác.";
+        TempData["icon"] = "fas fa-trash";
+        TempData["type"] = "warning";
+        return RedirectToAction("Account", "Admin");
+    }
+
+    [HttpPost]
     [AllowAnonymous]
     public async Task<IActionResult> Register(UserCreateViewModel model)
     {

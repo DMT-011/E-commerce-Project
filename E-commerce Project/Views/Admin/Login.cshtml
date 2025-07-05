@@ -7,88 +7,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - Black & White</title>
+    <title>Đăng nhập quản trị</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon/admin-login-favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="~/css/admin/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/admin/plugins.min.css" />
+    <link rel="stylesheet" href="~/css/admin/kaiadmin.min.css" />
     <link rel="stylesheet" href="/css/admin/adminLogin.css" asp-append-version="true">
+
 </head>
 <body>
-    <div class="login-container">
-        <div class="logo-img">
-            <img src="/images/logo/admin-logo.png" alt="">
-        </div>
-
-        <div class="login-header">
-            <h1>Hệ Thống Quản Trị</h1>
-            <p>Xác thực để truy cập hệ thống</p>
-        </div>
-        
-        <form id="loginForm" asp-action="Login" asp-controller="Admin" asp-route-returnUrl="@ViewBag.returnUrl" method="POST">
-            <div class="input-group">
-                <label for="username">Tài khoản</label>
-                <input type="text" id="username" asp-for="UserName" required placeholder="Nhập tên tài khoản">
-            </div>
+<div class="login-container">
+    <div class="logo-img">
+        <img src="/images/logo/administrator.png" alt="">
             
-            <div class="input-group">
-                <label for="password">Mật khẩu</label>
-                <div class="password-container">
-                    <input type="password" id="password" asp-for="Password" required placeholder="Nhập mật khẩu">
-                    <span class="toggle-password" id="togglePassword">
-                        <i class="fa-solid fa-eye"></i>
-                    </span>
-                </div>
-            </div>
-            
-            <div class="remember-forgot">
-                <div class="remember-me">
-                    <input type="checkbox" id="remember" name="remember">
-                    <label for="remember">Ghi nhớ đăng nhập</label>
-                </div>
-                <div class="forgot-password">
-                    <a href="#">Quên mật khẩu?</a>
-                </div>
-            </div>
-            
-            <button type="submit" class="login-button">Đăng Nhập</button>
-        </form>
-        
-        <div class="login-footer">
-            <p>© 2025 Admin Dashboard | Phiên bản 1.0.0</p>
-        </div>
     </div>
 
-<script>
-        // Toggle password visibility
-        const togglePassword = document.getElementById('togglePassword');
-        const passwordInput = document.getElementById('password');
+    <div class="login-header">
+        <h1>Hệ Thống Quản Trị</h1>
+        <p>Xác thực để truy cập hệ thống</p>
+    </div>
         
-        togglePassword.addEventListener('click', function() {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            this.innerHTML = type === 'password' ? 
-                '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
-        });
-
-        // Form submission
-        /* 
-        const loginForm = document.getElementById('loginForm');
+    <form id="loginForm" asp-action="Login" asp-controller="Admin" asp-route-returnUrl="@ViewBag.returnUrl" method="POST">
+        <div class="input-group">
+            <label for="username">Tài khoản</label>
+            <input type="text" id="username" asp-for="UserName" required placeholder="Nhập tên tài khoản">
+        </div>
+            
+        <div class="input-group">
+            <label for="password">Mật khẩu</label>
+            <div class="password-container">
+                <input type="password" id="password" asp-for="Password" required placeholder="Nhập mật khẩu">
+                <span class="toggle-password" id="togglePassword">
+                    <i class="fa-solid fa-eye"></i>
+                </span>
+            </div>
+        </div>
+            
+        <div class="remember-forgot">
+            <div class="remember-me">
+                <input type="checkbox" id="remember" name="remember">
+                <label for="remember">Ghi nhớ đăng nhập</label>
+            </div>
+            <div class="forgot-password">
+                <a href="#">Quên mật khẩu?</a>
+            </div>
+        </div>
+            
+        <button type="submit" class="login-button">Đăng Nhập</button>
+    </form>
         
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const remember = document.getElementById('remember').checked;
-            
-            // Simulate loading
-            const submitButton = loginForm.querySelector('button[type="submit"]');
-            const originalText = submitButton.textContent;
-            submitButton.textContent = 'Đang xử lý...';
-            submitButton.disabled = true;
-        });
-        */
-    </script>
+    <div class="login-footer">
+        <p>© 2025 Admin | Version 3.0.4</p>
+    </div>
+</div>
 
+    <!--   Core JS Files   -->
+    <script src="~/js/admin/core/jquery-3.7.1.min.js"></script>
+    <script src="~/js/admin/core/popper.min.js"></script>
+    <script src="~/js/admin/core/bootstrap.min.js"></script>
+
+    <!-- Bootstrap Notify -->
+    <script src="~/js/admin/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+    @await Html.PartialAsync("PartialViews/Admin/_NoticeSection")
+
+    <script>
+            // Toggle password visibility
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+            
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.innerHTML = type === 'password' ? 
+                    '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
+            });
+
+            // Form submission
+            /* 
+            const loginForm = document.getElementById('loginForm');
+            
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const remember = document.getElementById('remember').checked;
+                
+                // Simulate loading
+                const submitButton = loginForm.querySelector('button[type="submit"]');
+                const originalText = submitButton.textContent;
+                submitButton.textContent = 'Đang xử lý...';
+                submitButton.disabled = true;
+            });
+            */
+        </script>
 
 </body>
 </html>

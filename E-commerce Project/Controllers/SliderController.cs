@@ -1,11 +1,13 @@
 ﻿using E_commerce_Project.Models.Context;
 using E_commerce_Project.Models.Services.SliderService;
 using E_commerce_Project.Models.ViewModels.SliderViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace E_commerce_Project.Controllers;
 
+[Authorize(AuthenticationSchemes = "CookieAuthAdmin")]
 public class SliderController : Controller
 {
     private readonly ISliderService _sliderService;

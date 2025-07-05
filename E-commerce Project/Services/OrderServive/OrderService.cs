@@ -215,7 +215,7 @@ public class OrderService : IOrderService
             {
                Id = item.Id,
                FullName = item.User.FullName,
-               AdminName = _userService.GetUserByIdAsync(item.UserId).FullName,
+               AdminName = _userService.GetUserById(item.UserId).FullName,
                TotalOrder = item.TotalAmount,
                OrderNote = item.OrderNote ?? "",
                OrderStatus = (OrderStatusType) item.OrderStatus,

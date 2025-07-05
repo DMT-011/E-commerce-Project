@@ -1,0 +1,25 @@
+﻿function notice(title, message, type, icon) {
+    if (message) {
+        const content = {
+            icon: icon,
+            title: title,
+            message: message
+        }
+
+        const option = {
+            type: type,
+            placement: {
+                from: "top",
+                align: "right"
+            },
+            delay: 3000,
+            timer: 1000,
+            animate: {
+                enter: "animated bounceInRight",
+                exit: "animated bounceOutUp"
+            }
+        }
+        $.notify(content, option);
+    }
+}
+

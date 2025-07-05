@@ -1,9 +1,11 @@
 ﻿using E_commerce_Project.Models.Services.OrderServive;
 using E_commerce_Project.Models.ViewModels.AdminViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_commerce_Project.Controllers;
 
+[Authorize(AuthenticationSchemes = "CookieAuthAdmin")]
 public class OrderController : Controller
 {
     private readonly IOrderService _orderService;

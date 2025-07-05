@@ -14,7 +14,7 @@
 {
     <button class="btn btn-primary btn-create-slider">
         <i class="icon-control fas fa-calendar-check"></i>
-        Xác nhận
+        @(User.Identity.IsAuthenticated ? "Đã đăng nhập" : "Chưa đăng nhập")
     </button>
     <a href="/Admin/Slider" class="btn btn-black">
         <i class="icon-control fas fa-reply"></i>

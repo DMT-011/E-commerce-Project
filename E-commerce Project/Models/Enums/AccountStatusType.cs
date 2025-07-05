@@ -2,6 +2,6 @@
 
 public enum AccountStatusType
 {
-    Active = 0,
-    Banned = 1,
-}
+    Active = 1,
+    Banned = 0,
+} 

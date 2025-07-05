@@ -1,11 +1,13 @@
 ﻿using E_commerce_Project.Models.Services.CategoryService;
 using E_commerce_Project.Models.ViewModels.CategoryViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using X.PagedList.Extensions;
 
 namespace E_commerce_Project.Controllers;
 
+[Authorize(AuthenticationSchemes = "CookieAuthAdmin")]
 public class CategoryController : Controller
 {
     private readonly ICategoryService _categoryService;

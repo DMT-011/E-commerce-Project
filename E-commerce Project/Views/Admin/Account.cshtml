@@ -1,0 +1,228 @@
+@using E_commerce_Project.Models.Enums
+@model X.PagedList.IPagedList<E_commerce_Project.Models.ViewModels.AdminViewModel.AdminAccountListViewModel>;
+@{
+  Layout = "_LayoutAdminTable";
+  ViewBag.titleView = "Tài khoản";
+  ViewBag.featureCurrent = "Quản trị viên";
+
+  // Action for pagination section
+  ViewBag.action = "Account";
+}
+
+@section StylesViewChild
+{
+  <link rel="stylesheet" href="/css/admin/adminAccount.css" asp-append-version="true">
+  <style>
+    .empty-img {
+      width: 35%;
+    }
+  </style>
+}
+
+@section ControlsAdmin
+{
+  <a href="/Admin/Create" class="btn btn-primary ">
+    <i class="icon-control fas fa-plus-circle "></i>
+    Thêm mới
+  </a>
+  <a href="/Account/Trash" class="btn btn-danger">
+    <i class="icon-control fas fa-trash"></i>
+    Thùng rác
+    <span>(@ViewBag.countAccountDel)</span>
+  </a>
+}
+
+@if (Model.Count > 0)
+{
+  <table class="table align-middle table-product-list">
+    <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Tên quản trị viên</th>
+      <th scope="col">Tên truy cập</th>
+      <th scope="col">Trạng thái tài khoản</th>
+      <th scope="col">Thao tác</th>
+    </tr>
+    </thead>
+
+    <tbody class="table-group-divider">
+    @foreach (var item in Model)
+    {
+      <tr>
+        <th scope="row">
+          <span class="id-slide" style="margin-left: 2px">@item.Id</span>
+        </th>
+        <td>
+          @item.FullName
+        </td>
+        <td>
+          @item.UserName
+        </td>
+        <td class="button-status">
+          <div class="button-slider-wrap">
+            <input type="checkbox" class="btn-toggle-status" data-id-user="@item.Id" id="switch-@item.Id" @(item.Status == AccountStatusType.Active ? "checked" : "")/>
+            <label 
+              for="switch-@item.Id"
+              class="label-toggle"
+              data-bs-toggle="tooltip" 
+              data-bs-placement="top" 
+              >
+            </label>
+          </div>
+        </td>
+        <td class="product-controls">
+          <button
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#modal-confirm-delete"
+            data-user-id="@item.Id"
+            data-user-name="@item.FullName"
+          >
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+
+      </tr>
+    }
+    </tbody>
+  </table>
+
+  @section Pagination
+  {
+    @await Html.PartialAsync("PartialViews/Admin/_PaginationSection")
+    }
+  }
+
+@if (Model.Count == 0)
+{ 
+  // Context for empty section
+  ViewBag.contentEmpty = "Danh sách tài khoản rỗng";
+  ViewBag.contentLink = "";
+  ViewBag.actionEmpty = "";
+  ViewBag.imgEmpty = "user-empty.jpg";
+  @await Html.PartialAsync("PartialViews/Admin/_EmptySection")
+}
+
+
+<form action="" method="POST" id="form-delete-account"></form>
+
+@section ModalConfirm
+{
+  <!-- Modal -->
+  <div class="modal fade" id="modal-confirm-delete" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Chuyển tài khoản này vào thùng rác ?</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Tài khoản của quản trị viên <span style="font-weight: bold" class="slider-name"></span>  sẽ được sẽ được chuyển vào thùng rác <span style="color: #2bb930">( có thể khôi phục lại )</span>.
+        </div>  
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
+          <button type="button" class="btn btn-warning btn-confirm-delete">Xác nhận</button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+@section ScriptsViewChild
+{
+  <script src="~/js/admin/notice.js"></script>
+  <script>
+    const listBtnToogleStatus = document.querySelectorAll(".btn-toggle-status");
+    const listLabelToggles = document.querySelectorAll(".label-toggle");
+    
+    listBtnToogleStatus.forEach((btn) => {
+      btn.addEventListener("click", handleToogleBtn)
+    });
+    
+    listLabelToggles.forEach((item) => {
+        const btnToogleStatus = item.previousElementSibling;
+        const isChecked = btnToogleStatus.checked;
+        
+        if (isChecked) {
+          item.setAttribute("data-bs-title", "Đang kích hoạt");
+        } else {
+          item.setAttribute("data-bs-title", "Đã vô hiệu hóa")
+        }
+    });
+    
+    function changeContentTooltip(item, isActive) {
+      const tooltip = bootstrap.Tooltip.getOrCreateInstance(item);
+      if (isActive) {
+        tooltip.setContent({ '.tooltip-inner': "Đang kích hoạt" });
+        tooltip.show();
+      } else  {
+        tooltip.setContent({ '.tooltip-inner': "Đã vô hiệu hóa" });
+        tooltip.show();
+      }
+    }
+    
+    async function updateStatusAcount(userId, status) {
+      
+      const formData = {
+        userId: userId,
+        status: status,
+      }
+      
+      fetch("/Admin/UpdateStatus", {
+        method: 'POST',
+        headers: {  
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          notice(
+            title = "Cập nhật thành công",
+            message = `Trạng thái tài khoản có ID = ${userId} đã được cập nhật.`,
+            type = "info",
+            icon = "fas fa-edit"
+          );
+        })
+    }
+
+    function handleToogleBtn(e) {
+      const userId = this.dataset.idUser;
+      const isChecked = this.checked;
+      const labelToggle = this.nextElementSibling;
+      
+      if (isChecked) {
+        const active = 1;
+        updateStatusAcount(userId, active);
+        changeContentTooltip(labelToggle, active);
+      } else  {
+        const banned = 0;
+        updateStatusAcount(userId, banned);
+        changeContentTooltip(labelToggle, banned);
+      }
+    }
+  </script>
+  
+  <script>
+    const modalConfirmDelete = document.getElementById('modal-confirm-delete');
+    const formDelete = document.querySelector("#form-delete-account");
+    const btnConfirmDelete = document.querySelector(".btn-confirm-delete");
+
+    if (modalConfirmDelete) {
+      modalConfirmDelete.addEventListener('show.bs.modal', event => {
+        const contentBody = modalConfirmDelete.querySelector(".slider-name");
+        const userId = event.relatedTarget.dataset.userId;
+        const userName = event.relatedTarget.dataset.userName;
+
+        formDelete.action = `/User/Delete/${userId}`;
+        contentBody.textContent = userName;
+      })
+    }
+
+    btnConfirmDelete.onclick = function () {
+      formDelete.submit();
+    }
+  </script>
+}
