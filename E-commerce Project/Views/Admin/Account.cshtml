@@ -160,14 +160,28 @@
         tooltip.show();
       }
     }
+
+    function handleToogleBtn(e) {
+      const userId = this.dataset.idUser;
+      const isChecked = this.checked;
+      const labelToggle = this.nextElementSibling;
+
+      if (isChecked) {
+        const active = 1;
+        updateStatusAcount(userId, active, this);
+        changeContentTooltip(labelToggle, active);
+      } else  {
+        const banned = 0;
+        updateStatusAcount(userId, banned, this);
+        changeContentTooltip(labelToggle, banned);
+      }
     
-    async function updateStatusAcount(userId, status) {
+    async function updateStatusAcount(userId, status, btnStatus) {
       
       const formData = {
         userId: userId,
         status: status,
       }
-      
       fetch("/Admin/UpdateStatus", {
         method: 'POST',
         headers: {  
@@ -179,29 +193,31 @@
           return res.json();
         })
         .then((data) => {
+          showNoticeUpdateStatus(data, btnStatus);
+        });
+    }
+    
+    async function showNoticeUpdateStatus(data, btnStatus) {
+        var statusCode = await data.statusCode;
+        if (statusCode === 200) {
           notice(
             title = "Cập nhật thành công",
             message = `Trạng thái tài khoản có ID = ${userId} đã được cập nhật.`,
             type = "info",
             icon = "fas fa-edit"
           );
-        })
+        } else if (statusCode == 304) {
+          setTimeout(function () {
+            btnStatus.checked = true;
+          }, 1000)
+          notice(
+            title = "Cập nhật thất bại",
+            message = `Không thể tự vô hiệu tài khoản của bản thân.`,
+            type = "danger",
+            icon = "fas fa-times"
+          );
+      } 
     }
-
-    function handleToogleBtn(e) {
-      const userId = this.dataset.idUser;
-      const isChecked = this.checked;
-      const labelToggle = this.nextElementSibling;
-      
-      if (isChecked) {
-        const active = 1;
-        updateStatusAcount(userId, active);
-        changeContentTooltip(labelToggle, active);
-      } else  {
-        const banned = 0;
-        updateStatusAcount(userId, banned);
-        changeContentTooltip(labelToggle, banned);
-      }
     }
   </script>
   

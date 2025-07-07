@@ -65,11 +65,23 @@ public class UserController : Controller
     [Authorize(AuthenticationSchemes = "CookieAuthAdmin")]
     public async Task<IActionResult> Delete(int id)
     {
-        await _userService.DeleteUserAsync(id);
-        TempData["title"] = $"Đã chuyển vào thùng rác";
-        TempData["message"] = $"Tài khoản có ID = {id} đã được đưa vào thùng rác.";
-        TempData["icon"] = "fas fa-trash";
-        TempData["type"] = "warning";
+        var userIdModifier = User.FindFirst("userId")?.Value;
+        
+        try
+        {
+            await _userService.DeleteUserAsync(id, int.Parse(userIdModifier));
+            TempData["title"] = $"Đã chuyển vào thùng rác";
+            TempData["message"] = $"Tài khoản có ID = {id} đã được đưa vào thùng rác.";
+            TempData["icon"] = "fas fa-trash";
+            TempData["type"] = "warning";
+        }
+        catch
+        {
+            TempData["title"] = $"Thao tác thất bại";
+            TempData["message"] = $"Không thể chuyển tài khoản của bản thân vào thùng rác.";
+            TempData["icon"] = "fas fa-times";
+            TempData["type"] = "danger";
+        }
         return RedirectToAction("Account", "Admin");
     }
 

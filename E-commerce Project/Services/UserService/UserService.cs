@@ -87,14 +87,16 @@ public class UserService : IUserService
         _logger.LogInformation($"User {userName} with ID {user.Id} created successfully");
     }
 
-    public async Task DeleteUserAsync(int id)
+    public async Task DeleteUserAsync(int id, int userIdModifier)
     {
         var user = await _context.Users
             .Where(item => item.Id == id && item.IsDeleted == false)
             .FirstOrDefaultAsync();
 
         if (user == null) throw new Exception("User not found!");
-        
+
+        if (user.Id == userIdModifier) throw new Exception("Dont delete account yourself!");
+       
         user.IsDeleted = true;
         _context.Users.Update(user);
         await _context.SaveChangesAsync();
@@ -115,7 +117,7 @@ public class UserService : IUserService
         _logger.LogInformation($"User has {id} restore account successfully");
     }
 
-    public async Task<UserAccountStatusResultViewModel> UpdateStatusAccountUserAsync(UserStatusAccountViewModel model)
+    public async Task<UserAccountStatusResultViewModel> UpdateStatusAccountUserAsync(UserStatusAccountViewModel model, int userIdModifier)
     {
         var user = await _context.Users
             .Where(item => item.Id == model.UserId && item.IsDeleted == false)
@@ -127,6 +129,15 @@ public class UserService : IUserService
             {
                 StatusCode = 404,
                 Message = "User update status not found!"
+            };
+        }
+
+        if (user.Id == userIdModifier)
+        {
+            return new UserAccountStatusResultViewModel
+            {
+                StatusCode = 304,
+                Message = "Account status update not change."
             };
         }
 

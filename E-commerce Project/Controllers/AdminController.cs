@@ -159,7 +159,8 @@ public class AdminController : Controller
     [HttpPost]
     public async Task<JsonResult> UpdateStatus([FromBody] UserStatusAccountViewModel model)
     {
-        var response = await _userService.UpdateStatusAccountUserAsync(model);
+        var userId = User.FindFirst("userId")?.Value;
+        var response = await _userService.UpdateStatusAccountUserAsync(model, int.Parse(userId));
         return Json(response);
     } 
 }

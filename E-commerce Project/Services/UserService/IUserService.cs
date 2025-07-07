@@ -10,10 +10,10 @@ public interface IUserService
 {
     // Command
     Task CreateUserAsync(UserCreateViewModel model);
-    Task DeleteUserAsync(int id);
+    Task DeleteUserAsync(int id, int userIdModifier);
     Task RestoreUserAsync(int id);
 
-    Task<UserAccountStatusResultViewModel> UpdateStatusAccountUserAsync([FromBody] UserStatusAccountViewModel model);
+    Task<UserAccountStatusResultViewModel> UpdateStatusAccountUserAsync([FromBody] UserStatusAccountViewModel model, int id);
     // Query
     User GetUserById(int id);
     IPagedList<AdminAccountListViewModel> GetAllAccountListWithPagination(int? page);
