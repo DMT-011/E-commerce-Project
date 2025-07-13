@@ -2,15 +2,15 @@
 using E_commerce_Project.Models.Context;
 using E_commerce_Project.Models.Entities;
 using E_commerce_Project.Models.Enums;
-using E_commerce_Project.Models.Services.CartService;
 using E_commerce_Project.Models.Services.FileService;
 using E_commerce_Project.Models.ViewModels.AdminViewModel;
 using E_commerce_Project.Models.ViewModels.UserViewModel;
+using E_commerce_Project.ViewModels.AdminViewModel;
 using Microsoft.EntityFrameworkCore;
 using X.PagedList;
 using X.PagedList.Extensions;
 
-namespace E_commerce_Project.Models.Services.UserService;
+namespace E_commerce_Project.Services.UserService;
 
 public class UserService : IUserService
 {
@@ -18,7 +18,7 @@ public class UserService : IUserService
     private readonly ILogger<UserService> _logger;
     private readonly IFileService _fileService;
 
-    public UserService(ApplicationDbContext context, ILogger<UserService> logger , IFileService fileService)
+    public UserService(ApplicationDbContext context, ILogger<UserService> logger, IFileService fileService)
     {
         _context = context;
         _logger = logger;
@@ -43,7 +43,7 @@ public class UserService : IUserService
             .Where(item => item.Email == email)
             .SingleOrDefaultAsync();
 
-        if (checkExistUser != null) throw new Exception($"Email already exists");
+        if (checkExistEmail != null) throw new Exception($"Email already exists");
 
         var checkExistPhone = await _context.Users
             .Where(item => item.Phone == phone)
@@ -67,7 +67,7 @@ public class UserService : IUserService
             Address = model.Address,
             Gender = (int)GenderType.Other,
             AccountStatus = (int)AccountStatusType.Active,
-            Role = (int) UserRoleType.Customer
+            Role = (int)UserRoleType.Customer
         };
 
         if (model.Gender != null &&
@@ -77,12 +77,12 @@ public class UserService : IUserService
         {
             user.Gender = (int)model.Gender;
             user.AccountStatus = (int)model.AccountStatus;
-            user.Role = (int) model.Role;
+            user.Role = (int)model.Role;
         }
 
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
-        
+
         if (user.Role == (int)UserRoleType.Admin) await CreateAvatarUser(model, user);
         _logger.LogInformation($"User {userName} with ID {user.Id} created successfully");
     }
@@ -96,7 +96,7 @@ public class UserService : IUserService
         if (user == null) throw new Exception("User not found!");
 
         if (user.Id == userIdModifier) throw new Exception("Dont delete account yourself!");
-       
+
         user.IsDeleted = true;
         _context.Users.Update(user);
         await _context.SaveChangesAsync();
@@ -108,7 +108,7 @@ public class UserService : IUserService
         var user = await _context.Users
             .Where(item => item.Id == id && item.IsDeleted == true)
             .FirstOrDefaultAsync();
-        
+
         if (user == null) throw new Exception("User not found!");
 
         user.IsDeleted = false;
@@ -117,7 +117,8 @@ public class UserService : IUserService
         _logger.LogInformation($"User has {id} restore account successfully");
     }
 
-    public async Task<UserAccountStatusResultViewModel> UpdateStatusAccountUserAsync(UserStatusAccountViewModel model, int userIdModifier)
+    public async Task<UserAccountStatusResultViewModel> UpdateStatusAccountUserAsync(UserStatusAccountViewModel model,
+        int userIdModifier)
     {
         var user = await _context.Users
             .Where(item => item.Id == model.UserId && item.IsDeleted == false)
@@ -153,7 +154,7 @@ public class UserService : IUserService
             user.AccountStatus = model.Status;
             _context.Users.Update(user);
         }
-        
+
         await _context.SaveChangesAsync();
         return new UserAccountStatusResultViewModel
         {
@@ -173,9 +174,9 @@ public class UserService : IUserService
 
     public IPagedList<AdminAccountListViewModel> GetAllAccountListWithPagination(int? page)
     {
-        int pageSize = 5;    
+        int pageSize = 5;
         int pageNumber = page ?? 1;
-        var roleAdmin = (int) UserRoleType.Admin;
+        var roleAdmin = (int)UserRoleType.Admin;
 
         var accounts = _context.Users
             .AsNoTracking()
@@ -186,7 +187,7 @@ public class UserService : IUserService
                 Id = item.Id,
                 FullName = item.FullName,
                 UserName = item.Username,
-                Status = (AccountStatusType) item.AccountStatus,
+                Status = (AccountStatusType)item.AccountStatus,
             })
             .ToPagedList(pageNumber, pageSize);
         return accounts;
@@ -194,18 +195,17 @@ public class UserService : IUserService
 
     public IPagedList<AdminAccountTrashViewModel> GetAllAccountTrashWithPagination(int? page)
     {
-        int pageSize = 5;    
+        int pageSize = 5;
         int pageNumber = page ?? 1;
-        var roleAdmin = (int) UserRoleType.Admin;
+        var roleAdmin = (int)UserRoleType.Admin;
 
         var users = _context.Users
             .AsNoTracking()
             .Where(item => item.Role == roleAdmin && item.IsDeleted == true)
             .OrderByDescending(item => item.UpdatedAt)
             .ToList();
-        
-        var accounts = users.
-            Select(item => new AdminAccountTrashViewModel
+
+        var accounts = users.Select(item => new AdminAccountTrashViewModel
             {
                 Id = item.Id,
                 FullName = item.FullName,
@@ -214,8 +214,53 @@ public class UserService : IUserService
                 DeleteDate = item.UpdatedAt
             })
             .ToPagedList(pageNumber, pageSize);
-        
+
         return accounts;
+    }
+
+    public IPagedList<AdminCustomerListViewModel> GetAllCustomerWithPagination(int? page)
+    {
+        int pageSize = 5;
+        int pageNumber = page ?? 1;
+        var roleCustomer = (int)UserRoleType.Customer;
+
+        var users = _context.Users
+            .AsNoTracking()
+            .Where(item => item.Role == roleCustomer && item.IsDeleted == false)
+            .OrderByDescending(item => item.UpdatedAt)
+            .Select(item => new AdminCustomerListViewModel
+            {
+                Id = item.Id,
+                FullName = item.FullName,
+                Phone = item.Phone,
+                Email = item.Email,
+                Status = (AccountStatusType)item.AccountStatus
+            }).ToPagedList(pageNumber, pageSize);
+        return users;
+    }
+
+    public IPagedList<AdminCustomerTrashViewModel> GetAllCustomerTrashWithPagination(int? page)
+    {
+        int pageSize = 5;
+        int pageNumber = page ?? 1;
+        var roleCustomer = (int)UserRoleType.Customer;
+
+        var users = _context.Users
+            .AsNoTracking()
+            .Where(item => item.Role == roleCustomer && item.IsDeleted == true)
+            .OrderByDescending(item => item.UpdatedAt)
+            .ToList();
+
+        var customers = users
+            .Select(item => new AdminCustomerTrashViewModel
+            {
+                Id = item.Id,
+                FullName = item.FullName,
+                Phone = item.Phone,
+                DeleteDate = item.UpdatedAt,
+                UserModifier = GetUserById(item.UpdatedBy ?? 0).FullName,
+            }).ToPagedList(pageNumber, pageSize);
+        return customers;
     }
 
     public int GetTotalAccountAdminDelete()
@@ -224,6 +269,14 @@ public class UserService : IUserService
         var accountDeletes = _context.Users
             .Count(item => item.Role == roleAdmin && item.IsDeleted == true);
         return accountDeletes;
+    }
+
+    public int GetTotalCustomerDelete()
+    {
+        var roleCustomer = (int)UserRoleType.Customer;
+        var customerDeletes = _context.Users
+            .Count(item => item.Role == roleCustomer && item.IsDeleted == true);
+        return customerDeletes;
     }
 
     private async Task CreateAvatarUser(UserCreateViewModel model, User user)
@@ -244,6 +297,4 @@ public class UserService : IUserService
         await _context.SaveChangesAsync();
         _logger.LogInformation("Create avatar user successful");
     }
-    
-    
 }

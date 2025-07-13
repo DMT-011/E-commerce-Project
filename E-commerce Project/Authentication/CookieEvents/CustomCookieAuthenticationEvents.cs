@@ -1,5 +1,5 @@
 ﻿using E_commerce_Project.Models.Enums;
-using E_commerce_Project.Models.Services.UserService;
+using E_commerce_Project.Services.UserService;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 

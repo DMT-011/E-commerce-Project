@@ -1,4 +1,5 @@
-﻿using E_commerce_Project.Models.Services.UserService;
+﻿using E_commerce_Project.Models.Enums;
+using E_commerce_Project.Services.UserService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,6 +29,16 @@ public class AccountController : Controller
         TempData["message"] = $"Tài khoản có ID = {id} đã được khôi phục.";
         TempData["icon"] = "fas fa-sync-alt";
         TempData["type"] = "success";
+        
+        var userRestoreRole = _userService.GetUserById(id).Role;
+        var isCustomer = userRestoreRole == (int)UserRoleType.Customer;
+
+        if (isCustomer)
+        {
+            TempData["message"] = $"Người dùng có ID = {id} đã được khôi phục.";
+            return RedirectToAction("Trash", "Customer");
+        }
+        
         return RedirectToAction("Trash", "Account");
     }
 }

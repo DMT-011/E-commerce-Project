@@ -1,12 +1,13 @@
 ﻿using System.Security.Claims;
 using E_commerce_Project.Models.Context;
+using E_commerce_Project.Models.Enums;
 using E_commerce_Project.Models.Services.AuthService;
 using E_commerce_Project.Models.Services.CartService;
 using E_commerce_Project.Models.Services.OrderServive;
 using E_commerce_Project.Models.Services.ProductImageService;
-using E_commerce_Project.Models.Services.UserService;
 using E_commerce_Project.Models.ViewModels.CartViewModel;
 using E_commerce_Project.Models.ViewModels.UserViewModel;
+using E_commerce_Project.Services.UserService;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -66,7 +67,9 @@ public class UserController : Controller
     public async Task<IActionResult> Delete(int id)
     {
         var userIdModifier = User.FindFirst("userId")?.Value;
-        
+        var roleUserUpdate = _userService.GetUserById(id).Role;
+        var isCustomer = roleUserUpdate == (int)UserRoleType.Customer;
+            
         try
         {
             await _userService.DeleteUserAsync(id, int.Parse(userIdModifier));
@@ -82,6 +85,13 @@ public class UserController : Controller
             TempData["icon"] = "fas fa-times";
             TempData["type"] = "danger";
         }
+;   
+        if (isCustomer)
+        {
+            TempData["message"] = $"Khách hàng có ID = {id} đã được đưa vào thùng rác.";
+            return RedirectToAction("Customer", "Admin");
+        }
+        
         return RedirectToAction("Account", "Admin");
     }
 
@@ -102,7 +112,18 @@ public class UserController : Controller
     public async Task<IActionResult> Login(string? returnUrl, UserLoginViewModel model)
     {
         var user = await _authService.AuthenticateCustomer(model);
+        var isAccountActive = user.AccountStatus == (int)AccountStatusType.Active;
+        
         if(user == null) throw new Exception("User does not exists");
+        
+        if (!isAccountActive)
+        {
+            TempData["title"] = "Tài khoản của bạn đã bị khóa"; 
+            TempData["message"] = "Vui lòng liên hệ quản trị viên để biết thêm thông tin.";
+            TempData["textBtn"] = "Xác nhận";
+            TempData["type"] = "error";
+            return RedirectToAction("Index", "Home");
+        }
 
         var checkUserCart = _cartService.GetCartByIdUser(user.Id);
         if (checkUserCart == null) await _cartService.CreateCartAsync(user.Id);

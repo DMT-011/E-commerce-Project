@@ -1,0 +1,102 @@
+﻿@model X.PagedList.IPagedList<E_commerce_Project.ViewModels.AdminViewModel.AdminCustomerTrashViewModel>;
+@{
+  Layout = "_LayoutAdminTable";
+  ViewBag.titleView = "Danh sách khách hàng";
+  ViewBag.featureCurrent = "Thùng rác";
+
+  // Action for pagination section
+  ViewBag.action = "Trash";
+}
+
+<style>
+  .empty-img {
+    width: 40%;
+  }
+  
+  .empty-wrapper .image-wrapper {
+    margin-bottom: 36px;
+  }
+</style>
+
+@section ControlsAdmin
+{
+  <a href="/Admin/Customer" class="btn btn-black">
+    <i class="icon-control fas fa-reply"></i>
+    Quay lại
+  </a>
+}
+
+@if (Model.Count > 0)
+{
+  <table class="table align-middle table-product-list">
+    <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Tên khách hàng</th>
+      <th scope="col">Số điện thoại</th>
+      <th scope="col">Ngày xóa</th>
+      <th scope="col">Quản trị viên thực hiện</th>
+      <th scope="col">Thao tác</th>
+    </tr>
+    </thead>
+
+    <tbody class="table-group-divider">
+    @foreach (var item in Model)
+    {
+      <tr >
+        <th scope="row">
+          <span >@item.Id</span>
+        </th>
+        <td>
+          @item.FullName
+        </td>
+        <td>
+          @item.Phone
+        </td>
+        <td>
+          @item.DeleteDate.ToShortDateString()
+        </td>
+        <td>
+          @item.UserModifier
+        </td>
+        <td >
+          <button
+            class="btn btn-black btn-restore-account"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            data-bs-title="Khôi phục"
+            data-user-id="@item.Id"
+          >
+            <i class="fas fa-sync-alt"></i>
+          </button>
+        </td>
+      </tr>
+    }
+    </tbody>
+  </table>
+  
+  @section Pagination
+  {
+    @await Html.PartialAsync("PartialViews/Admin/_PaginationSection", Model)
+  }
+}
+
+@if (Model.Count == 0)
+{
+  // Context for empty section
+  ViewBag.contentEmpty = "Thùng rác rỗng, quay lại danh sách";
+  ViewBag.contentLink = "khách hàng";
+  ViewBag.actionEmpty = "/Admin/Customer";
+  ViewBag.imgEmpty = "trash-empty-color.jpg";
+  
+  @await Html.PartialAsync("PartialViews/Admin/_EmptySection")
+}
+
+
+<!-- Form restore and force delete slider -->
+<form action="" method="POST" id="form-restore-account"></form>
+
+@section ScriptsViewChild
+{
+  <script src="~/js/admin/restoreUser.js"></script>
+}

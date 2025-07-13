@@ -1,12 +1,12 @@
 @using E_commerce_Project.Models.Enums
-@model X.PagedList.IPagedList<E_commerce_Project.Models.ViewModels.AdminViewModel.AdminAccountListViewModel>;
+@model X.PagedList.IPagedList<E_commerce_Project.Models.ViewModels.AdminViewModel.AdminCustomerListViewModel>;
 @{
   Layout = "_LayoutAdminTable";
-  ViewBag.titleView = "Tài khoản";
-  ViewBag.featureCurrent = "Quản trị viên";
+  ViewBag.titleView = "Khách hàng";
+  ViewBag.featureCurrent = "Danh sách khách hàng";
 
   // Action for pagination section
-  ViewBag.action = "Account";
+  ViewBag.action = "Customer";
 }
 
 @section StylesViewChild
@@ -21,14 +21,10 @@
 
 @section ControlsAdmin
 {
-  <a href="/Admin/Create" class="btn btn-primary ">
-    <i class="icon-control fas fa-plus-circle "></i>
-    Thêm mới
-  </a>
-  <a href="/Account/Trash" class="btn btn-danger">
+  <a href="/Customer/Trash" class="btn btn-danger">
     <i class="icon-control fas fa-trash"></i>
     Thùng rác
-    <span>(@ViewBag.countAccountDel)</span>
+    <span>(@ViewBag.countCustomerDel)</span>
   </a>
 }
 
@@ -38,8 +34,9 @@
     <thead>
     <tr>
       <th scope="col">ID</th>
-      <th scope="col">Tên quản trị viên</th>
-      <th scope="col">Tên truy cập</th>
+      <th scope="col">Tên khách hàng</th>
+      <th scope="col">Só điện thoại</th>
+      <th scope="col">Email</th>
       <th scope="col">Trạng thái tài khoản</th>
       <th scope="col">Thao tác</th>
     </tr>
@@ -56,7 +53,10 @@
           @item.FullName
         </td>
         <td>
-          @item.UserName
+          @item.Phone
+        </td>
+        <td>
+          @item.Email
         </td>
         <td class="button-status">
           <div class="button-slider-wrap">
@@ -96,7 +96,7 @@
 @if (Model.Count == 0)
 { 
   // Context for empty section
-  ViewBag.contentEmpty = "Danh sách tài khoản rỗng";
+  ViewBag.contentEmpty = "Danh sách khách hàng rỗng";
   ViewBag.contentLink = "";
   ViewBag.actionEmpty = "";
   ViewBag.imgEmpty = "user-empty.jpg";
@@ -113,11 +113,11 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Chuyển tài khoản này vào thùng rác ?</h5>
+          <h5 class="modal-title">Chuyển người dùng này vào thùng rác ?</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          Tài khoản của quản trị viên <span style="font-weight: bold" class="slider-name"></span>  sẽ được sẽ được chuyển vào thùng rác <span style="color: #2bb930">( có thể khôi phục lại )</span>.
+          Khách hàng <span style="font-weight: bold" class="slider-name"></span> sẽ được sẽ được chuyển vào thùng rác <span style="color: #2bb930">( có thể khôi phục lại )</span>.
         </div>  
         <div class="modal-footer">
           <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
@@ -130,6 +130,7 @@
 
 @section ScriptsViewChild
 {
+
   <script src="~/js/admin/notice.js"></script>
   <script src="~/js/admin/handleAjaxStatusAccount.js"></script>
   <script src="~/js/admin/deleteUser.js"></script>

@@ -6,9 +6,9 @@ using E_commerce_Project.Models.Services.CategoryService;
 using E_commerce_Project.Models.Services.OrderServive;
 using E_commerce_Project.Models.Services.ProductService;
 using E_commerce_Project.Models.Services.SliderService;
-using E_commerce_Project.Models.Services.UserService;
 using E_commerce_Project.Models.ViewModels.AdminViewModel;
 using E_commerce_Project.Models.ViewModels.UserViewModel;
+using E_commerce_Project.Services.UserService;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -55,6 +55,13 @@ public class AdminController : Controller
     public IActionResult Create()
     {
         return View();
+    }
+
+    public IActionResult Customer(int? page)
+    {
+        var model = _userService.GetAllCustomerWithPagination(page);
+        ViewBag.countCustomerDel = _userService.GetTotalCustomerDelete();
+        return View(model);
     }
 
     public IActionResult Account(int? page)
